@@ -76,8 +76,6 @@ plugins:
       js_files:
         - scripts.js
 nav:
-  - README: 00-README.md
-
   # Core AWS Services
   - IAM: 01-IAM.md
   - S3: 02-S3.md
