@@ -1,315 +1,150 @@
-# AWS Solutions Architect Associate (SAA-C03) — Topic Guides
+SAA-C03 Topic Guides — Study Index
 
-**38 exam-focused study guides covering the major AWS Solutions Architect Associate (SAA-C03) topics** — explained the way a good teacher explains them, rather than reading like service documentation.
+38 exam-focused topic guides for the AWS Solutions Architect Associate (SAA-C03) exam. Each file follows the same teaching pattern:
 
-## What makes these different
+The idea — the service explained from zero with a real-world analogy.
+Core concepts — exam-tested facts, numbers, tables, and explicit "THE trap" callouts.
+Question patterns — realistic exam scenarios with answers and signal keywords.
+Pocket card — a keyword → answer table for rapid review.
 
-Every guide follows the same teaching format:
+The goal is to understand why an architectural solution fits the requirements, not simply memorize service definitions.
 
-1. **The idea** — each service explained from zero using a real-world analogy.
-2. **Core concepts** — exam-relevant facts, limits, defaults, distinctions, and explicit **"THE trap"** callouts highlighting common mistakes.
-3. **Question patterns** — realistic exam-style scenarios, with answers and the keywords that help identify the correct solution.
-4. **Pocket card** — a keyword → answer table for rapid revision.
+<button id="pwa-install-button" class="md-button md-button--primary" type="button" onclick="installPWA()" style="display: none;">📲 Install AWS SAAC03</button>
 
-The guides emphasize decision patterns that commonly matter in SAA-C03 scenarios, such as:
+📖 Suggested Reading Order
+🏗️ Priority 1: Core Infrastructure
 
-- Multi-AZ vs. Read Replicas
-- Gateway vs. Interface VPC Endpoints
-- SQS vs. SNS vs. Kinesis vs. EventBridge
-- RDS vs. Aurora vs. DynamoDB
-- NAT Gateway vs. VPC Endpoints
-- CloudFront vs. Global Accelerator
-- Backup and restore vs. pilot light vs. warm standby
+Goal: Master networking, storage, compute, and identity fundamentals first.
 
-The goal is to understand **why a solution fits the requirements**, not simply memorize service definitions.
+??? note "Networking and Content Delivery"
 
----
+- [06 — VPC](06-VPC.md) — subnets, NAT, security groups vs NACLs, endpoints, peering, Transit Gateway, PrivateLink.
+- [07 — Route 53](07-Route53.md) — routing policies, health checks, Alias vs CNAME.
+- [08 — CloudFront & Global Accelerator](08-CloudFront-GlobalAccelerator.md) — CDN vs global network acceleration.
+- [32 — Direct Connect & VPN](32-DirectConnect-VPN.md) — hybrid connectivity and encrypted tunnels.
+- [33 — Transit Gateway](33-Transit-Gateway.md) — hub-and-spoke networking.
+- [37I — DNS, IPv6 & Edge Infrastructure](37I-DNS, IPv6 & Edge Infrastructure.md) — DNS, IPv6, and edge concepts.
 
-## Start here
 
-📖 **Topic Guides Index** — browse all 38 guides below, organized by study priority and topic.
+??? note "Compute"
 
-\<button id="pwa-install-button" class="md-button md-button--primary" type="button" onclick="installPWA()" style="display: none;"\>📲 Install AWS SAA-C03 Notes\</button\>
+- [03 — EC2](03-EC2.md) — instance families, pricing models, placement groups.
+- [05 — ELB & Auto Scaling](05-ELB-AutoScaling.md) — load balancers, health checks, scaling policies.
+- [13 — Lambda](13-Lambda.md) — execution limits, concurrency, VPC access.
+- [14 — ECS & Fargate](14-ECS-Fargate.md) — containers, task definitions, task roles.
+- [14B — EKS & Kubernetes](14B-EKS-Kubernetes.md) — managed Kubernetes and cluster architecture.
+- [15 — Elastic Beanstalk](15-Elastic-Beanstalk.md) — managed deployments and deployment policies.
 
-### High-value guides to prioritize
 
-If you're short on time, consider starting with these topics. This is a practical study recommendation, not an official ranking of individual service question frequency.
+??? note "Storage"
 
-- VPC — networking fundamentals, routing, endpoints, connectivity, and security controls.
-- S3 — storage classes, encryption, lifecycle policies, replication, and data protection.
-- RDS & Aurora — Multi-AZ, Read Replicas, failover, scaling, and database selection.
-- SQS, SNS & Kinesis — messaging, event-driven architectures, streaming, and decoupling.
-- Exam Traps & Key Patterns — review after studying the underlying services, then revisit during final revision.
+- [02 — S3](02-S3.md) — storage classes, encryption, lifecycle, replication, Object Lock.
+- [04 — EBS, EFS & Instance Store](04-EBS-EFS-InstanceStore.md) — block vs file storage and ephemeral disks.
+- [25 — Storage Gateway, DataSync & Transfer Family](25-StorageGateway-DataSync-TransferFamily.md) — hybrid storage and file transfers.
+- [26 — FSx](26-FSx.md) — Windows, Lustre, ONTAP, OpenZFS.
+- [27 — Snow Family](27-Snow-Family.md) — offline data transfer and edge computing.
 
----
 
-## Official exam-domain weights
+??? note "Identity and Access Management"
 
-AWS organizes the scored SAA-C03 content into four domains:
+- [01 — IAM](01-IAM.md) — roles, policies, permissions, STS, cross-account access.
 
-| Exam domain | Weight |
-| --- | --- |
-| Design Secure Architectures | 30% |
-| Design Resilient Architectures | 26% |
-| Design High-Performing Architectures | 24% |
-| Design Cost-Optimized Architectures | 20% |
+🗄️ Priority 2: Databases
 
-These percentages describe the official exam domains, not the frequency of individual services or question patterns. Use the weights to guide your overall preparation, but don't neglect a domain or service solely because it seems less prominent.
+Goal: Learn to choose the right database and understand availability, performance, and scaling trade-offs.
 
-**Official reference:** [AWS Certified Solutions Architect – Associate (SAA-C03) Exam Guide](<https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03.html>)
+??? note "Database Services"
 
----
+- [09 — RDS & Aurora](09-RDS-Aurora.md) — Multi-AZ vs Read Replicas, failover, Aurora scaling.
+- [10 — DynamoDB](10-DynamoDB.md) — DAX, Global Tables, Streams, GSI vs LSI.
+- [11 — ElastiCache](11-ElastiCache.md) — Redis vs Memcached and caching strategies.
+- [12 — Other Databases](12-Other-Databases.md) — specialized database services and database selection.
 
-# 🚨 Priority 1: Core AWS Services
+⚡ Priority 3: Serverless and Application Integration
 
-**Goal:** Build a strong foundation in identity, storage, compute, networking, databases, and security.
+Goal: Understand decoupling, event-driven architectures, APIs, and workflows.
 
-??? note "00 — Start Here"
+??? note "Application Services"
 
-```
-- [Topic Guides Index](00-README.md)
-```
+- [16 — API Gateway](16-API-Gateway.md) — authorization, throttling, integrations, timeouts.
+- [17 — SQS, SNS & Kinesis](17-SQS-SNS-Kinesis.md) — queues, fan-out, streaming, decoupling.
+- [18 — EventBridge & Step Functions](18-EventBridge-StepFunctions.md) — event routing and workflows.
+- [37G — Application Development & Integration](37G-Application Development & Integration.md) — additional application and integration services.
 
-??? note "01 — Identity and Access Management"
+🔐 Priority 4: Security and Identity
 
-```
-- [IAM](01-IAM.md)
-```
+Goal: Recognize the right security control for encryption, secrets, application identities, and threat protection.
 
-??? note "02 — Storage"
+??? note "Security Services"
 
-```
-- [Amazon S3](02-S3.md)
-- [EBS, EFS & Instance Store](04-EBS-EFS-InstanceStore.md)
-- [Storage Gateway, DataSync & Transfer Family](25-StorageGateway-DataSync-TransferFamily.md)
-- [Amazon FSx](26-FSx.md)
-- [Snow Family](27-Snow-Family.md)
-```
+- [20 — KMS & CloudHSM](20-KMS-CloudHSM.md) — encryption keys and hardware security modules.
+- [21 — Secrets Manager & Parameter Store](21-SecretsManager-ParameterStore.md) — secret storage, rotation, configuration.
+- [22 — WAF, Shield & Security Services](22-WAF-Shield-SecurityServices.md) — web protection, DDoS mitigation, threat detection.
+- [23 — Cognito](23-Cognito.md) — User Pools vs Identity Pools.
+- [24 — Directory Services](24-Directory-Services.md) — Managed Microsoft AD, AD Connector, Simple AD.
+- [37B — Certificates](37B-Certificates.md) — certificates, TLS, and HTTPS.
 
-??? note "03 — Compute"
+📊 Priority 5: Monitoring, Management and Governance
 
-```
-- [Amazon EC2](03-EC2.md)
-- [ELB & Auto Scaling](05-ELB-AutoScaling.md)
-- [AWS Lambda](13-Lambda.md)
-- [ECS & Fargate](14-ECS-Fargate.md)
-- [EKS & Kubernetes](14B-EKS-Kubernetes.md)
-- [Elastic Beanstalk](15-Elastic-Beanstalk.md)
-```
+Goal: Understand operational visibility, account governance, infrastructure automation, and cost optimization.
 
-??? note "04 — Networking and Content Delivery"
+??? note "Monitoring and Operations"
 
-```
-- [Amazon VPC](06-VPC.md)
-- [Amazon Route 53](07-Route53.md)
-- [CloudFront & Global Accelerator](08-CloudFront-GlobalAccelerator.md)
-- [Direct Connect & VPN](32-DirectConnect-VPN.md)
-- [Transit Gateway](33-Transit-Gateway.md)
-- [DNS, IPv6 & Edge Infrastructure](37I-DNS, IPv6 & Edge Infrastructure.md)
-```
+- [19 — CloudWatch, CloudTrail & Config](19-CloudWatch-CloudTrail-Config.md) — metrics, logs, API auditing, configuration history.
+- [37F — Systems Manager & Operations](37F-Systems Manager & Operations.md) — fleet management, automation, operational visibility.
 
-??? note "05 — Databases"
 
-```
-- [RDS & Aurora](09-RDS-Aurora.md)
-- [Amazon DynamoDB](10-DynamoDB.md)
-- [Amazon ElastiCache](11-ElastiCache.md)
-- [Other Databases](12-Other-Databases.md)
-```
+??? note "Infrastructure and Governance"
 
-??? note "06 — Messaging and Application Integration"
+- [28 — CloudFormation](28-CloudFormation.md) — Infrastructure as Code and stacks.
+- [29 — Organizations & Control Tower](29-Organizations-ControlTower.md) — SCPs, multi-account governance, landing zones.
+- [30 — Service Catalog & Trusted Advisor](30-ServiceCatalog-TrustedAdvisor.md) — standardized provisioning and recommendations.
+- [34 — Well-Architected Framework](34-Well-Architected.md) — architectural trade-offs and the six pillars.
+- [37H — Specialized Services & Governance](37H-Specialized Services & Governance.md) — additional governance and specialized services.
 
-```
-- [API Gateway](16-API-Gateway.md)
-- [SQS, SNS & Kinesis](17-SQS-SNS-Kinesis.md)
-- [EventBridge & Step Functions](18-EventBridge-StepFunctions.md)
-- [Application Development & Integration](37G-Application Development & Integration.md)
-```
 
-??? note "07 — Security and Protection"
+??? note "Cost Management"
 
-```
-- [KMS & CloudHSM](20-KMS-CloudHSM.md)
-- [Secrets Manager & Parameter Store](21-SecretsManager-ParameterStore.md)
-- [WAF, Shield & Security Services](22-WAF-Shield-SecurityServices.md)
-- [Amazon Cognito](23-Cognito.md)
-- [Directory Services](24-Directory-Services.md)
-- [Certificates](37B-Certificates.md)
-```
+- [31 — Cost Management](31-Cost-Management.md) — Cost Explorer, Budgets, Cost and Usage Reports.
 
----
+📈 Priority 6: Analytics, AI and Data Integration
 
-# 🏗️ Priority 2: Architecture and Resilience
+Goal: Recognize additional AWS services and match them to the requirements in scenario questions.
 
-**Goal:** Understand how to design highly available, fault-tolerant, scalable, and loosely coupled systems.
+??? note "Analytics and Data"
 
-??? note "08 — High Availability and Disaster Recovery"
+- [37C — Data Lakes, ETL & Data Integration](37C-Data Lakes, ETL & Data Integration.md) — data lakes, ETL, data movement.
+- [37D — Analytics, Big Data & Streaming](37D-Analytics, Big Data & Streaming.md) — analytics, big data, stream processing.
+- [37E — AI & Machine Learning One-Liners](37E-AI & Machine Learning One-Liners.md) — AI/ML service recognition and use cases.
 
-```
-- [Disaster Recovery](35-Disaster-Recovery.md)
-- [Migration, Messaging & Disaster Recovery](37A-Migration, Messaging & Disaster Recovery.md)
-```
+📦 Priority 7: Migration and Disaster Recovery
 
-??? note "09 — Infrastructure as Code"
+Goal: Choose the right migration approach and recovery strategy based on RPO, RTO, cost, and operational requirements.
 
-```
-- [AWS CloudFormation](28-CloudFormation.md)
-```
+??? note "Migration and Resilience"
 
-??? note "10 — Well-Architected Design"
+- [35 — Disaster Recovery](35-Disaster-Recovery.md) — RPO/RTO, backup and restore, pilot light, warm standby, multi-site.
+- [37A — Migration, Messaging & Disaster Recovery](37A-Migration, Messaging & Disaster Recovery.md) — migration options, messaging patterns, recovery scenarios.
 
-```
-- [AWS Well-Architected Framework](34-Well-Architected.md)
-```
+🎯 Priority 8: Final Review
 
-??? note "11 — Exam Traps and Architecture Patterns"
+Goal: Consolidate your knowledge, eliminate distractors, and revisit common exam traps.
 
-```
-- [Exam Traps & Key Patterns](36-Exam-Traps-KeyPatterns.md)
-- [Elimination Rules](38-elimination rules.md)
-```
+??? note "Exam Preparation"
 
----
+- [36 — Exam Traps & Key Patterns](36-Exam-Traps-KeyPatterns.md) — common traps, service comparisons, scenario keywords.
+- [38 — Elimination Rules](38-elimination rules.md) — eliminating distractors and selecting answers against requirements.
 
-# ⚙️ Priority 3: Operations, Governance and Cost
+🧠 How to Use These Guides
+First pass: Follow the suggested reading order. Focus on the analogies and understand what each service solves.
+Second pass: Cover the answer columns in the pocket cards and quiz yourself using the keywords.
+After practice tests: For every incorrect answer, revisit that topic's Question Patterns section. Identify the signal words or constraints you missed.
+Exam morning: Review guides 36 and 38, then skim the pocket cards. Reinforce what you know rather than trying to learn everything from scratch.
+📊 Official Exam-Domain Weights
+Exam domain	Weight
+Design Secure Architectures	30%
+Design Resilient Architectures	26%
+Design High-Performing Architectures	24%
+Design Cost-Optimized Architectures	20%
 
-**Goal:** Learn how to monitor, manage, govern, and optimize AWS environments.
-
-??? note "12 — Monitoring and Auditing"
-
-```
-- [CloudWatch, CloudTrail & Config](19-CloudWatch-CloudTrail-Config.md)
-- [Systems Manager & Operations](37F-Systems Manager & Operations.md)
-```
-
-??? note "13 — Governance and Multi-Account Management"
-
-```
-- [Organizations & Control Tower](29-Organizations-ControlTower.md)
-- [Service Catalog & Trusted Advisor](30-ServiceCatalog-TrustedAdvisor.md)
-- [Specialized Services & Governance](37H-Specialized Services & Governance.md)
-```
-
-??? note "14 — Cost Optimization"
-
-```
-- [Cost Management](31-Cost-Management.md)
-```
-
----
-
-# 🔍 Priority 4: Additional Services and Knowledge Gaps
-
-**Goal:** Recognize less frequently emphasized services and identify the right solution when they appear in a scenario.
-
-??? note "15 — Data Lakes, ETL and Data Integration"
-
-```
-- [Data Lakes, ETL & Data Integration](37C-Data Lakes, ETL & Data Integration.md)
-```
-
-??? note "16 — Analytics, Big Data and Streaming"
-
-```
-- [Analytics, Big Data & Streaming](37D-Analytics, Big Data & Streaming.md)
-```
-
-??? note "17 — AI and Machine Learning"
-
-```
-- [AI & Machine Learning One-Liners](37E-AI & Machine Learning One-Liners.md)
-```
-
----
-
-# 🧠 Exam-Technique Rules
-
-## 1\. Identify the actual requirement
-
-You can start by reading the final sentence to identify what the question asks for. Then read the entire scenario carefully.
-
-Distinguish between requirements such as:
-
-- **MOST cost-effective**
-- **LEAST operational overhead**
-- **HIGHLY available**
-- **MINIMUM latency**
-- **NEAR-ZERO data loss**
-- **MINIMUM recovery time**
-
-The best solution depends on the complete set of requirements, not just the service named in the question.
-
-## 2\. Count every requirement
-
-Treat phrases such as "X as well as Y" as a checklist. The correct answer must satisfy every required condition.
-
-If a question asks for both private connectivity and high availability, an option that provides only private connectivity is incomplete.
-
-## 3\. Pay attention to qualifying words
-
-Words and phrases such as **serverless, automatically, at no additional cost, immediately, directly, cannot, and always** can change whether an answer is correct.
-
-Don't reject an answer simply because it uses an absolute term. Check whether the statement is actually true for the specified service, configuration, and situation.
-
-## 4\. Compare similar answer choices carefully
-
-When two options appear almost identical, examine their differences:
-
-- Which one satisfies all requirements?
-- Which one introduces an unnecessary component?
-- Which one requires more operational work?
-- Which one fails a stated performance, availability, security, or cost constraint?
-
-A single qualification can determine the correct answer.
-
-## 5\. Use numerical requirements to eliminate options
-
-Pay attention to stated limits and targets, including:
-
-- Retrieval time and storage durability
-- IOPS and throughput
-- Recovery Point Objective (RPO) and Recovery Time Objective (RTO)
-- Timeout limits
-- Data-transfer volume
-- Capacity and scaling requirements
-
-Use the values to eliminate incompatible solutions before comparing the remaining options.
-
-Verify unfamiliar or potentially outdated numbers against current AWS documentation.
-
-## 6\. Don't guess based on how familiar an option sounds
-
-An unfamiliar service feature can be correct, but unfamiliarity alone doesn't make an option more likely to be right.
-
-If none of the familiar choices appears suitable:
-
-1. Re-read the exact requirement.
-2. Identify which requirement eliminates each plausible option.
-3. Check whether an unfamiliar service or feature fits the scenario.
-4. Verify its actual behavior and limitations if necessary.
-
-Choose the answer that satisfies the requirements, not the one that sounds most sophisticated or most familiar.
-
-## 7\. Prefer the simplest solution that meets every requirement
-
-When several options work, consider operational overhead, cost, availability, scalability, and security.
-
-Don't automatically select the cheapest service if it fails a reliability or performance requirement. Likewise, don't select a more complex architecture when a managed service meets all the stated requirements.
-
----
-
-# 📚 Accuracy and Disclaimer
-
-These are community study notes, not official AWS exam content. They are not affiliated with or endorsed by Amazon Web Services.
-
-The guides are intended to explain concepts and help you practice architectural decisions. They should not be treated as a guarantee of complete exam coverage or as a substitute for the official exam guide.
-
-AWS service features, quotas, pricing, regional availability, and product lifecycles can change. Before relying on a specific limit or behavior:
-
-- Check the current official AWS documentation.
-- Verify that the service and feature remain supported.
-- Distinguish default settings from maximum configurable limits.
-- Pay attention to exceptions and prerequisites.
-- Use the current SAA-C03 exam guide to confirm the scope of your preparation.
-
-**Official exam guide:** [AWS Certified Solutions Architect – Associate (SAA-C03)](<https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03.html>)
+These weights apply to the official exam domains, not individual AWS services. Use them to balance your preparation rather than predict the frequency of specific service questions.
