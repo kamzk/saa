@@ -1,0 +1,827 @@
+# Section 13: Lambda
+
+## The idea
+
+**AWS Lambda = serverless compute.**
+
+You upload a **function** containing your code, define what **event** should trigger it, and AWS runs the function for you.
+
+Examples of triggers:
+
+```text
+S3 upload
+API request
+EventBridge schedule
+SNS message
+SQS message
+Kinesis record
+DynamoDB Stream record
+```
+
+AWS manages:
+
+* provisioning servers
+* scaling
+* operating systems
+* infrastructure maintenance
+
+You manage:
+
+* function code
+* configuration
+* permissions
+* triggers
+
+Lambda is **event-driven**:
+
+```text
+Event
+  ↓
+Lambda function
+  ↓
+Code runs
+```
+
+Lambda automatically scales based on incoming events.
+
+You pay based on usage/execution rather than keeping servers running continuously.
+
+```text
+No invocation
+→ No Lambda execution charge
+
+More events
+→ Lambda can run more concurrent executions
+```
+
+---
+
+# Hard limits — where many exam traps come from
+
+| Limit                          | Value                              |
+| ------------------------------ | ---------------------------------- |
+| **Maximum execution time**     | **15 minutes**                     |
+| Memory                         | **128 MB – 10 GB**                 |
+| CPU                            | **Scales with memory**             |
+| Ephemeral `/tmp` storage       | Up to **10 GB**                    |
+| Deployment package             | **50 MB zipped / 250 MB unzipped** |
+| Container image                | Up to **10 GB**                    |
+| Default concurrency per Region | **1,000**                          |
+
+### Important trap: maximum execution time
+
+Lambda cannot run for more than **15 minutes per invocation**.
+
+So:
+
+> **"A 2-hour video processing job needs to run as one Lambda invocation."**
+
+→ **Not Lambda**
+
+Possible alternatives:
+
+* AWS Batch
+* ECS / Fargate
+
+**Step Functions** can also be used when the overall workflow can be **divided into multiple steps**, with each Lambda invocation staying within the 15-minute limit.
+
+Example:
+
+```text
+2-hour workflow
+
+Step 1 → Lambda < 15 min
+        ↓
+Step 2 → Lambda < 15 min
+        ↓
+Step 3 → Lambda < 15 min
+        ↓
+...
+```
+
+### Exam signal
+
+> **One Lambda invocation longer than 15 minutes → not Lambda**
+
+---
+
+## CPU scales with memory
+
+Lambda does not give you a separate CPU setting.
+
+Instead:
+
+> **More memory → more CPU**
+
+So:
+
+> **"A CPU-bound Lambda function is too slow. How should you improve its performance?"**
+
+→ **Increase Lambda memory**
+
+For example:
+
+```text
+512 MB
+ ↓
+slow
+
+1024 MB
+ ↓
+more CPU
+ ↓
+faster
+```
+
+This is a common exam trap because the question may ask about **CPU**, while the correct setting is **memory**.
+
+---
+
+# Three ways Lambda gets invoked
+
+There are three important invocation patterns to understand:
+
+1. **Synchronous**
+2. **Asynchronous**
+3. **Event Source Mapping**
+
+---
+
+## 1. Synchronous invocation
+
+The caller **waits for Lambda to finish** and receive the response.
+
+```text
+Client
+  ↓
+API Gateway
+  ↓
+Lambda
+  ↓
+Response
+  ↓
+Client
+```
+
+Common examples:
+
+* API Gateway → Lambda
+* Application directly invoking Lambda
+* Lambda Function URL
+
+### Remember
+
+> **Synchronous = caller waits for the result**
+
+---
+
+## 2. Asynchronous invocation
+
+The event source sends the event to Lambda and **does not wait for the function to finish**.
+
+Typical asynchronous sources:
+
+* S3
+* SNS
+* EventBridge
+
+Example:
+
+```text
+S3
+ ↓
+Lambda
+```
+
+The source does not wait for Lambda's final result.
+
+Lambda handles the event asynchronously.
+
+### What happens when Lambda fails?
+
+Lambda automatically retries the event.
+
+```text
+Initial attempt
+      ↓
+Failure
+      ↓
+Retry
+      ↓
+Failure
+      ↓
+Retry
+      ↓
+Failure
+      ↓
+Event discarded
+```
+
+That means failed asynchronous events can eventually be lost unless you configure additional handling.
+
+### Protect against lost asynchronous events
+
+Use:
+
+* **Dead-letter queue (DLQ)**
+* **On-failure destination**
+
+```text
+Async Lambda failure
+        ↓
+DLQ / failure destination
+        ↓
+Handle failed event
+```
+
+### Important exam trap
+
+> **"Asynchronously invoked Lambda events can disappear after retries."**
+
+→ Configure a **DLQ or on-failure destination**.
+
+### Remember
+
+```text
+S3
+SNS
+EventBridge
+   ↓
+Asynchronous Lambda invocation
+```
+
+---
+
+## 3. Event Source Mapping
+
+For some sources, Lambda **pulls records from the source** rather than the source directly invoking Lambda.
+
+Important examples:
+
+* Amazon SQS
+* Amazon Kinesis Data Streams
+* DynamoDB Streams
+
+This is called **Event Source Mapping**.
+
+Example:
+
+```text
+SQS
+ ↓
+Lambda polls queue
+ ↓
+Gets a batch of messages
+ ↓
+Lambda processes them
+```
+
+For streams:
+
+```text
+Kinesis / DynamoDB Streams
+       ↓
+Event Source Mapping
+       ↓
+Lambda
+```
+
+Lambda reads records in **batches**.
+
+### Important distinction
+
+```text
+S3 / SNS / EventBridge
+→ Lambda is PUSHED the event
+
+SQS / Kinesis / DynamoDB Streams
+→ Lambda PULLS records through Event Source Mapping
+```
+
+### Easy memory
+
+> **S3/SNS/EventBridge = push**
+
+> **SQS/Kinesis/DynamoDB Streams = pull**
+
+---
+
+# Lambda Function URL
+
+A **Lambda Function URL** is a direct **HTTP(S) endpoint for a Lambda function**.
+
+It is useful when an external service simply needs to call Lambda through HTTP, such as a **webhook**.
+
+```text
+Third-party service
+       ↓ HTTP POST
+Lambda Function URL
+       ↓
+    Lambda
+```
+
+### Function URL vs API Gateway
+
+| Requirement                                 | Better choice           |
+| ------------------------------------------- | ----------------------- |
+| Simple HTTP endpoint/webhook for one Lambda | **Lambda Function URL** |
+| Full API management/features                | **API Gateway**         |
+
+### Exam signal
+
+> **"Third-party service sends an HTTP POST webhook directly to Lambda."**
+
+→ **Lambda Function URL**
+
+> **"Need API management, throttling, transformations, advanced authorization, or a larger API."**
+
+→ **API Gateway**
+
+### Simple rule
+
+> **Simple webhook → Function URL**
+
+> **Full API → API Gateway**
+
+---
+
+# Cold starts and concurrency
+
+## Cold start
+
+A **cold start** happens when Lambda needs to initialize a new execution environment before running the function.
+
+Initialization can include:
+
+* starting the runtime
+* loading your code
+* loading dependencies
+
+This can cause additional latency.
+
+Typical symptom:
+
+> **"The API normally responds quickly, but occasionally has latency spikes after periods of inactivity."**
+
+→ **Cold start**
+
+---
+
+## Lambda SnapStart
+
+**Lambda SnapStart** reduces cold-start latency by taking a snapshot of a pre-initialized execution environment and restoring from that snapshot instead of initializing from scratch.
+
+* Supported managed runtimes: **Java 11+**, **Python 3.12+**, **.NET 8+**.
+* Not supported for Node.js, Ruby, OS-only runtimes, or arbitrary custom container base images without required hooks.
+* Java managed runtimes: no additional SnapStart cost; other supported runtimes may have SnapStart pricing.
+* Exam signal: cold-start latency with a supported runtime → consider **SnapStart**; for any runtime/pre-warmed execution environments → **Provisioned Concurrency**.
+
+---
+
+# Provisioned vs Reserved Concurrency
+
+These two are easy to confuse.
+
+## Provisioned Concurrency
+
+**Provisioned Concurrency = keep execution environments pre-initialized and ready to handle requests.**
+
+Purpose:
+
+> **Reduce/eliminate cold-start latency.**
+
+Think:
+
+```text
+Provisioned Concurrency
+= PRE-WARMED
+```
+
+### Exam signal
+
+> **Cold-start latency → Provisioned Concurrency**
+
+---
+
+## Reserved Concurrency
+
+**Reserved Concurrency = reserve a maximum number of concurrent executions for a function.**
+
+Purpose:
+
+> **Prevent a Lambda function from consuming unlimited concurrency and overwhelming a downstream service.**
+
+Example:
+
+```text
+Lambda
+ ↓
+Legacy database
+ ↓
+Database supports only 50 connections
+```
+
+Set:
+
+```text
+Reserved Concurrency = 50
+```
+
+Now the function cannot run more than 50 concurrent executions.
+
+Think:
+
+```text
+Reserved Concurrency
+= RESTRICT / CAP
+```
+
+### Exam signal
+
+> **Protect downstream system / cap Lambda concurrency → Reserved Concurrency**
+
+---
+
+## The easiest distinction
+
+```text
+Provisioned Concurrency
+= PRE-WARM
+= reduce cold starts
+
+Reserved Concurrency
+= RESTRICT / CAP
+= limit concurrent executions
+```
+
+---
+
+# Lambda in a VPC
+
+By default, Lambda functions run outside your VPC networking environment.
+
+They cannot directly access resources that are private inside your VPC.
+
+For example:
+
+```text
+Lambda
+   ❌
+Private RDS
+```
+
+If you configure Lambda to run in your VPC, Lambda can access private VPC resources:
+
+```text
+Lambda
+   ↓
+VPC
+   ↓
+Private RDS
+```
+
+### Important trap: VPC Lambda and Internet access
+
+A Lambda function attached to a VPC does **not automatically have Internet access**.
+
+Even placing it in a public subnet does not solve this by itself.
+
+If it needs outbound Internet access, a common solution is:
+
+```text
+Lambda in private subnet
+        ↓
+NAT Gateway
+        ↓
+Internet
+```
+
+For AWS services, **VPC endpoints** may be preferable when available.
+
+So:
+
+```text
+Lambda in VPC
++
+Private resources
+→ ✅
+
+Lambda in VPC
++
+Internet access
+→ NAT Gateway or appropriate VPC endpoint
+```
+
+---
+
+# Lambda + RDS
+
+Lambda can scale to many concurrent executions.
+
+That can create a problem if every invocation opens its own database connection.
+
+Example:
+
+```text
+100 Lambda executions
+        ↓
+100 database connections
+        ↓
+RDS overwhelmed
+```
+
+The common solution is:
+
+> **RDS Proxy**
+
+RDS Proxy maintains a **connection pool** and allows Lambda executions to share database connections more efficiently.
+
+```text
+Lambda
+  ↓
+RDS Proxy
+  ↓
+Connection pool
+  ↓
+RDS
+```
+
+### Exam signal
+
+> **Lambda + RDS + too many database connections → RDS Proxy**
+
+---
+
+# Lambda permissions and configuration
+
+## Execution role
+
+The Lambda function uses an **IAM execution role**.
+
+That role determines what AWS resources the function can access.
+
+Example:
+
+```text
+Lambda
+ ↓
+Execution role
+ ↓
+s3:GetObject
+dynamodb:PutItem
+secretsmanager:GetSecretValue
+```
+
+### Memory
+
+> **Lambda permissions → Execution role**
+
+---
+
+## Lambda Layers
+
+**Lambda Layers = package shared dependencies/libraries separately from the function code.**
+
+Useful when multiple Lambda functions use the same libraries.
+
+```text
+Layer
+ ├── shared library
+ └── dependency
+
+Function A → uses Layer
+Function B → uses Layer
+Function C → uses Layer
+```
+
+> **Small info:** Lambda Layers are versioned. A function can use up to **5 layers**. The total unzipped size of the function code plus all layers must stay within the **250 MB** ZIP limit. Layer content is extracted under **/opt** in the Lambda execution environment.
+
+### Signal
+
+> **Shared libraries/dependencies → Lambda Layers**
+
+---
+
+## Container images
+
+Lambda functions can also be deployed using container images.
+
+Maximum container image size:
+
+> **10 GB**
+
+Normal Lambda deployment package limits:
+
+```text
+ZIP
+= 50 MB compressed
+= 250 MB uncompressed
+```
+
+Container image:
+
+```text
+= up to 10 GB
+```
+
+### Signal
+
+> **Lambda dependencies/package too large for ZIP → container image**
+
+---
+
+## Environment variables
+
+**Environment variables = configuration stored outside the code.**
+
+Examples:
+
+```text
+DATABASE_HOST
+API_URL
+ENVIRONMENT
+TABLE_NAME
+```
+
+### Signal
+
+> **Configuration outside code → Environment variables**
+
+---
+
+# EventBridge schedule + Lambda
+
+EventBridge can trigger Lambda on a schedule.
+
+Example:
+
+```text
+Every night at 2 AM
+        ↓
+EventBridge
+        ↓
+Lambda
+        ↓
+Run cleanup script
+```
+
+This is effectively a **serverless cron** pattern.
+
+### Exam signal
+
+> **"Run a task every night at 2 AM without managing servers."**
+
+→ **EventBridge schedule → Lambda**
+
+---
+
+# Lambda@Edge vs CloudFront Functions
+
+Both allow code to run at **CloudFront edge locations**, but they have different capabilities.
+
+|                | **Lambda@Edge**                       | **CloudFront Functions**                    |
+| -------------- | ------------------------------------- | ------------------------------------------- |
+| Runtime        | Node.js / Python                      | JavaScript                                  |
+| Execution time | Up to seconds                         | **Sub-millisecond**                         |
+| Network calls  | **Yes**                               | **No**                                      |
+| Hooks          | Viewer + origin request/response      | Viewer request/response                     |
+| Best for       | More complex edge logic               | Very lightweight edge logic                 |
+| Examples       | JWT/auth validation, origin selection | Header manipulation, URL rewrites/redirects |
+
+### Lambda@Edge
+
+Use it when you need more complex logic at the CloudFront edge.
+
+Examples:
+
+* JWT/authentication validation
+* origin selection
+* logic requiring network calls
+
+Important:
+
+> **Lambda@Edge supports network calls.**
+
+### CloudFront Functions
+
+Use it for very lightweight, high-volume edge operations.
+
+Examples:
+
+* modify headers
+* rewrite URLs
+* redirects
+
+Important:
+
+> **CloudFront Functions cannot make network calls.**
+
+### Simple rule
+
+```text
+Needs network calls
+or more complex edge logic
+→ Lambda@Edge
+
+Simple header / URL manipulation
+→ CloudFront Functions
+```
+
+---
+
+# Question patterns
+
+> **"90-minute video transcoding job — can it run on Lambda?"**
+> → **No — Lambda has a 15-minute maximum. Use AWS Batch / Fargate.**
+
+> **"Can the 90-minute workflow be split into multiple Lambda steps?"**
+> → **Yes — Step Functions can orchestrate multiple steps, provided each Lambda invocation stays within the 15-minute limit.**
+
+> **"Generate a thumbnail whenever an image lands in S3."**
+> → **S3 event notification → Lambda**
+
+> **"API is normally fast but has latency spikes after idle periods."**
+> → **Provisioned Concurrency** (or **SnapStart** if using a supported runtime such as Java/Python/.NET)
+
+> **"Java/Python/.NET Lambda has cold-start latency spikes."**
+> → **Lambda SnapStart** if supported; otherwise **Provisioned Concurrency**
+
+> **"Lambda scaling overwhelms a legacy database that supports only 50 concurrent connections."**
+> → **Reserved Concurrency** to cap Lambda concurrency; **RDS Proxy** can additionally manage database connections.
+
+> **"Lambda must query an RDS database in a private subnet."**
+> → **Attach Lambda to the VPC + use RDS Proxy when connection management is a concern.**
+
+> **"Lambda is attached to a VPC and still needs Internet access."**
+> → **NAT Gateway** for Internet access, or an appropriate **VPC endpoint** when accessing a supported AWS service.
+
+> **"CPU-intensive Lambda function is too slow."**
+> → **Increase memory** because CPU scales with memory.
+
+> **"Run a cleanup script every night at 2 AM without servers."**
+> → **EventBridge schedule → Lambda**
+
+> **"Validate JWT tokens or call an external authentication service at the edge."**
+> → **Lambda@Edge**
+
+> **"Rewrite URLs or add security headers at the edge."**
+> → **CloudFront Functions**
+
+> **"Asynchronously invoked Lambda fails and events eventually disappear."**
+> → **DLQ / on-failure destination**
+
+> **"Lambda should process SQS messages."**
+> → **Event Source Mapping** — Lambda polls SQS and processes messages in batches.
+
+> **"Lambda needs permission to write to DynamoDB."**
+> → **Lambda execution role**
+
+> **"Several Lambda functions share the same libraries."**
+> → **Lambda Layers**
+
+> **"Lambda dependencies exceed the normal ZIP package limit."**
+> → **Container image**
+
+> **"Lambda needs to run code every night at a specific time."**
+> → **EventBridge schedule**
+
+> **"Third-party service sends an HTTP POST webhook to trigger Lambda."**
+> → **Lambda Function URL**
+
+> **"Third-party service needs a simple HTTP endpoint for one Lambda."**
+> → **Lambda Function URL**
+
+> **"Need a full-featured HTTP API with API management."**
+> → **API Gateway**
+
+---
+
+# Pocket card
+
+| Keyword                                    | Answer                                     |
+| ------------------------------------------ | ------------------------------------------ |
+| Job > 15 minutes                           | **Not Lambda → Batch / Fargate**           |
+| Workflow divided into <15-min Lambda steps | **Step Functions**                         |
+| CPU-bound slow function                    | **Increase memory**                        |
+| Cold-start latency (any runtime)           | **Provisioned Concurrency**                |
+| Cold-start latency on supported runtime    | **SnapStart** (Java/Python/.NET)           |
+| Protect downstream / cap invocations       | **Reserved Concurrency**                   |
+| Lambda + RDS connection pressure           | **RDS Proxy**                              |
+| Lambda in VPC needs Internet               | **NAT Gateway / appropriate VPC endpoint** |
+| Async failures / prevent event loss        | **DLQ / on-failure destination**           |
+| SQS / Kinesis / DDB Streams                | **Event Source Mapping**                   |
+| S3 / SNS / EventBridge                     | **Async push**                             |
+| Simple HTTP webhook to Lambda              | **Lambda Function URL**                    |
+| Full-featured HTTP API                     | **API Gateway**                            |
+| Serverless cron                            | **EventBridge schedule → Lambda**          |
+| Shared dependencies                        | **Lambda Layers**                          |
+| ZIP package > 250 MB unzipped              | **Container image → 10 GB**                |
+| Function permissions                       | **Execution role**                         |
+| Configuration outside code                 | **Environment variables**                  |
+| Edge + network calls / complex logic       | **Lambda@Edge**                            |
+| Edge header/URL manipulation               | **CloudFront Functions**                   |
+| Maximum Lambda runtime                     | **15 minutes**                             |
+| Memory                                     | **128 MB – 10 GB**                         |
+| `/tmp` storage                             | **Up to 10 GB**                            |
+| ZIP deployment package                     | **50 MB zipped / 250 MB unzipped**         |
+| Container image                            | **10 GB**                                  |

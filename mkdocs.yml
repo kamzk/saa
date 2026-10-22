@@ -1,0 +1,148 @@
+site_name: AWS Solution Architect Associate Notes
+site_url: https://saac03.pages.dev
+
+theme:
+  name: material
+  custom_dir: overrides
+  logo: assets/logo.svg
+  favicon: assets/favicon.ico
+  features:
+    - header.autohide
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.top
+    - search.suggest
+    - search.highlight
+
+  language: en
+  
+  font:
+    code: Roboto Mono
+
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: amber
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+        
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+
+use_directory_urls: false
+
+extra_css:
+  - styles.css
+
+extra_javascript:
+  - scripts.js
+
+extra:
+  generator: false
+  robots: noindex, nofollow
+  manifest: ./manifest.json
+
+extra_templates:
+  - manifest.json
+  - sw.js
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  
+plugins:
+  - search
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+          remove_comments: true
+      cache_safe: true
+      js_files:
+        - scripts.js
+nav:
+  - README: 00-README.md
+
+  # Core AWS Services
+  - IAM: 01-IAM.md
+  - S3: 02-S3.md
+  - EC2: 03-EC2.md
+  - EBS, EFS & Instance Store: 04-EBS-EFS-InstanceStore.md
+  - ELB & Auto Scaling: 05-ELB-AutoScaling.md
+  - VPC: 06-VPC.md
+  - Route 53: 07-Route53.md
+  - CloudFront & Global Accelerator: 08-CloudFront-GlobalAccelerator.md
+
+  # Databases
+  - RDS & Aurora: 09-RDS-Aurora.md
+  - DynamoDB: 10-DynamoDB.md
+  - ElastiCache: 11-ElastiCache.md
+  - Other Databases: 12-Other-Databases.md
+
+  # Compute & Application Services
+  - Lambda: 13-Lambda.md
+  - ECS & Fargate: 14-ECS-Fargate.md
+  - EKS & Kubernetes: 14B-EKS-Kubernetes.md
+  - Elastic Beanstalk: 15-Elastic-Beanstalk.md
+  - API Gateway: 16-API-Gateway.md
+  - SQS, SNS & Kinesis: 17-SQS-SNS-Kinesis.md
+  - EventBridge & Step Functions: 18-EventBridge-StepFunctions.md
+
+  # Security & Identity
+  - KMS & CloudHSM: 20-KMS-CloudHSM.md
+  - Secrets Manager & Parameter Store: 21-SecretsManager-ParameterStore.md
+  - WAF, Shield & Security Services: 22-WAF-Shield-SecurityServices.md
+  - Cognito: 23-Cognito.md
+  - Directory Services: 24-Directory-Services.md
+  - Certificates: 37B-Certificates.md
+
+  # Monitoring & Operations
+  - CloudWatch, CloudTrail & Config: 19-CloudWatch-CloudTrail-Config.md
+  - Systems Manager & Operations: 37F-Systems Manager & Operations.md
+
+  # Storage & Data Transfer
+  - Storage Gateway, DataSync & Transfer Family: 25-StorageGateway-DataSync-TransferFamily.md
+  - FSx: 26-FSx.md
+  - Snow Family: 27-Snow-Family.md
+
+  # Infrastructure & Governance
+  - CloudFormation: 28-CloudFormation.md
+  - Organizations & Control Tower: 29-Organizations-ControlTower.md
+  - Service Catalog & Trusted Advisor: 30-ServiceCatalog-TrustedAdvisor.md
+  - Cost Management: 31-Cost-Management.md
+  - Well-Architected Framework: 34-Well-Architected.md
+
+  # Networking
+  - Direct Connect & VPN: 32-DirectConnect-VPN.md
+  - Transit Gateway: 33-Transit-Gateway.md
+  - DNS, IPv6 & Edge Infrastructure: 37I-DNS, IPv6 & Edge Infrastructure.md
+
+  # Migration, Resilience & Architecture
+  - Disaster Recovery: 35-Disaster-Recovery.md
+  - Migration, Messaging & Disaster Recovery: 37A-Migration, Messaging & Disaster Recovery.md
+
+  # Analytics, AI & Integration
+  - Data Lakes, ETL & Data Integration: 37C-Data Lakes, ETL & Data Integration.md
+  - Analytics, Big Data & Streaming: 37D-Analytics, Big Data & Streaming.md
+  - AI & Machine Learning One-Liners: 37E-AI & Machine Learning One-Liners.md
+  - Application Development & Integration: 37G-Application Development & Integration.md
+  - Specialized Services & Governance: 37H-Specialized Services & Governance.md
+
+  # Exam Preparation
+  - Exam Traps & Key Patterns: 36-Exam-Traps-KeyPatterns.md
+  - Elimination Rules: 38-elimination rules.md

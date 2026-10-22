@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+
+  <link rel="manifest" href="{{ 'manifest.json' | url }}">
+  <meta name="theme-color" content="#FF6F00">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="AWS SAAC03">
+  <link rel="apple-touch-icon" href="{{ 'assets/icon-192.png' | url }}">
+{% endblock %}

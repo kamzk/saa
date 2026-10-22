@@ -1,0 +1,1663 @@
+# Section 37C: Data Lakes, ETL & Data Integration
+
+## The idea
+
+These are AWS services that commonly appear in SAA questions involving **data lakes, ETL, metadata, schema discovery, data preparation, incremental processing, and bulk operations on S3 objects**.
+
+You generally don't need deep knowledge of each one.
+
+The best strategy is:
+
+> **Read the requirement → identify the unique keyword → choose the service.**
+
+```text
+Serverless ETL + data catalog
+→ AWS Glue
+
+Automatically discover schema in S3
+→ Glue Crawler
+
+Store table/schema metadata
+→ Glue Data Catalog
+
+Transform CSV → Parquet
+→ Glue ETL
+
+Visual / drag-and-drop Glue ETL jobs
+→ Glue Studio
+
+Clean / mask / anonymize data with minimal custom code
+→ AWS Glue DataBrew
+
+Athena query performance on large S3 data
+→ Parquet / ORC
+
+Prevent Glue from reprocessing previously processed data
+→ Glue Job Bookmark
+
+Data lake + fine-grained permissions
+→ Lake Formation
+
+Aurora/JDBC → S3 data lake with predefined ingestion workflow
+→ Lake Formation Blueprint
+
+Salesforce → S3
+→ AppFlow
+
+Find/subscribe to third-party datasets
+→ AWS Data Exchange
+
+Discover sensitive data in S3
+→ Amazon Macie
+
+Bulk operation on millions of existing S3 objects
+→ S3 Batch Operations
+```
+
+---
+
+# Data Lake + Lake Formation
+
+### What is a data lake?
+
+**Data lake = a central place to store large amounts of raw data in different formats for later processing and analytics.**
+
+In AWS, **Amazon S3 is commonly used as the storage for a data lake**.
+
+```text
+                    DATA LAKE
+                       ↓
+                      S3
+        ┌──────────────┼──────────────┐
+        ↓              ↓              ↓
+     CSV files      JSON files      Images
+     Logs           Parquet         IoT data
+     Database data  Video           etc.
+```
+
+Simple idea:
+
+```text
+S3
+= actual data
+
+Data lake
+= the overall collection of data used for analytics
+```
+
+Other services can then process or query it:
+
+```text
+S3
+ ↓
+Glue / Athena / EMR
+ ↓
+Process / query / analyze
+```
+
+### What is Lake Formation?
+
+**AWS Lake Formation = governance and fine-grained access control for a data lake.**
+
+It does **not** store the actual data.
+
+Think:
+
+```text
+S3
+= stores the data
+
+Lake Formation
+= controls who can access what
+```
+
+For example:
+
+```text
+Sales team
+→ sales table
+
+Finance team
+→ financial table
+
+Regional manager
+→ only rows for their region
+
+Analyst
+→ only selected columns
+```
+
+Lake Formation can provide fine-grained permissions at the **table, row, and column** level.
+
+### Common pattern
+
+```text
+S3
+ ↓
+Glue Crawler
+ ↓
+Glue Data Catalog
+ ↓
+Lake Formation permissions
+ ↓
+Athena / EMR / other analytics
+```
+
+### SAA memory
+
+> **Data lake = data**
+
+> **S3 = common data lake storage**
+
+> **Lake Formation = who can access what**
+
+### Signal
+
+> **Data lake + fine-grained permissions → AWS Lake Formation**
+
+---
+
+# Lake Formation Blueprints & Workflows
+
+**Lake Formation Blueprint = predefined ingestion recipe.**
+
+A blueprint can create a **workflow** containing Glue jobs, crawlers, and triggers to ingest data into the S3 data lake.
+
+For a relational database such as **Aurora MySQL**, the **incremental database blueprint** can load data from a JDBC source into S3.
+
+```text
+Aurora MySQL
+     ↓
+Lake Formation Blueprint
+     ↓
+Workflow
+     ↓
+Glue jobs / crawler / triggers
+     ↓
+S3 data lake
+```
+
+The workflow copies the **actual data** into S3; the Glue Data Catalog stores metadata about the resulting tables.
+
+### Incremental database blueprint
+
+The first run loads the selected data and establishes bookmarks.
+
+Later runs use the bookmarks to identify **new rows**.
+
+```text
+First run
+→ existing data → S3
+
+Later runs
+→ new rows → S3
+```
+
+This is best when data is primarily **append-only** and existing rows are not continually updated.
+
+### Blueprint vs workflow
+
+```text
+Blueprint
+= recipe/template
+
+Workflow
+= actual generated process
+```
+
+> **Aurora/JDBC → S3 data lake with minimal ingestion orchestration → Lake Formation Blueprint**
+
+---
+
+# Lake Formation Tag-Based Access Control (LF-TBAC)
+
+**LF-TBAC = use tags to control access to many data resources.**
+
+Instead of manually granting permissions to each table, database, or column, you attach **LF-Tags** to resources and grant permissions based on those tags.
+
+Example:
+
+```text
+Sales data
+→ LF-Tag: department=sales
+
+DevOps data
+→ LF-Tag: department=devops
+
+HR data
+→ LF-Tag: department=hr
+```
+
+Then:
+
+```text
+DevOps team
+→ permission for department=devops
+→ gets access to matching resources
+```
+
+This is useful when:
+
+* there are many datasets
+* data is spread across multiple AWS accounts
+* fine-grained access control is required
+* minimal operational overhead is important
+
+### Why LF-TBAC?
+
+Without tags:
+
+```text
+Table 1 → manually grant
+Table 2 → manually grant
+Table 3 → manually grant
+Table 4 → manually grant
+...
+```
+
+With LF-TBAC:
+
+```text
+Tag resources
+      ↓
+Grant permission to the tag
+      ↓
+Matching resources are covered
+```
+
+### Signal
+
+> **Many datasets + fine-grained access + cross-account sharing + minimal operational overhead**
+
+→ **Lake Formation Tag-Based Access Control (LF-TBAC)**
+
+### Exam shortcut
+
+> **Lake Formation + scalable fine-grained authorization → LF-TBAC**
+
+---
+
+# AWS Glue
+
+**AWS Glue = serverless ETL and Data Catalog service.**
+
+ETL means:
+
+```text
+Extract
+Transform
+Load
+```
+
+Glue can:
+
+* discover data
+* catalog schemas
+* transform data
+* prepare data for analytics
+* track previously processed data with **job bookmarks**
+
+It is especially useful when the requirement is **serverless ETL with low operational overhead**, especially for larger data-processing workloads.
+
+**Glue Studio** → visual / drag-and-drop interface for creating Glue ETL jobs.
+
+### Main Glue components
+
+```text
+             AWS Glue
+                │
+      ┌─────────┼─────────────┐
+      ↓         ↓             ↓
+   Crawler    Catalog         ETL
+  discover    metadata      transform
+                                │
+                                ↓
+                         Job Bookmark
+                         track progress
+```
+
+---
+
+# Glue Crawler
+
+**Glue Crawler = automatically discovers the structure/schema of data.**
+
+It can inspect data sources such as S3 and determine things like:
+
+```text
+customer_id → integer
+name        → string
+price       → decimal
+```
+
+It then updates the **Glue Data Catalog**.
+
+### Typical flow
+
+```text
+S3 files
+   ↓
+Glue Crawler
+   ↓
+Discover schema
+   ↓
+Glue Data Catalog
+```
+
+### Signal
+
+> **"Automatically discover the schema of files in S3."**
+
+→ **Glue Crawler**
+
+### Important
+
+> **Crawler discovers. It does not perform the ETL transformation.**
+
+For example, a crawler can determine that a CSV contains:
+
+```text
+customer_id
+name
+price
+```
+
+But it does not perform:
+
+```text
+CSV → Parquet
+```
+
+That is the job of Glue ETL.
+
+---
+
+# Glue Data Catalog
+
+**Glue Data Catalog = centralized metadata store.**
+
+It stores information **about** datasets rather than the actual dataset itself.
+
+It can store:
+
+* table definitions
+* columns
+* data types
+* data locations
+* schema
+
+Think:
+
+```text
+Actual data
+→ S3
+
+Information ABOUT the data
+→ Glue Data Catalog
+```
+
+### Signal
+
+> **"Store metadata/schema/table definitions."**
+
+→ **Glue Data Catalog**
+
+### Important
+
+> **Data Catalog stores metadata. It does not transform or store the actual data.**
+
+---
+
+# Glue ETL
+
+**Glue ETL = performs the actual data transformation.**
+
+For example:
+
+```text
+CSV
+ ↓
+Glue ETL
+ ↓
+Parquet
+```
+
+It can perform common transformations such as:
+
+* format conversion
+* filtering
+* joining
+* cleaning
+* restructuring
+
+### Signal
+
+> **"Convert CSV files to Parquet."**
+
+→ **Glue ETL**
+
+### Important distinction
+
+```text
+Glue Crawler
+= discovers schema
+
+Glue Data Catalog
+= stores metadata
+
+Glue ETL
+= transforms data
+```
+
+---
+
+# AWS Glue DataBrew
+
+**AWS Glue DataBrew = visual, no-code/low-code data preparation and cleaning service.**
+
+It is useful when the requirement is to **clean, normalize, transform, or anonymize data without developing custom code**.
+
+Typical operations include:
+
+* cleaning data
+* replacing values
+* masking sensitive information
+* removing unwanted data
+* standardizing data
+* preparing datasets for analytics or development
+
+### Typical pattern
+
+```text
+Amazon RDS
+    ↓
+DataBrew
+    ↓
+Clean / mask / transform data
+    ↓
+Amazon S3
+    ↓
+Development / analytics
+```
+
+### Strong SAA signal
+
+> **"Clean or sanitize data with minimal custom code."**
+
+→ **AWS Glue DataBrew**
+
+Especially when the question says:
+
+* remove or replace personal identifiers
+* mask sensitive values
+* prepare a copy of production data for development
+* reduce custom code
+* minimize operational overhead
+
+### Example
+
+A company exports customer data from RDS every week to create development data.
+
+Customer names and personal identifiers must be removed or replaced with random values.
+
+```text
+RDS
+ ↓
+DataBrew
+ ↓
+Replace / mask sensitive values
+ ↓
+S3
+ ↓
+Development environment
+```
+
+→ **DataBrew**
+
+### DataBrew vs Glue ETL
+
+Both can transform data, but the exam distinction is:
+
+```text
+Glue ETL
+→ Serverless ETL
+→ More general / programmable data transformation
+
+DataBrew
+→ Visual data preparation
+→ Little/no custom code
+→ Cleaning / masking / standardizing data
+```
+
+### DataBrew vs Macie
+
+This is an important SAA trap.
+
+```text
+Macie
+→ Discover sensitive data in S3
+
+DataBrew
+→ Clean / transform / mask data
+```
+
+Do not choose Macie just because the question mentions **PII**.
+
+If the requirement is:
+
+> **"Find/discover sensitive data in S3."**
+
+→ **Macie**
+
+If the requirement is:
+
+> **"Remove, replace, mask, or clean sensitive data with minimal code."**
+
+→ **DataBrew**
+
+### DataBrew vs Athena
+
+```text
+Athena
+→ Query/analyze data in S3 using SQL
+
+DataBrew
+→ Visually clean/transform data
+```
+
+If you need to write SQL/regular expressions to perform the transformation, that usually means **more operational overhead** than DataBrew.
+
+### Exam shortcut
+
+> **Clean / mask / anonymize data + minimal code → DataBrew**
+
+> **Discover sensitive data in S3 → Macie**
+
+> **Query S3 data with SQL → Athena**
+
+---
+
+# Parquet for Athena
+
+**Apache Parquet = columnar file format optimized for analytics.**
+
+When Athena queries a large dataset in S3, Parquet can reduce the amount of data that needs to be read because Athena can read only the required columns.
+
+Typical pattern:
+
+```text
+Large JSON dataset in S3
+        ↓
+Convert to Parquet
+        ↓
+Amazon Athena
+        ↓
+Less data scanned
+        ↓
+Faster / cheaper queries
+```
+
+### Common exam signal
+
+> **Athena queries are slow because a large amount of JSON data is stored in S3.**
+
+→ **Convert the data to Parquet or another columnar format such as ORC.**
+
+### Security connection
+
+If the S3 data is governed by **Lake Formation**, the performance improvement does not require removing the Lake Formation controls.
+
+For data access through Lake Formation, the relevant IAM permission can include:
+
+**`lakeformation:GetDataAccess`**
+
+So the common exam combination is:
+
+```text
+Athena + large JSON dataset
+→ Parquet
+
+Lake Formation-controlled data access
+→ lakeformation:GetDataAccess
+```
+
+### Important distinction
+
+```text
+Parquet / ORC
+→ query-performance optimization
+
+Lake Formation
+→ data lake access control
+```
+
+---
+
+# Glue Job Bookmarks
+
+**Glue Job Bookmarks = track what a Glue ETL job has already processed.**
+
+They are useful for **incremental ETL** because they help Glue avoid processing the same old data again on later runs.
+
+### Typical problem
+
+Suppose an S3 bucket contains:
+
+```text
+Day 1:
+A
+B
+C
+```
+
+The Glue job processes all three objects.
+
+Later:
+
+```text
+Day 2:
+A
+B
+C
+D
+E
+```
+
+Without a mechanism to track previous progress, the job may process:
+
+```text
+A B C D E
+```
+
+again.
+
+With **job bookmarks**, Glue can track what was already processed and focus on the newly relevant data.
+
+```text
+Day 1:
+S3 → A B C
+     ↓
+Glue processes A B C
+     ↓
+Bookmark records progress
+
+
+Day 2:
+S3 → A B C D E
+     ↓
+Bookmark knows A B C were already processed
+     ↓
+Glue processes new/relevant data
+```
+
+### Signal
+
+> **"Glue ETL keeps reprocessing old data from previous runs."**
+
+→ **Enable Glue Job Bookmarks**
+
+### Main benefit
+
+**Operational efficiency.**
+
+You do not need to build custom logic just to remember which data was already processed.
+
+### Typical question
+
+> "A daily AWS Glue ETL job reads data from S3, but old data from previous runs is being reprocessed. What is the most operationally efficient solution?"
+
+→ **Enable Job Bookmarks**
+
+### Important distinction
+
+```text
+Job Bookmark
+= remember what the Glue job processed
+
+Crawler
+= discover schema
+
+Catalog
+= store metadata
+
+ETL
+= transform data
+```
+
+---
+
+# Glue Job Bookmarks vs Other Solutions
+
+## Job Bookmarks vs deleting old data
+
+Do **not** create custom Lambda logic just to delete previously processed source data unless the requirement explicitly calls for deletion.
+
+Deleting source data can:
+
+* destroy historical data
+* create additional operational complexity
+* make recovery harder
+* require extra monitoring and permissions
+
+If the problem is simply:
+
+> **"Don't process the same data again."**
+
+→ **Glue Job Bookmarks**
+
+---
+
+## Job Bookmarks vs partitioning
+
+Partitioning and bookmarks solve different problems.
+
+```text
+Partitioning
+= organize data for more efficient querying/processing
+
+Job Bookmark
+= track previously processed data
+```
+
+For example:
+
+```text
+S3 data organized by:
+year/month/day
+→ Partitioning
+
+Glue remembers which data was already processed
+→ Job Bookmark
+```
+
+They can be used together.
+
+---
+
+# Complete Glue Example
+
+Suppose CSV files arrive in an S3 bucket every day.
+
+A typical serverless data-processing workflow can look like:
+
+```text
+S3 source bucket
+      ↓
+Glue Crawler
+      ↓
+Discover schema
+      ↓
+Glue Data Catalog
+      ↓
+Store metadata/table definition
+      ↓
+Glue ETL job
+      ↓
+Job Bookmark checks previous progress
+      ↓
+Process new/relevant data
+      ↓
+CSV → Parquet
+      ↓
+S3 transformed bucket
+```
+
+This separates the roles:
+
+```text
+Crawler
+→ Understand the structure
+
+Catalog
+→ Remember the structure
+
+ETL
+→ Transform the data
+
+Job Bookmark
+→ Remember what the ETL job already processed
+```
+
+---
+
+# Glue ETL + S3
+
+A typical serverless solution can look like:
+
+```text
+S3
+ ↓ Object Created
+EventBridge
+ ↓
+Glue ETL job
+ ↓
+Job Bookmark
+ ↓
+CSV → Parquet
+ ↓
+S3 transformed bucket
+```
+
+Or the process can use a **scheduled Glue job**.
+
+Glue is useful when the requirement is:
+
+* serverless ETL
+* low operational overhead
+* processing larger datasets
+* preparing data for analytics
+* incremental processing without custom tracking
+
+### Glue vs Lambda
+
+```text
+Lambda
+→ lightweight event-driven processing
+
+Glue
+→ larger/serverless ETL and data preparation
+```
+
+---
+
+# Glue vs EC2 + Spark vs EMR vs Lambda
+
+A common SAA question may give several ways to process data.
+
+### EC2 + Spark
+
+```text
+EC2 + Spark
+→ You manage the servers
+```
+
+You are responsible for more infrastructure management.
+
+### EMR
+
+```text
+EMR
+→ Managed big-data / Spark infrastructure
+```
+
+Amazon EMR is covered more deeply in the analytics section.
+
+### Lambda
+
+```text
+Lambda
+→ Better for lightweight event-driven processing
+```
+
+Lambda can be useful for smaller, short-running transformations triggered by events.
+
+### Glue
+
+```text
+Glue
+→ Serverless ETL
+```
+
+Glue is the natural choice when the question emphasizes **serverless ETL** rather than generic compute.
+
+### Glue Job Bookmark
+
+```text
+Glue Job Bookmark
+→ Incremental processing
+```
+
+If the question specifically says that **previously processed data keeps getting processed again**, the key feature is the **Job Bookmark**, not simply Glue itself.
+
+---
+
+# AWS Glue Service Comparison
+
+| Glue component        | Main job                  | Signal                                    |
+| --------------------- | ------------------------- | ----------------------------------------- |
+| **Glue Crawler**      | Discover schema           | Automatically discover schema             |
+| **Glue Data Catalog** | Store metadata            | Tables / schema / metadata                |
+| **Glue ETL**          | Transform data            | CSV → Parquet / ETL                       |
+| **Glue Studio**       | Visual ETL job creation   | Drag-and-drop ETL                         |
+| **Glue DataBrew**     | Visual data preparation   | Clean / mask / anonymize with little code |
+| **Glue Job Bookmark** | Track processing progress | Prevent reprocessing previously read data |
+
+### Quick memory
+
+```text
+Discover
+→ Crawler
+
+Store
+→ Catalog
+
+Transform
+→ ETL
+
+Visual ETL
+→ Glue Studio
+
+Clean / mask / anonymize with little code
+→ DataBrew
+
+Remember previous processing
+→ Job Bookmark
+```
+
+---
+
+# Amazon AppFlow
+
+**Amazon AppFlow = transfer data between SaaS applications and AWS services without writing the integration yourself.**
+
+It is designed for data integration between supported applications and AWS destinations/sources.
+
+Examples include:
+
+```text
+Salesforce
+    ↓
+AppFlow
+    ↓
+S3
+```
+
+or:
+
+```text
+Salesforce
+    ↓
+AppFlow
+    ↓
+Amazon Redshift
+```
+
+### Signal
+
+> **Salesforce/SaaS → S3 or Redshift → AppFlow**
+
+---
+
+## Example
+
+> "A company wants to move Salesforce data into Amazon S3 without custom integration code."
+
+→ **Amazon AppFlow**
+
+### Important idea
+
+AppFlow is about **data transfer/integration between applications and AWS services**.
+
+It is not primarily an ETL engine like Glue.
+
+```text
+AppFlow
+= move data between SaaS and AWS
+
+Glue
+= discover / catalog / transform data
+```
+
+---
+
+# AWS Data Exchange
+
+**AWS Data Exchange = discover, subscribe to, share, and use third-party datasets in AWS.**
+
+It provides a way for data providers to make datasets available and for data recipients to discover and subscribe to them.
+
+Typical use case:
+
+```text
+Third-party data provider
+          ↓
+   AWS Data Exchange
+          ↓
+      Subscriber
+          ↓
+   AWS analytics / ML
+```
+
+Example:
+
+> "A company wants to find and subscribe to a third-party dataset for use in its analytics workload."
+
+→ **AWS Data Exchange**
+
+### Signal
+
+> **Find / subscribe to third-party datasets → AWS Data Exchange**
+
+### Important distinction
+
+```text
+AppFlow
+= move data between supported SaaS applications and AWS
+
+Data Exchange
+= discover / subscribe to external datasets
+```
+
+---
+
+# Amazon Macie
+
+**Amazon Macie = discover and identify sensitive data in Amazon S3.**
+
+Macie uses pattern matching and machine learning techniques to help identify sensitive data and provide visibility into data security risks.
+
+Typical examples include:
+
+* personal information
+* credentials
+* financial information
+* other sensitive-data patterns
+
+### Typical pattern
+
+```text
+S3
+ ↓
+Macie
+ ↓
+Discover sensitive data
+```
+
+### Signal
+
+> **"Discover sensitive data in S3."**
+
+→ **Amazon Macie**
+
+### Important distinction
+
+Macie is primarily about **discovery and visibility**, not general-purpose data cleaning.
+
+```text
+Macie
+→ Find sensitive data
+
+DataBrew
+→ Clean / transform / mask data
+
+Athena
+→ Query data
+```
+
+### SAA trap
+
+A question may mention:
+
+> **customer names / personal identifiers / PII**
+
+Do not automatically choose Macie.
+
+Ask:
+
+> **Does the requirement say to discover the sensitive data, or to transform/remove it?**
+
+```text
+Discover PII in S3
+→ Macie
+
+Remove / replace / mask PII with minimal code
+→ DataBrew
+```
+
+---
+
+# S3 Batch Operations
+
+**S3 Batch Operations = perform an operation on many existing S3 objects.**
+
+For example, it can perform supported operations such as:
+
+* copy objects
+* restore objects
+* add tags
+* invoke Lambda
+* perform other supported object-level operations
+
+The key idea is **bulk operations on existing objects**.
+
+### Example
+
+```text
+Millions of existing objects
+        ↓
+S3 Batch Operations
+        ↓
+Apply the operation
+```
+
+---
+
+# Important S3 Encryption Trap
+
+A bucket's default encryption setting does **not retroactively change old objects**.
+
+Suppose:
+
+```text
+S3 bucket
+↓
+Millions of existing objects
+```
+
+You change the bucket's default encryption configuration.
+
+That does not automatically reprocess all existing objects.
+
+When the question instead asks you to:
+
+> **Perform an operation on millions/billions of existing S3 objects**
+
+→ **S3 Batch Operations**
+
+---
+
+## Example
+
+> "A company has millions of existing S3 objects and needs to apply an operation to all of them."
+
+→ **S3 Batch Operations**
+
+The exact operation might be:
+
+* copying objects
+* tagging objects
+* restoring objects
+* invoking Lambda
+* another supported object-level operation
+
+The important clue is the **large number of existing objects**.
+
+---
+
+# S3 Batch Operations vs EventBridge / Lambda
+
+Do not confuse bulk processing of existing objects with processing a newly created object.
+
+### New object arrives
+
+```text
+S3 Object Created
+→ EventBridge / Lambda / other event-driven solution
+```
+
+### Millions of existing objects
+
+```text
+Existing objects
+→ S3 Batch Operations
+```
+
+### Mental model
+
+```text
+New event
+→ Event-driven processing
+
+Huge number of existing objects
+→ S3 Batch Operations
+```
+
+---
+
+# Data Lake Architecture Example
+
+A larger architecture can combine several services:
+
+```text
+                    SaaS applications
+                         │
+                         ↓
+                      AppFlow
+                         │
+                         ↓
+S3 data lake ──────────────────────────────────┐
+   │                                            │
+   ↓                                            ↓
+Glue Crawler                             Lake Formation
+   │                                      permissions
+   ↓                                            │
+Glue Data Catalog                              │
+   │                                            │
+   ↓                                            │
+Glue ETL ───────────────→ transformed data ←───┘
+   │
+   ↓
+Job Bookmark
+tracks incremental processing
+```
+
+For a relational source such as Aurora:
+
+```text
+Aurora / JDBC
+      ↓
+Lake Formation Blueprint
+      ↓
+Generated workflow
+      ↓
+Glue jobs + crawler + triggers
+      ↓
+S3 data lake
+      ↓
+Lake Formation permissions
+      ↓
+Athena / QuickSight
+```
+
+For data preparation / anonymization:
+
+```text
+RDS export
+    ↓
+DataBrew
+    ↓
+Clean / mask / replace sensitive values
+    ↓
+S3
+    ↓
+Development environment
+```
+
+The roles remain different:
+
+```text
+AppFlow
+= bring data from SaaS
+
+Lake Formation Blueprint
+= predefined ingestion workflow
+
+S3
+= store the actual data
+
+Glue Crawler
+= discover schema
+
+Glue Data Catalog
+= store metadata
+
+Glue ETL
+= transform data
+
+DataBrew
+= visually clean / mask / prepare data
+
+Glue Job Bookmark
+= track previously processed data
+
+Lake Formation
+= control data lake access
+
+Macie
+= discover sensitive data in S3
+```
+
+---
+
+# Common Question Patterns
+
+> **"Serverless ETL and a central data catalog are required."**
+
+→ **AWS Glue**
+
+---
+
+> **"Automatically discover the schema of data files in S3."**
+
+→ **Glue Crawler**
+
+---
+
+> **"Store table/schema metadata for analytics."**
+
+→ **Glue Data Catalog**
+
+---
+
+> **"Convert CSV files into Parquet."**
+
+→ **Glue ETL**
+
+---
+
+> **"Create Glue ETL jobs using a visual interface instead of building the job entirely in code."**
+
+→ **Glue Studio**
+
+---
+
+> **"Clean, mask, or anonymize customer data with minimal custom code."**
+
+→ **AWS Glue DataBrew**
+
+---
+
+> **"A weekly copy of RDS customer data is needed for development, but names and personal identifiers must be removed or replaced."**
+
+→ **AWS Glue DataBrew**
+
+---
+
+> **"Athena queries are slow because a large amount of JSON data is stored in S3."**
+
+→ **Transform the data into Apache Parquet (or another columnar format such as ORC)**
+
+---
+
+> **"A Glue ETL job keeps processing old S3 data from previous runs."**
+
+→ **Enable Glue Job Bookmarks**
+
+---
+
+> **"A daily Glue job should process newly arrived data without repeatedly processing old data."**
+
+→ **Glue Job Bookmarks**
+
+---
+
+> **"A company wants to build a data lake with fine-grained access control over tables, rows, and columns."**
+
+→ **Lake Formation**
+
+---
+
+> **"A company stores its raw analytics data in S3 and wants to control which users can access specific tables, rows, or columns."**
+
+→ **Lake Formation**
+
+---
+
+> **"Aurora/JDBC data must be ingested into an S3 data lake with minimal custom orchestration."**
+
+→ **Lake Formation Blueprint / Workflow**
+
+---
+
+> **"Aurora data should be incrementally loaded into the data lake."**
+
+→ **Lake Formation Incremental Database Blueprint**
+
+---
+
+> **"A company wants Aurora data in S3 and column-level access for marketing users, then wants to query it from QuickSight."**
+
+→ **Lake Formation Blueprint → S3 → Lake Formation Data Filter → Athena → QuickSight**
+
+---
+
+> **"Move Salesforce data to S3 without custom integration code."**
+
+→ **AppFlow**
+
+---
+
+> **"Transfer data from a SaaS application to Amazon Redshift without building the integration from scratch."**
+
+→ **AppFlow**
+
+---
+
+> **"A company wants to find and subscribe to a third-party dataset for analytics."**
+
+→ **AWS Data Exchange**
+
+---
+
+> **"A company wants to discover sensitive data patterns in an S3 bucket."**
+
+→ **Amazon Macie**
+
+---
+
+> **"Apply an operation to millions of existing S3 objects."**
+
+→ **S3 Batch Operations**
+
+---
+
+> **"Millions/billions of existing S3 objects need to be processed in bulk."**
+
+→ **S3 Batch Operations**
+
+---
+
+# Important SAA Traps
+
+## Glue Job Bookmark vs Partitioning
+
+Do not confuse these.
+
+```text
+Partitioning
+= organize data to improve query/processing efficiency
+
+Job Bookmark
+= track what the Glue job already processed
+```
+
+Exam trigger:
+
+```text
+Data is hard to query efficiently
+→ Think partitioning / columnar formats such as Parquet
+
+Glue keeps reprocessing old data
+→ Think Job Bookmark
+```
+
+---
+
+## Parquet vs GZIP
+
+Do not treat compression and columnar storage as the same thing.
+
+```text
+Parquet
+= columnar format
+= analytics/query optimization
+
+GZIP
+= compression
+= reduces file size
+```
+
+For Athena performance questions involving large JSON datasets:
+
+> **Convert to Parquet/ORC**
+
+rather than simply compressing the JSON with GZIP.
+
+---
+
+## DataBrew vs Macie
+
+This is one of the most useful distinctions in this section.
+
+```text
+Macie
+→ Discover sensitive data in S3
+
+DataBrew
+→ Clean / transform / mask / anonymize data
+```
+
+Exam trigger:
+
+```text
+Find PII
+→ Macie
+
+Remove / replace / mask PII
+→ DataBrew
+```
+
+---
+
+## DataBrew vs Athena
+
+```text
+Athena
+→ Query/analyze S3 data using SQL
+
+DataBrew
+→ Visually clean/transform data
+```
+
+If the question emphasizes **minimal custom code** for cleaning or preparing data, DataBrew is usually the better fit.
+
+---
+
+## AppFlow vs Data Exchange
+
+```text
+SaaS application → AWS
+→ AppFlow
+
+Third-party dataset → discover/subscribe/use
+→ AWS Data Exchange
+```
+
+---
+
+## S3 Batch Operations vs normal S3 events
+
+```text
+One newly created object
+→ event-driven processing
+
+Millions of existing objects
+→ S3 Batch Operations
+```
+
+---
+
+## Job Bookmarks vs custom Lambda cleanup
+
+Do not overengineer a Glue incremental-processing problem.
+
+```text
+Glue reprocesses old data
+→ Job Bookmark
+
+Delete old source objects
+→ Not the default solution
+```
+
+If the question asks for the **most operationally efficient** way to prevent reprocessing, Job Bookmarks are usually the direct answer.
+
+---
+
+## Blueprint vs Glue Data Catalog
+
+Do not confuse ingestion with metadata.
+
+```text
+Lake Formation Blueprint / Workflow
+→ copies/ingests actual data into S3
+
+Glue Data Catalog
+→ stores metadata about that data
+```
+
+---
+
+# Glue + DataBrew + Macie + Athena
+
+A useful way to separate the services:
+
+```text
+             S3 data
+                │
+      ┌─────────┼───────────┐
+      ↓         ↓           ↓
+   Macie     DataBrew    Athena
+      │         │           │
+   DISCOVER   CLEAN       QUERY
+   sensitive   / MASK      / ANALYZE
+     data      data         data
+```
+
+And for ETL:
+
+```text
+S3
+ ↓
+Glue Crawler
+ ↓
+Glue Data Catalog
+ ↓
+Glue ETL
+ ↓
+Transformed data
+```
+
+So:
+
+```text
+Crawler
+→ discover
+
+Catalog
+→ metadata
+
+ETL
+→ transform
+
+DataBrew
+→ visually clean / mask
+
+Macie
+→ discover sensitive data in S3
+
+Athena
+→ query
+```
+
+---
+
+# Pocket Card
+
+| Keyword                                          | Answer                             |
+| ------------------------------------------------ | ---------------------------------- |
+| Serverless ETL / data catalog                    | **AWS Glue**                       |
+| Discover schema                                  | **Glue Crawler**                   |
+| Automatically discover S3 file schema            | **Glue Crawler**                   |
+| Store metadata                                   | **Glue Data Catalog**              |
+| Store table/schema definitions                   | **Glue Data Catalog**              |
+| Transform data                                   | **Glue ETL**                       |
+| CSV → Parquet                                    | **Glue ETL**                       |
+| Visual / drag-and-drop ETL                       | **Glue Studio**                    |
+| Clean / mask / anonymize data + minimal code     | **AWS Glue DataBrew**              |
+| Discover sensitive data in S3                    | **Amazon Macie**                   |
+| Query S3 data with SQL                           | **Amazon Athena**                  |
+| Athena + large JSON dataset                      | **Parquet / ORC**                  |
+| Reduce Athena data scanned                       | **Parquet / ORC**                  |
+| Glue reprocesses old data                        | **Glue Job Bookmark**              |
+| Incremental Glue ETL processing                  | **Glue Job Bookmark**              |
+| Data lake + fine-grained permissions             | **Lake Formation**                 |
+| Data lake + many datasets + scalable permissions | **Lake Formation LF-TBAC**         |
+| S3 = actual data in the data lake                | **Amazon S3**                      |
+| Lake Formation = data lake access                | **AWS Lake Formation**             |
+| Lake Formation data access                       | **`lakeformation:GetDataAccess`**  |
+| Table/row/column permissions                     | **Lake Formation**                 |
+| Cross-account fine-grained access                | **Lake Formation LF-TBAC**         |
+| Aurora/JDBC → S3 data lake                       | **Lake Formation Blueprint**       |
+| Predefined ingestion recipe                      | **Lake Formation Blueprint**       |
+| Blueprint → actual process                       | **Lake Formation Workflow**        |
+| Incremental Aurora/JDBC ingestion                | **Incremental Database Blueprint** |
+| Blueprint actual data destination                | **S3**                             |
+| Blueprint metadata                               | **Glue Data Catalog**              |
+| SaaS → S3                                        | **AppFlow**                        |
+| SaaS → Redshift                                  | **AppFlow**                        |
+| Find/subscribe to third-party datasets           | **AWS Data Exchange**              |
+| Bulk operation on existing S3 objects            | **S3 Batch Operations**            |
+| Millions/billions of existing objects            | **S3 Batch Operations**            |
+
+```
+```
