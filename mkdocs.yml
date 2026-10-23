@@ -76,71 +76,108 @@ plugins:
       js_files:
         - scripts.js
 nav:
-  # Core AWS Services
-  - IAM: 01-IAM.md
-  - S3: 02-S3.md
-  - EC2: 03-EC2.md
-  - EBS, EFS & Instance Store: 04-EBS-EFS-InstanceStore.md
-  - ELB & Auto Scaling: 05-ELB-AutoScaling.md
-  - VPC: 06-VPC.md
-  - Route 53: 07-Route53.md
-  - CloudFront & Global Accelerator: 08-CloudFront-GlobalAccelerator.md
 
-  # Databases
-  - RDS & Aurora: 09-RDS-Aurora.md
-  - DynamoDB: 10-DynamoDB.md
-  - ElastiCache: 11-ElastiCache.md
-  - Other Databases: 12-Other-Databases.md
+  # ----------------------------------------------------------------
+  # PRIORITY 1: CORE INFRASTRUCTURE
+  # ----------------------------------------------------------------
 
-  # Compute & Application Services
-  - Lambda: 13-Lambda.md
-  - ECS & Fargate: 14-ECS-Fargate.md
-  - EKS & Kubernetes: 14B-EKS-Kubernetes.md
-  - Elastic Beanstalk: 15-Elastic-Beanstalk.md
-  - API Gateway: 16-API-Gateway.md
-  - SQS, SNS & Kinesis: 17-SQS-SNS-Kinesis.md
-  - EventBridge & Step Functions: 18-EventBridge-StepFunctions.md
+  - Networking and Content Delivery:
+      - VPC: "06-VPC.md"
+      - Route 53: "07-Route53.md"
+      - CloudFront & Global Accelerator: "08-CloudFront-GlobalAccelerator.md"
+      - Direct Connect & VPN: "32-DirectConnect-VPN.md"
+      - Transit Gateway: "33-Transit-Gateway.md"
+      - DNS, IPv6 & Edge Infrastructure: "37I-DNS, IPv6 & Edge Infrastructure.md"
 
-  # Security & Identity
-  - KMS & CloudHSM: 20-KMS-CloudHSM.md
-  - Secrets Manager & Parameter Store: 21-SecretsManager-ParameterStore.md
-  - WAF, Shield & Security Services: 22-WAF-Shield-SecurityServices.md
-  - Cognito: 23-Cognito.md
-  - Directory Services: 24-Directory-Services.md
-  - Certificates: 37B-Certificates.md
+  - Compute:
+      - EC2: "03-EC2.md"
+      - ELB & Auto Scaling: "05-ELB-AutoScaling.md"
+      - Lambda: "13-Lambda.md"
+      - ECS & Fargate: "14-ECS-Fargate.md"
+      - EKS & Kubernetes: "14B-EKS-Kubernetes.md"
+      - Elastic Beanstalk: "15-Elastic-Beanstalk.md"
 
-  # Monitoring & Operations
-  - CloudWatch, CloudTrail & Config: 19-CloudWatch-CloudTrail-Config.md
-  - Systems Manager & Operations: 37F-Systems Manager & Operations.md
+  - Storage:
+      - S3: "02-S3.md"
+      - EBS, EFS & Instance Store: "04-EBS-EFS-InstanceStore.md"
+      - Storage Gateway, DataSync & Transfer Family: "25-StorageGateway-DataSync-TransferFamily.md"
+      - FSx: "26-FSx.md"
+      - Snow Family: "27-Snow-Family.md"
 
-  # Storage & Data Transfer
-  - Storage Gateway, DataSync & Transfer Family: 25-StorageGateway-DataSync-TransferFamily.md
-  - FSx: 26-FSx.md
-  - Snow Family: 27-Snow-Family.md
+  - Identity and Access Management:
+      - IAM: "01-IAM.md"
 
-  # Infrastructure & Governance
-  - CloudFormation: 28-CloudFormation.md
-  - Organizations & Control Tower: 29-Organizations-ControlTower.md
-  - Service Catalog & Trusted Advisor: 30-ServiceCatalog-TrustedAdvisor.md
-  - Cost Management: 31-Cost-Management.md
-  - Well-Architected Framework: 34-Well-Architected.md
+  # ----------------------------------------------------------------
+  # PRIORITY 2: DATABASES
+  # ----------------------------------------------------------------
 
-  # Networking
-  - Direct Connect & VPN: 32-DirectConnect-VPN.md
-  - Transit Gateway: 33-Transit-Gateway.md
-  - DNS, IPv6 & Edge Infrastructure: 37I-DNS, IPv6 & Edge Infrastructure.md
+  - Database Services:
+      - RDS & Aurora: "09-RDS-Aurora.md"
+      - DynamoDB: "10-DynamoDB.md"
+      - ElastiCache: "11-ElastiCache.md"
+      - Other Databases: "12-Other-Databases.md"
 
-  # Migration, Resilience & Architecture
-  - Disaster Recovery: 35-Disaster-Recovery.md
-  - Migration, Messaging & Disaster Recovery: 37A-Migration, Messaging & Disaster Recovery.md
+  # ----------------------------------------------------------------
+  # PRIORITY 3: SERVERLESS AND APPLICATION INTEGRATION
+  # ----------------------------------------------------------------
 
-  # Analytics, AI & Integration
-  - Data Lakes, ETL & Data Integration: 37C-Data Lakes, ETL & Data Integration.md
-  - Analytics, Big Data & Streaming: 37D-Analytics, Big Data & Streaming.md
-  - AI & Machine Learning One-Liners: 37E-AI & Machine Learning One-Liners.md
-  - Application Development & Integration: 37G-Application Development & Integration.md
-  - Specialized Services & Governance: 37H-Specialized Services & Governance.md
+  - Application Services:
+      - API Gateway: "16-API-Gateway.md"
+      - SQS, SNS & Kinesis: "17-SQS-SNS-Kinesis.md"
+      - EventBridge & Step Functions: "18-EventBridge-StepFunctions.md"
+      - Application Development & Integration: "37G-Application Development & Integration.md"
 
-  # Exam Preparation
-  - Exam Traps & Key Patterns: 36-Exam-Traps-KeyPatterns.md
-  - Elimination Rules: 38-elimination rules.md
+  # ----------------------------------------------------------------
+  # PRIORITY 4: SECURITY AND IDENTITY
+  # ----------------------------------------------------------------
+
+  - Security Services:
+      - KMS & CloudHSM: "20-KMS-CloudHSM.md"
+      - Secrets Manager & Parameter Store: "21-SecretsManager-ParameterStore.md"
+      - WAF, Shield & Security Services: "22-WAF-Shield-SecurityServices.md"
+      - Cognito: "23-Cognito.md"
+      - Directory Services: "24-Directory-Services.md"
+      - Certificates: "37B-Certificates.md"
+
+  # ----------------------------------------------------------------
+  # PRIORITY 5: MONITORING, MANAGEMENT AND GOVERNANCE
+  # ----------------------------------------------------------------
+
+  - Monitoring and Operations:
+      - CloudWatch, CloudTrail & Config: "19-CloudWatch-CloudTrail-Config.md"
+      - Systems Manager & Operations: "37F-Systems Manager & Operations.md"
+
+  - Infrastructure and Governance:
+      - CloudFormation: "28-CloudFormation.md"
+      - Organizations & Control Tower: "29-Organizations-ControlTower.md"
+      - Service Catalog & Trusted Advisor: "30-ServiceCatalog-TrustedAdvisor.md"
+      - Well-Architected Framework: "34-Well-Architected.md"
+      - Specialized Services & Governance: "37H-Specialized Services & Governance.md"
+
+  - Cost Management:
+      - Cost Management: "31-Cost-Management.md"
+
+  # ----------------------------------------------------------------
+  # PRIORITY 6: ANALYTICS, AI AND DATA INTEGRATION
+  # ----------------------------------------------------------------
+
+  - Analytics and Data:
+      - Data Lakes, ETL & Data Integration: "37C-Data Lakes, ETL & Data Integration.md"
+      - Analytics, Big Data & Streaming: "37D-Analytics, Big Data & Streaming.md"
+      - AI & Machine Learning One-Liners: "37E-AI & Machine Learning One-Liners.md"
+
+  # ----------------------------------------------------------------
+  # PRIORITY 7: MIGRATION AND DISASTER RECOVERY
+  # ----------------------------------------------------------------
+
+  - Migration and Resilience:
+      - Disaster Recovery: "35-Disaster-Recovery.md"
+      - Migration, Messaging & Disaster Recovery: "37A-Migration, Messaging & Disaster Recovery.md"
+
+  # ----------------------------------------------------------------
+  # PRIORITY 8: FINAL REVIEW
+  # ----------------------------------------------------------------
+
+  - Exam Preparation:
+      - Exam Traps & Key Patterns: "36-Exam-Traps-KeyPatterns.md"
+      - Elimination Rules: "38-elimination rules.md"
