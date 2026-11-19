@@ -599,7 +599,7 @@ S3/DynamoDB
 
 ---
 
-# Connecting VPCs
+## Connecting VPCs
 
 ```text
 VPC Peering
@@ -763,7 +763,7 @@ Common use: SaaS service consumed privately by many customer VPCs.
 
 ---
 
-# Quick chooser
+## Quick chooser
 
 ```text
 2 VPCs → VPC Peering
