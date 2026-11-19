@@ -23,7 +23,7 @@ AWS Region
 
 ---
 
-# Boxes in boxes
+## Boxes in boxes
 
 ```text
 AWS Region
@@ -48,7 +48,7 @@ AWS Region
 
 ---
 
-# Route tables
+## Route tables
 
 Example:
 
@@ -60,7 +60,7 @@ Destination       Target
 
 The `local` route allows communication within the VPC CIDR, subject to security controls.
 
-## Longest-prefix match
+### Longest-prefix match
 
 When multiple routes match, the **most specific route wins**.
 
@@ -75,7 +75,7 @@ Traffic to `10.0.1.50` uses `/24`.
 
 ---
 
-# Public vs private
+## Public vs private
 
 A subnet is **public** when its route table has a route to an **Internet Gateway (IGW)**.
 
@@ -101,7 +101,7 @@ For IPv4, both directions are possible if routing, public IP addressing, and sec
 
 ---
 
-# Public subnet vs internet-reachable EC2
+## Public subnet vs internet-reachable EC2
 
 For IPv4 Internet reachability, an EC2 instance normally needs:
 
@@ -125,7 +125,7 @@ Internet-reachable EC2
 
 ---
 
-# Internet access components
+## Internet access components
 
 | Component            | IP          | Traffic  | Purpose                              |
 | -------------------- | ----------- | -------- | ------------------------------------ |
@@ -194,7 +194,7 @@ For SAA:
 
 ---
 
-# NAT Gateway vs NAT Instance
+## NAT Gateway vs NAT Instance
 
 | NAT Gateway                   | NAT Instance                      |
 | ----------------------------- | --------------------------------- |
@@ -206,7 +206,7 @@ For SAA:
 
 ---
 
-# IPv6
+## IPv6
 
 NAT Gateway is mainly an **IPv4** solution.
 
@@ -233,7 +233,7 @@ Internet → EC2 ❌
 
 ---
 
-# CIDR essentials
+## CIDR essentials
 
 CIDR describes an IP range.
 
@@ -270,7 +270,7 @@ Common sizes:
 
 ---
 
-# VPC DNS
+## VPC DNS
 
 A VPC provides DNS functionality for resources such as EC2 instances.
 
@@ -317,7 +317,7 @@ EC2 cannot resolve DNS names
 
 ---
 
-# Lambda + VPC capacity
+## Lambda + VPC capacity
 
 A VPC-connected Lambda function that scales heavily can run into **ENI or subnet IP capacity** limits.
 
@@ -341,7 +341,7 @@ A small subnet can therefore become a scaling bottleneck for a high-concurrency 
 
 ---
 
-# No overlapping CIDRs
+## No overlapping CIDRs
 
 Networks that need to connect should use **non-overlapping CIDRs**.
 
@@ -362,7 +362,7 @@ Overlapping ranges cause problems with:
 
 ---
 
-# Security Groups vs NACLs
+## Security Groups vs NACLs
 
 |              | **Security Group**   | **NACL**            |
 | ------------ | -------------------- | ------------------- |
@@ -374,7 +374,7 @@ Overlapping ranges cause problems with:
 
 ---
 
-# Security Group
+## Security Group
 
 Security Groups are **stateful**.
 
@@ -447,7 +447,7 @@ Security Groups **cannot DENY**.
 
 ---
 
-# NACL
+## NACL
 
 NACLs are **stateless**.
 
@@ -471,7 +471,7 @@ Example:
 
 ---
 
-# Ephemeral ports
+## Ephemeral ports
 
 Responses commonly use ephemeral ports:
 
@@ -513,7 +513,7 @@ The traffic is **DENIED**.
 
 ---
 
-# Security Group vs NACL memory
+## Security Group vs NACL memory
 
 ```text
 Security Group
@@ -532,7 +532,7 @@ NACL
 
 ---
 
-# VPC Endpoints
+## VPC Endpoints
 
 VPC Endpoints provide a **private path to AWS services without the public Internet**.
 
@@ -545,7 +545,7 @@ VPC Endpoints provide a **private path to AWS services without the public Intern
 
 ---
 
-# Gateway Endpoint
+## Gateway Endpoint
 
 Used for:
 
@@ -568,7 +568,7 @@ Gateway endpoints use route tables.
 
 ---
 
-# Interface Endpoint
+## Interface Endpoint
 
 Uses an **ENI** in your subnet and **AWS PrivateLink**.
 
@@ -614,7 +614,7 @@ PrivateLink
 
 ---
 
-# VPC Peering
+## VPC Peering
 
 Connects **two VPCs directly**.
 
@@ -627,7 +627,7 @@ VPC-A ←→ VPC-B
 * **Not transitive**
 * CIDRs cannot overlap
 
-## VPC Peering + Route Tables
+### VPC Peering + Route Tables
 
 Creating the peering connection **does not automatically tell the route tables to use it**.
 
@@ -713,7 +713,7 @@ VPC-A ←→ VPC-B
 
 ---
 
-# Transit Gateway
+## Transit Gateway
 
 Central hub for:
 
@@ -738,7 +738,7 @@ On-premises
 
 ---
 
-# PrivateLink
+## PrivateLink
 
 PrivateLink exposes **one service**, not a whole network.
 
@@ -775,9 +775,9 @@ One service → PrivateLink
 
 ---
 
-# Observability & admin access
+## Observability & admin access
 
-## VPC Flow Logs
+### VPC Flow Logs
 
 Record **traffic metadata**, including:
 
@@ -795,7 +795,7 @@ They do **not** capture packet contents.
 
 ---
 
-# Traffic Mirroring
+## Traffic Mirroring
 
 Copies **actual packets** to an inspection/monitoring system.
 
@@ -811,7 +811,7 @@ Traffic Mirroring
 
 ---
 
-# Bastion Host
+## Bastion Host
 
 EC2 jump server for private instances.
 
@@ -837,7 +837,7 @@ You manage the bastion.
 
 ---
 
-# SSM Session Manager
+## SSM Session Manager
 
 Modern alternative to bastion.
 
@@ -861,7 +861,7 @@ Sessions can be logged.
 
 ---
 
-# VPC Sharing
+## VPC Sharing
 
 Allows one account to own the VPC while other accounts use its subnets.
 
@@ -879,7 +879,7 @@ Uses **AWS RAM**.
 
 ---
 
-# Hybrid Networking & Connectivity
+## Hybrid Networking & Connectivity
 
 Main services:
 
@@ -891,7 +891,7 @@ Main services:
 
 ---
 
-# Direct Connect and VIF
+## Direct Connect and VIF
 
 ```text
 On-premises
@@ -903,11 +903,11 @@ AWS
    VIF
 ```
 
-## Direct Connect connection
+### Direct Connect connection
 
 Physical/dedicated network connection between on-premises and AWS.
 
-## VIF
+### VIF
 
 Logical connection over Direct Connect using **BGP** for routes.
 
@@ -917,7 +917,7 @@ Logical connection over Direct Connect using **BGP** for routes.
 
 ---
 
-# Private VIF
+## Private VIF
 
 Private VIF connects through a **Virtual Private Gateway (VGW)**.
 
@@ -937,7 +937,7 @@ VPC
 
 ---
 
-# Direct Connect Gateway
+## Direct Connect Gateway
 
 Centralizes Direct Connect connectivity across supported architectures.
 
@@ -968,7 +968,7 @@ Transit VIF
 
 ---
 
-# Direct Connect redundancy
+## Direct Connect redundancy
 
 One DX connection can be a single point of failure.
 
@@ -991,7 +991,7 @@ VPN ─→ VPC
 
 ---
 
-# Why Private VIF targets the correct VPC
+## Why Private VIF targets the correct VPC
 
 A Private VIF connects to a **VGW**, and the VGW belongs to a specific VPC.
 
@@ -1011,7 +1011,7 @@ The VIF must reach the **correct VGW/VPC**.
 
 ---
 
-# VPN as backup
+## VPN as backup
 
 ```text
 On-premises
@@ -1026,7 +1026,7 @@ On-premises
 
 ---
 
-# VPC Peering
+## VPC Peering
 
 Private connection between two VPCs:
 
@@ -1044,7 +1044,7 @@ does not connect VPC-1 to VPC-3 through VPC-2.
 
 ---
 
-# Exam question pattern
+## Exam question pattern
 
 Given:
 
@@ -1073,7 +1073,7 @@ VPC Peering is **not transitive**.
 
 ---
 
-# Direct Connect vs VPN
+## Direct Connect vs VPN
 
 |            | **Direct Connect**              | **Site-to-Site VPN**         |
 | ---------- | ------------------------------- | ---------------------------- |
@@ -1084,7 +1084,7 @@ VPC Peering is **not transitive**.
 
 ---
 
-# VPC Peering vs Transit Gateway
+## VPC Peering vs Transit Gateway
 
 |              | **VPC Peering**      | **Transit Gateway** |
 | ------------ | -------------------- | ------------------- |
@@ -1095,7 +1095,7 @@ VPC Peering is **not transitive**.
 
 ---
 
-# VPN CloudHub
+## VPN CloudHub
 
 Connects multiple remote networks through a hub-and-spoke VPN architecture.
 
@@ -1111,7 +1111,7 @@ Branch B
 
 ---
 
-# One-line mental model
+## One-line mental model
 
 ```text
 VPC
@@ -1164,7 +1164,7 @@ DNS hostnames
 = AWS assigns DNS hostnames to resources
 ```
 
-# Hybrid Networking — one-line mental model
+## Hybrid Networking — one-line mental model
 
 ```text
 Direct Connect
@@ -1197,7 +1197,7 @@ VPN CloudHub
 
 ---
 
-# Question patterns
+## Question patterns
 
 > **Block a specific IP** → **NACL DENY**
 
@@ -1249,7 +1249,7 @@ VPN CloudHub
 
 ---
 
-# Pocket card
+## Pocket card
 
 | Keyword                         | Answer                                      |
 | ------------------------------- | ------------------------------------------- |
