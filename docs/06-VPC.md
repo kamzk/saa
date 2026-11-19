@@ -136,7 +136,7 @@ Internet-reachable EC2
 
 ---
 
-# NAT Gateway — private IPv4 outbound
+## NAT Gateway — private IPv4 outbound
 
 Used when private instances need:
 
@@ -159,7 +159,7 @@ Private EC2 → Internet ✅
 Internet → Private EC2 ❌
 ```
 
-## NAT Gateway placement
+### NAT Gateway placement
 
 A traditional zonal NAT Gateway is in a **public subnet**.
 
@@ -171,7 +171,7 @@ Private subnet route:
 
 NAT then uses the IGW.
 
-## NAT availability
+### NAT availability
 
 Traditional high-availability pattern:
 
@@ -194,7 +194,7 @@ For SAA:
 
 ---
 
-## NAT Gateway vs NAT Instance
+### NAT Gateway vs NAT Instance
 
 | NAT Gateway                   | NAT Instance                      |
 | ----------------------------- | --------------------------------- |
