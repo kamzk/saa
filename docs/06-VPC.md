@@ -1054,6 +1054,7 @@ On-premises
 Direct Connect
      ↓
 VPC-1
+
 ```
 
 Need more fault tolerance:
