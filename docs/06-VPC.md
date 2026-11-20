@@ -262,7 +262,7 @@ Common sizes:
 /24 → 256 addresses
 ```
 
-### Important facts
+## Important facts
 
 * VPC CIDR: **/16 to /28**
 * AWS reserves **5 IPv4 addresses per subnet**
@@ -305,7 +305,7 @@ For a normal EC2 private DNS hostname:
 
 You do **not** need Route 53 for the default EC2 private DNS hostname.
 
-### SAA memory
+## Memory
 
 ```text
 EC2 has no private DNS hostname

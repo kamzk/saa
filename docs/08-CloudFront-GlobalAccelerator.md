@@ -4,7 +4,7 @@
 
 CloudFront and Global Accelerator both improve application performance for users around the world, but they solve **different problems**.
 
-### CloudFront
+## CloudFront
 
 **CloudFront = content delivery and HTTP/HTTPS acceleration.**
 
@@ -17,7 +17,7 @@ It can:
 * Protect private S3 content with Origin Access Control (OAC)
 * Run custom logic at edge locations using Lambda@Edge
 
-### Global Accelerator
+## Global Accelerator
 
 **Global Accelerator = network traffic acceleration and availability.**
 
@@ -30,7 +30,7 @@ It can:
 * Perform health checks and route new connections to healthy endpoints
 * Avoid DNS-based failover delays
 
-### Main distinction
+## Main distinction
 
 ```text
 CloudFront
@@ -47,7 +47,7 @@ Global Accelerator
 
 ---
 
-# CloudFront
+## CloudFront
 
 **Amazon CloudFront is a Content Delivery Network (CDN).**
 
@@ -55,7 +55,7 @@ It distributes content through AWS edge locations around the world.
 
 Users connect to the CloudFront edge location that serves their request, and CloudFront retrieves content from the origin when necessary.
 
-### Origins
+## Origins
 
 CloudFront can use origins such as:
 
@@ -76,7 +76,7 @@ CloudFront
 Origin
 ```
 
-### Main use cases
+## Main use cases
 
 * Static websites
 * Images and files
@@ -88,7 +88,7 @@ Origin
 
 ---
 
-# CloudFront caching
+## CloudFront caching
 
 CloudFront can cache content at edge locations.
 
@@ -110,7 +110,7 @@ User → CloudFront
 
 When CloudFront serves a cache hit, the request does not need to retrieve the object from the origin again.
 
-### Why caching matters
+## Why caching matters
 
 Caching can:
 
@@ -119,7 +119,7 @@ Caching can:
 * reduce origin load
 * reduce data transfer from the origin
 
-### Exam clue
+## Exam clue
 
 > **"Reduce the load on the origin server behind CloudFront."**
 
@@ -127,7 +127,7 @@ Caching can:
 
 ---
 
-# TTL
+## TTL
 
 **TTL (Time To Live)** determines how long CloudFront considers an object fresh in the cache before it needs to check the origin again.
 
@@ -144,7 +144,7 @@ However, longer TTLs also mean content changes may take longer to appear unless 
 
 ---
 
-# CloudFront Invalidation
+## CloudFront Invalidation
 
 An **invalidation** tells CloudFront to remove cached objects before their normal TTL expires.
 
@@ -162,7 +162,7 @@ Invalidation
 → /*
 ```
 
-### Important
+## Important
 
 Invalidations can incur charges after the included allowance.
 
@@ -180,7 +180,7 @@ app-v2.js
 
 CloudFront treats the new filename as a new object.
 
-### Exam clue
+## Exam clue
 
 > **"The company needs to force CloudFront to refresh cached content before the TTL expires."**
 
@@ -188,7 +188,7 @@ CloudFront treats the new filename as a new object.
 
 ---
 
-# CloudFront dynamic content
+## CloudFront dynamic content
 
 CloudFront is not limited to static content.
 
@@ -198,7 +198,7 @@ However:
 
 > **Caching is not required for CloudFront to provide acceleration.**
 
-### Important distinction
+## Important distinction
 
 ```text
 Static/cacheable content
@@ -210,7 +210,7 @@ Dynamic/non-cacheable HTTP content
 
 ---
 
-# Lambda@Edge
+## Lambda@Edge
 
 **Lambda@Edge** lets you run custom Lambda code at **CloudFront edge locations**.
 
@@ -241,7 +241,7 @@ Lambda@Edge
 Origin
 ```
 
-### Exam clue
+## Exam clue
 
 > **"Execute custom application logic at CloudFront edge locations."**
 
@@ -249,7 +249,7 @@ Origin
 
 ---
 
-# CloudFront + Lambda@Edge + Kinesis
+## CloudFront + Lambda@Edge + Kinesis
 
 For globally distributed applications that need **real-time streaming data processing** together with edge processing:
 
@@ -283,13 +283,13 @@ Typical data:
 * Application events
 * Real-time telemetry
 
-### Exam clue
+## Exam clue
 
 > **"Process user activity in real time and execute processing close to global users."**
 
 → **CloudFront + Lambda@Edge + Kinesis**
 
-### Important distinction
+## Important distinction
 
 ```text
 Route 53 latency-based routing
@@ -304,7 +304,7 @@ Kinesis
 
 ---
 
-# CloudFront Origin Access Control (OAC)
+## CloudFront Origin Access Control (OAC)
 
 **Origin Access Control (OAC)** allows CloudFront to securely access an S3 bucket while keeping the bucket private.
 
@@ -325,19 +325,19 @@ The S3 bucket policy grants the CloudFront service permission to access the buck
 
 Users can access the content through CloudFront without needing direct public access to the S3 bucket.
 
-### OAC and SigV4
+## OAC and SigV4
 
 OAC can use **AWS Signature Version 4 (SigV4)** to sign requests from CloudFront to S3.
 
 The recommended configuration is to have CloudFront sign requests to the S3 origin.
 
-### Important exam clue
+## Important exam clue
 
 > **"S3 content must be accessible only through CloudFront and the S3 bucket must remain private."**
 
 → **CloudFront + OAC**
 
-### OAI vs OAC
+## OAI vs OAC
 
 **OAI (Origin Access Identity)** is the older mechanism.
 
@@ -349,11 +349,11 @@ OAC supports capabilities that OAI does not, including:
 * SSE-KMS
 * authenticated dynamic requests such as `PUT`, `POST`, and `DELETE`
 
-### Important S3 condition
+## Important S3 condition
 
 OAC is designed for a **regular S3 bucket origin**, not an S3 static website endpoint.
 
-### Memory rule
+## Memory rule
 
 ```text
 Private S3 bucket + CloudFront
@@ -362,7 +362,7 @@ Private S3 bucket + CloudFront
 
 ---
 
-# CloudFront signed URLs
+## CloudFront signed URLs
 
 **Signed URLs** provide temporary access to CloudFront content.
 
@@ -384,7 +384,7 @@ Typical use cases:
 * One protected video
 * Temporary access to a specific object
 
-### Exam clue
+## Exam clue
 
 > **"Give a customer temporary access to one private file."**
 
@@ -392,7 +392,7 @@ Typical use cases:
 
 ---
 
-# CloudFront signed cookies
+## CloudFront signed cookies
 
 **Signed cookies** also provide temporary access to private CloudFront content, but they are useful when a user needs access to **multiple files**.
 
@@ -416,13 +416,13 @@ Typical use cases:
 * Premium content libraries
 * Multiple private resources without changing the URLs
 
-### Exam clue
+## Exam clue
 
 > **"Subscribers need access to many files in a private content library."**
 
 → **Signed Cookies**
 
-### Signed URL vs Signed Cookies
+## Signed URL vs Signed Cookies
 
 |               | Signed URL             | Signed Cookies           |
 | ------------- | ---------------------- | ------------------------ |
@@ -432,7 +432,7 @@ Typical use cases:
 
 ---
 
-# CloudFront Geo Restriction
+## CloudFront Geo Restriction
 
 **Geo Restriction** controls content access at the **country level**.
 
@@ -447,11 +447,11 @@ Typical use case:
 
 → **CloudFront Geo Restriction**
 
-### Important
+## Important
 
 CloudFront's built-in geographic restriction works at the **country level**.
 
-### Exam clue
+## Exam clue
 
 > **"Block users from country X from accessing the content."**
 
@@ -459,7 +459,7 @@ CloudFront's built-in geographic restriction works at the **country level**.
 
 ---
 
-# CloudFront custom SSL/TLS certificate
+## CloudFront custom SSL/TLS certificate
 
 For a custom domain on CloudFront, the ACM certificate used by CloudFront must be in:
 
@@ -477,7 +477,7 @@ CloudFront ACM certificate
 → us-east-1
 ```
 
-### Exam clue
+## Exam clue
 
 > **"Attach a custom ACM certificate to CloudFront."**
 
@@ -485,7 +485,7 @@ CloudFront ACM certificate
 
 ---
 
-# CloudFront Field-Level Encryption
+## CloudFront Field-Level Encryption
 
 **Field-level encryption** encrypts selected fields in an HTTPS request at the CloudFront edge.
 
@@ -503,11 +503,11 @@ The sensitive field remains encrypted as it travels through the application stac
 
 Only the application that has the corresponding private key can decrypt the field.
 
-### Important
+## Important
 
 Field-level encryption is for **specific fields**, not necessarily the entire request.
 
-### Exam clue
+## Exam clue
 
 > **"Encrypt a credit card number at the edge so intermediate application components cannot read it."**
 
@@ -515,7 +515,7 @@ Field-level encryption is for **specific fields**, not necessarily the entire re
 
 ---
 
-# CloudFront Origin Groups
+## CloudFront Origin Groups
 
 An **origin group** contains:
 
@@ -544,7 +544,7 @@ Typical use case:
 
 CloudFront origin failover is configured for specific HTTP status codes and applies to viewer requests using supported methods such as `GET`, `HEAD`, and `OPTIONS`.
 
-### Exam clue
+## Exam clue
 
 > **"CloudFront should automatically use a secondary origin when the primary origin fails."**
 
@@ -552,7 +552,7 @@ CloudFront origin failover is configured for specific HTTP status codes and appl
 
 ---
 
-# CloudFront Price Classes
+## CloudFront Price Classes
 
 **Price Class** determines which CloudFront edge locations are used by your distribution.
 
@@ -571,7 +571,7 @@ Fewer edge locations
 → potentially higher latency for some users
 ```
 
-### Exam clue
+## Exam clue
 
 > **"Reduce CloudFront costs and accept potentially higher latency in some geographic regions."**
 
@@ -581,13 +581,13 @@ Price Class controls the locations used for CloudFront delivery; it does not det
 
 ---
 
-# Global Accelerator
+## Global Accelerator
 
 **AWS Global Accelerator** improves the performance and availability of applications by providing static anycast IP addresses and routing traffic through the AWS global network.
 
 It does **not cache application content**.
 
-### Typical architecture
+## Typical architecture
 
 ```text
 User
@@ -611,7 +611,7 @@ Supported standard accelerator endpoints include:
 
 ---
 
-# Global Accelerator Static IP Addresses
+## Global Accelerator Static IP Addresses
 
 A standard Global Accelerator provides **two static IPv4 addresses**.
 
@@ -711,7 +711,7 @@ The health-check interval and threshold are configurable, so the detection and f
 
 ---
 
-# CloudFront vs Global Accelerator
+## CloudFront vs Global Accelerator
 
 | Feature                                 | **CloudFront**                               | **Global Accelerator**                                  |
 | --------------------------------------- | -------------------------------------------- | ------------------------------------------------------- |
@@ -728,7 +728,7 @@ The health-check interval and threshold are configurable, so the detection and f
 
 ---
 
-# CloudFront vs S3 Transfer Acceleration vs Global Accelerator
+## CloudFront vs S3 Transfer Acceleration vs Global Accelerator
 
 This is a common SAA distinction.
 
@@ -750,7 +750,7 @@ Typical:
 
 ---
 
-### S3 Transfer Acceleration
+## S3 Transfer Acceleration
 
 Used when users are **transferring files to or from S3 over long distances** and need improved transfer performance.
 
@@ -764,7 +764,7 @@ Typical clue:
 
 ---
 
-### Global Accelerator
+## Global Accelerator
 
 Used for applications that need **network-level acceleration**, including TCP/UDP workloads.
 
@@ -776,7 +776,7 @@ Typical clue:
 
 ---
 
-# The three-way direction and protocol trap
+## The three-way direction and protocol trap
 
 Read the **direction and protocol** carefully:
 
@@ -793,7 +793,7 @@ Global users use a TCP/UDP application
 
 ---
 
-# CloudFront vs Global Accelerator vs S3 Transfer Acceleration
+## CloudFront vs Global Accelerator vs S3 Transfer Acceleration
 
 | Requirement                                | Answer                       |
 | ------------------------------------------ | ---------------------------- |
@@ -809,7 +809,7 @@ Global users use a TCP/UDP application
 
 ---
 
-# Question patterns
+## Question patterns
 
 > **"Serve a static website to users worldwide with low latency; the S3 bucket must not be publicly accessible."**
 
@@ -907,9 +907,9 @@ Global users use a TCP/UDP application
 
 ---
 
-# Important SAA traps
+## Important SAA traps
 
-## OAC vs Signed URL
+### OAC vs Signed URL
 
 These solve different problems.
 
@@ -941,7 +941,7 @@ The signed URL controls viewer access, while OAC protects the S3 origin.
 
 ---
 
-## OAI vs OAC
+### OAI vs OAC
 
 ```text
 OAC
@@ -1045,7 +1045,7 @@ Change where CloudFront gets content from
 
 ---
 
-# Pocket card
+## Pocket card
 
 | Keyword in question                               | Answer                                       |
 | ------------------------------------------------- | -------------------------------------------- |
