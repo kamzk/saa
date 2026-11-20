@@ -1,9 +1,9 @@
 {
   "name": "AWS Solution Architect Associate Notes",
-  "short_name": "AWS SAAC03",
+  "short_name": "AWS SAAC3",
   "description": "AWS Solutions Architect Associate study notes.",
-  "start_url": "https://saac03.pages.dev/",
-  "scope": "https://saac03.pages.dev/",
+  "start_url": "https://saac3.pages.dev/",
+  "scope": "https://saac3.pages.dev/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#FF6F00",

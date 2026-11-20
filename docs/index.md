@@ -9,7 +9,7 @@ Pocket card — a keyword → answer table for rapid review.
 
 The goal is to understand why an architectural solution fits the requirements, not simply memorize service definitions.
 
-<button id="pwa-install-button" class="md-button md-button--primary" type="button" onclick="installPWA()" style="display: none;">📲 Install AWS SAAC03</button>
+<button id="pwa-install-button" class="md-button md-button--primary" type="button" onclick="installPWA()" style="display: none;">📲 Install AWS SAAC3</button>
 
 📖 Suggested Reading Order
 
