@@ -31,7 +31,7 @@ User → Route 53 → ALB → EC2
 
 ---
 
-# DNS records
+## DNS records
 
 **A, AAAA, and CNAME are DNS record types.**
 
@@ -45,7 +45,7 @@ It is a **Route 53 feature** that lets an A or AAAA record point to supported AW
 | **CNAME** | Name → another DNS name                                                 | Cannot be used at the zone apex |
 | **Alias** | Route 53 feature for pointing A/AAAA records to supported AWS resources | Can be used at the zone apex    |
 
-### A / AAAA
+## A / AAAA
 
 ```text
 A
@@ -55,7 +55,7 @@ AAAA
 → 2001:db8::1
 ```
 
-### CNAME
+## CNAME
 
 A CNAME points one domain name to another **DNS name**.
 
@@ -89,7 +89,7 @@ The restriction is on **where the CNAME record exists**, not what name it points
 
 ---
 
-# Alias
+## Alias
 
 **Alias is a Route 53 feature, not a separate DNS record type.**
 
@@ -111,7 +111,7 @@ Supported resources include:
 * API Gateway
 * S3 website endpoint
 
-### Examples
+## Examples
 
 ```text
 example.com
@@ -139,7 +139,7 @@ Alias AAAA
 → IPv6
 ```
 
-### Advantages
+## Advantages
 
 * Can be used at the **root/apex**
 * No Route 53 charge for Alias queries
@@ -152,7 +152,7 @@ Alias AAAA
 
 > **Dual-stack ALB → Alias A + Alias AAAA**
 
-### CNAME vs Alias
+## CNAME vs Alias
 
 ```text
 CNAME
@@ -164,7 +164,7 @@ Alias A / Alias AAAA
 → DNS name → supported AWS resource
 ```
 
-### Important exam distinction
+## Important exam distinction
 
 ```text
 A / AAAA / CNAME
@@ -176,7 +176,7 @@ Alias
 
 ---
 
-# Route 53 + S3 static website
+## Route 53 + S3 static website
 
 Route 53 can point a domain to an **S3 static website endpoint** using an Alias record.
 
@@ -206,7 +206,7 @@ Alias
 S3 website endpoint
 ```
 
-### HTTPS
+## HTTPS
 
 Native S3 website endpoints do not provide HTTPS.
 
@@ -226,15 +226,15 @@ CloudFront can use an ACM certificate.
 
 ---
 
-# Hosted zones
+## Hosted zones
 
-## Public hosted zone
+### Public hosted zone
 
 Answers public Internet DNS queries.
 
 > Public website → **Public hosted zone**
 
-## Private hosted zone
+### Private hosted zone
 
 Answers DNS queries only from associated VPCs.
 
@@ -250,11 +250,11 @@ Private IP
 
 ---
 
-# Route 53 Resolver endpoints
+## Route 53 Resolver endpoints
 
 Used when DNS resolution crosses the **AWS/on-premises boundary**.
 
-## Inbound
+### Inbound
 
 **On-premises → AWS**
 
@@ -270,7 +270,7 @@ Private hosted zone
 
 > On-prem DNS needs to resolve AWS private DNS → **Inbound endpoint**
 
-## Outbound
+### Outbound
 
 **AWS → on-premises**
 
@@ -288,7 +288,7 @@ Uses a **Resolver forwarding rule**.
 
 > AWS resources need to resolve on-prem DNS → **Outbound endpoint + forwarding rule**
 
-### Memory
+## Memory
 
 ```text
 Inbound  → DNS comes IN → On-prem → AWS
@@ -299,7 +299,7 @@ Normal VPC DNS already uses Route 53 Resolver; endpoints are needed for cross-ne
 
 ---
 
-# Routing policies
+## Routing policies
 
 | Policy                 | Main purpose                   | Signal              |
 | ---------------------- | ------------------------------ | ------------------- |
@@ -313,7 +313,7 @@ Normal VPC DNS already uses Route 53 Resolver; endpoints are needed for cross-ne
 
 ---
 
-# Active-Active vs Active-Passive
+## Active-Active vs Active-Passive
 
 This is an important multi-Region distinction.
 
@@ -356,7 +356,7 @@ Usually implemented with **Failover routing + health checks**.
 
 > Primary + standby / DR → **Active-Passive**
 
-### Key distinction
+## Key distinction
 
 ```text
 Active-Active
@@ -368,7 +368,7 @@ Active-Passive
 
 ---
 
-# Simple routing
+## Simple routing
 
 Returns a basic DNS answer.
 
@@ -376,7 +376,7 @@ Returns a basic DNS answer.
 
 ---
 
-# Weighted routing
+## Weighted routing
 
 Splits traffic by percentage.
 
@@ -397,7 +397,7 @@ Useful for:
 
 ---
 
-# Latency-based routing
+## Latency-based routing
 
 Sends users to the Region Route 53 determines will provide the **lowest latency**.
 
@@ -407,7 +407,7 @@ This is based on latency, not simply geographic location.
 
 ---
 
-# Failover routing
+## Failover routing
 
 Provides **primary + secondary** routing.
 
@@ -433,7 +433,7 @@ DNS caching means failover is not necessarily instantaneous.
 
 ---
 
-# Geolocation routing
+## Geolocation routing
 
 Routes based on **user location**.
 
@@ -457,7 +457,7 @@ A **default record** should handle unmatched locations.
 
 ---
 
-# Geoproximity routing
+## Geoproximity routing
 
 Uses geographic relationship between users and resources and supports **bias** to shift traffic.
 
@@ -472,7 +472,7 @@ Geoproximity → Geography + BIAS
 
 ---
 
-# Multi-Value Answer routing
+## Multi-Value Answer routing
 
 Returns **multiple healthy records** in a single DNS response.
 
@@ -498,7 +498,7 @@ Client picks one (usually the first)
 
 ---
 
-# Health checks
+## Health checks
 
 Route 53 health checks can influence routing decisions.
 
@@ -522,7 +522,7 @@ Route 53 health check
 
 ---
 
-# Calculated health checks
+## Calculated health checks
 
 Combines multiple health checks.
 
@@ -536,9 +536,9 @@ Check C ─┘
 
 ---
 
-# Route 53 vs Load Balancer
+## Route 53 vs Load Balancer
 
-## Route 53
+### Route 53
 
 DNS-level decision:
 
@@ -557,7 +557,7 @@ Can choose:
 * AWS resource
 * Geographic destination
 
-## Load Balancer
+### Load Balancer
 
 Traffic-path decision:
 
@@ -575,7 +575,7 @@ Chooses:
 * Container
 * Target
 
-### Exam rule
+## Exam rule
 
 ```text
 Choose between Regions/sites
@@ -587,7 +587,7 @@ Choose between instances/targets
 
 ---
 
-# Route 53 failover vs ELB failover
+## Route 53 failover vs ELB failover
 
 ### Instance failure
 
@@ -616,7 +616,7 @@ Route 53
 
 ---
 
-# TTL
+## TTL
 
 **TTL (Time To Live)** controls how long DNS resolvers may cache an answer.
 
@@ -643,9 +643,9 @@ Route 53 cannot force clients to immediately discard cached answers.
 
 ---
 
-# Global Accelerator vs Route 53
+## Global Accelerator vs Route 53
 
-## Route 53
+### Route 53
 
 DNS-based:
 
@@ -659,7 +659,7 @@ Route 53
 Destination
 ```
 
-## Global Accelerator
+### Global Accelerator
 
 Uses static anycast IPs and stays in the traffic path:
 
@@ -681,7 +681,7 @@ This avoids waiting for normal DNS TTL behavior when switching endpoints.
 
 ---
 
-# Question patterns
+## Question patterns
 
 > **Root domain → ALB**
 > → **Alias A or Alias AAAA**
@@ -745,7 +745,7 @@ This avoids waiting for normal DNS TTL behavior when switching endpoints.
 
 ---
 
-# Pocket card
+## Pocket card
 
 | Keyword                          | Answer                                           |
 | -------------------------------- | ------------------------------------------------ |
