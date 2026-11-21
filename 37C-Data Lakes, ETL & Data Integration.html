@@ -1,0 +1,566 @@
+<!doctype html><html lang=en class=no-js> <head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://saac3.pages.dev/37C-Data%20Lakes%2C%20ETL%20%26%20Data%20Integration.html><link rel=prev href=31-Cost-Management.html><link rel=next href=37D-Analytics%2C%20Big%20Data%20%26%20Streaming.html><link rel=icon href=assets/favicon.ico><meta name=generator content="mkdocs-1.6.1, mkdocs-material-9.8.2"><title>Data Lakes, ETL & Data Integration - AWS Solution Architect Associate Notes</title><link rel=stylesheet href=assets/stylesheets/main.57a0d79d.min.css><link rel=stylesheet href=assets/stylesheets/palette.fb2fffe2.min.css><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback"><style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style><link rel=stylesheet href=styles.css><script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script><link rel=manifest href=manifest.json><meta name=theme-color content=#FF6F00><meta name=mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black><meta name=apple-mobile-web-app-title content="AWS SAAC3"><link rel=apple-touch-icon href=assets/icon-192.png></head> <body dir=ltr data-md-color-scheme=default data-md-color-primary=amber data-md-color-accent=deep-orange> <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off> <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off> <label class=md-overlay for=__drawer></label> <div data-md-component=skip> <a href=#section-37c-data-lakes-etl-data-integration class=md-skip> Skip to content </a> </div> <div data-md-component=announce> </div> <header class="md-header md-header--shadow" data-md-component=header> <nav class="md-header__inner md-grid" aria-label=Header> <a href=. title="AWS Solution Architect Associate Notes" class="md-header__button md-logo" aria-label="AWS Solution Architect Associate Notes" data-md-component=logo> <img src=assets/logo.svg alt=logo> </a> <label class="md-header__button md-icon" for=__drawer> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg> </label> <div class=md-header__title data-md-component=header-title> <div class=md-header__ellipsis> <div class=md-header__topic> <span class=md-ellipsis> AWS Solution Architect Associate Notes </span> </div> <div class=md-header__topic data-md-component=header-topic> <span class=md-ellipsis> Data Lakes, ETL & Data Integration </span> </div> </div> </div> <form class=md-header__option data-md-component=palette> <input class=md-option data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme=default data-md-color-primary=amber data-md-color-accent=deep-orange aria-label="Switch to dark mode" type=radio name=__palette id=__palette_0> <label class="md-header__button md-icon" title="Switch to dark mode" for=__palette_1 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg> </label> <input class=md-option data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme=slate data-md-color-primary=deep-orange data-md-color-accent=amber aria-label="Switch to light mode" type=radio name=__palette id=__palette_1> <label class="md-header__button md-icon" title="Switch to light mode" for=__palette_0 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg> </label> </form> <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script> <label class="md-header__button md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg> </label> <div class=md-search data-md-component=search role=dialog> <label class=md-search__overlay for=__search></label> <div class=md-search__inner role=search> <form class=md-search__form name=search> <input type=text class=md-search__input name=query aria-label=Search placeholder=Search autocapitalize=off autocorrect=off autocomplete=off spellcheck=false data-md-component=search-query required> <label class="md-search__icon md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg> </label> <nav class=md-search__options aria-label=Search> <button type=reset class="md-search__icon md-icon" title=Clear aria-label=Clear tabindex=-1> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> </button> </nav> <div class=md-search__suggest data-md-component=search-suggest></div> </form> <div class=md-search__output> <div class=md-search__scrollwrap tabindex=0 data-md-scrollfix> <div class=md-search-result data-md-component=search-result> <div class=md-search-result__meta> Initializing search </div> <ol class=md-search-result__list role=presentation></ol> </div> </div> </div> </div> </div> </nav> </header> <div class=md-container data-md-component=container> <main class=md-main data-md-component=main> <div class="md-main__inner md-grid"> <div class="md-sidebar md-sidebar--primary" data-md-component=sidebar data-md-type=navigation> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--primary" aria-label=Navigation data-md-level=0> <label class=md-nav__title for=__drawer> <a href=. title="AWS Solution Architect Associate Notes" class="md-nav__button md-logo" aria-label="AWS Solution Architect Associate Notes" data-md-component=logo> <img src=assets/logo.svg alt=logo> </a> AWS Solution Architect Associate Notes </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_1> <label class=md-nav__link for=__nav_1 id=__nav_1_label tabindex=0> <span class=md-ellipsis> Networking and Content Delivery </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_1_label aria-expanded=false> <label class=md-nav__title for=__nav_1> <span class="md-nav__icon md-icon"></span> Networking and Content Delivery </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=06-VPC.html class=md-nav__link> <span class=md-ellipsis> VPC </span> </a> </li> <li class=md-nav__item> <a href=07-Route53.html class=md-nav__link> <span class=md-ellipsis> Route 53 </span> </a> </li> <li class=md-nav__item> <a href=08-CloudFront-GlobalAccelerator.html class=md-nav__link> <span class=md-ellipsis> CloudFront & Global Accelerator </span> </a> </li> <li class=md-nav__item> <a href=32-DirectConnect-VPN.html class=md-nav__link> <span class=md-ellipsis> Direct Connect & VPN </span> </a> </li> <li class=md-nav__item> <a href=33-Transit-Gateway.html class=md-nav__link> <span class=md-ellipsis> Transit Gateway </span> </a> </li> <li class=md-nav__item> <a href=37I-DNS%2C%20IPv6%20%26%20Edge%20Infrastructure.html class=md-nav__link> <span class=md-ellipsis> DNS, IPv6 & Edge Infrastructure </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_2> <label class=md-nav__link for=__nav_2 id=__nav_2_label tabindex=0> <span class=md-ellipsis> Compute </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_2_label aria-expanded=false> <label class=md-nav__title for=__nav_2> <span class="md-nav__icon md-icon"></span> Compute </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=03-EC2.html class=md-nav__link> <span class=md-ellipsis> EC2 </span> </a> </li> <li class=md-nav__item> <a href=05-ELB-AutoScaling.html class=md-nav__link> <span class=md-ellipsis> ELB & Auto Scaling </span> </a> </li> <li class=md-nav__item> <a href=13-Lambda.html class=md-nav__link> <span class=md-ellipsis> Lambda </span> </a> </li> <li class=md-nav__item> <a href=14-ECS-Fargate.html class=md-nav__link> <span class=md-ellipsis> ECS & Fargate </span> </a> </li> <li class=md-nav__item> <a href=14B-EKS-Kubernetes.html class=md-nav__link> <span class=md-ellipsis> EKS & Kubernetes </span> </a> </li> <li class=md-nav__item> <a href=15-Elastic-Beanstalk.html class=md-nav__link> <span class=md-ellipsis> Elastic Beanstalk </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_3> <label class=md-nav__link for=__nav_3 id=__nav_3_label tabindex=0> <span class=md-ellipsis> Storage </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_3_label aria-expanded=false> <label class=md-nav__title for=__nav_3> <span class="md-nav__icon md-icon"></span> Storage </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=02-S3.html class=md-nav__link> <span class=md-ellipsis> S3 </span> </a> </li> <li class=md-nav__item> <a href=04-EBS-EFS-InstanceStore.html class=md-nav__link> <span class=md-ellipsis> EBS, EFS & Instance Store </span> </a> </li> <li class=md-nav__item> <a href=25-StorageGateway-DataSync-TransferFamily.html class=md-nav__link> <span class=md-ellipsis> Storage Gateway, DataSync & Transfer Family </span> </a> </li> <li class=md-nav__item> <a href=26-FSx.html class=md-nav__link> <span class=md-ellipsis> FSx </span> </a> </li> <li class=md-nav__item> <a href=27-Snow-Family.html class=md-nav__link> <span class=md-ellipsis> Snow Family </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_4> <label class=md-nav__link for=__nav_4 id=__nav_4_label tabindex=0> <span class=md-ellipsis> Identity and Access Management </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_4_label aria-expanded=false> <label class=md-nav__title for=__nav_4> <span class="md-nav__icon md-icon"></span> Identity and Access Management </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=01-IAM.html class=md-nav__link> <span class=md-ellipsis> IAM </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_5> <label class=md-nav__link for=__nav_5 id=__nav_5_label tabindex=0> <span class=md-ellipsis> Database Services </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_5_label aria-expanded=false> <label class=md-nav__title for=__nav_5> <span class="md-nav__icon md-icon"></span> Database Services </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=09-RDS-Aurora.html class=md-nav__link> <span class=md-ellipsis> RDS & Aurora </span> </a> </li> <li class=md-nav__item> <a href=10-DynamoDB.html class=md-nav__link> <span class=md-ellipsis> DynamoDB </span> </a> </li> <li class=md-nav__item> <a href=11-ElastiCache.html class=md-nav__link> <span class=md-ellipsis> ElastiCache </span> </a> </li> <li class=md-nav__item> <a href=12-Other-Databases.html class=md-nav__link> <span class=md-ellipsis> Other Databases </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_6> <label class=md-nav__link for=__nav_6 id=__nav_6_label tabindex=0> <span class=md-ellipsis> Application Services </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_6_label aria-expanded=false> <label class=md-nav__title for=__nav_6> <span class="md-nav__icon md-icon"></span> Application Services </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=16-API-Gateway.html class=md-nav__link> <span class=md-ellipsis> API Gateway </span> </a> </li> <li class=md-nav__item> <a href=17-SQS-SNS-Kinesis.html class=md-nav__link> <span class=md-ellipsis> SQS, SNS & Kinesis </span> </a> </li> <li class=md-nav__item> <a href=18-EventBridge-StepFunctions.html class=md-nav__link> <span class=md-ellipsis> EventBridge & Step Functions </span> </a> </li> <li class=md-nav__item> <a href=37G-Application%20Development%20%26%20Integration.html class=md-nav__link> <span class=md-ellipsis> Application Development & Integration </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_7> <label class=md-nav__link for=__nav_7 id=__nav_7_label tabindex=0> <span class=md-ellipsis> Security Services </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_7_label aria-expanded=false> <label class=md-nav__title for=__nav_7> <span class="md-nav__icon md-icon"></span> Security Services </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=20-KMS-CloudHSM.html class=md-nav__link> <span class=md-ellipsis> KMS & CloudHSM </span> </a> </li> <li class=md-nav__item> <a href=21-SecretsManager-ParameterStore.html class=md-nav__link> <span class=md-ellipsis> Secrets Manager & Parameter Store </span> </a> </li> <li class=md-nav__item> <a href=22-WAF-Shield-SecurityServices.html class=md-nav__link> <span class=md-ellipsis> WAF, Shield & Security Services </span> </a> </li> <li class=md-nav__item> <a href=23-Cognito.html class=md-nav__link> <span class=md-ellipsis> Cognito </span> </a> </li> <li class=md-nav__item> <a href=24-Directory-Services.html class=md-nav__link> <span class=md-ellipsis> Directory Services </span> </a> </li> <li class=md-nav__item> <a href=37B-Certificates.html class=md-nav__link> <span class=md-ellipsis> Certificates </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_8> <label class=md-nav__link for=__nav_8 id=__nav_8_label tabindex=0> <span class=md-ellipsis> Monitoring and Operations </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_8_label aria-expanded=false> <label class=md-nav__title for=__nav_8> <span class="md-nav__icon md-icon"></span> Monitoring and Operations </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=19-CloudWatch-CloudTrail-Config.html class=md-nav__link> <span class=md-ellipsis> CloudWatch, CloudTrail & Config </span> </a> </li> <li class=md-nav__item> <a href=37F-Systems%20Manager%20%26%20Operations.html class=md-nav__link> <span class=md-ellipsis> Systems Manager & Operations </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_9> <label class=md-nav__link for=__nav_9 id=__nav_9_label tabindex=0> <span class=md-ellipsis> Infrastructure and Governance </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_9_label aria-expanded=false> <label class=md-nav__title for=__nav_9> <span class="md-nav__icon md-icon"></span> Infrastructure and Governance </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=28-CloudFormation.html class=md-nav__link> <span class=md-ellipsis> CloudFormation </span> </a> </li> <li class=md-nav__item> <a href=29-Organizations-ControlTower.html class=md-nav__link> <span class=md-ellipsis> Organizations & Control Tower </span> </a> </li> <li class=md-nav__item> <a href=30-ServiceCatalog-TrustedAdvisor.html class=md-nav__link> <span class=md-ellipsis> Service Catalog & Trusted Advisor </span> </a> </li> <li class=md-nav__item> <a href=34-Well-Architected.html class=md-nav__link> <span class=md-ellipsis> Well-Architected Framework </span> </a> </li> <li class=md-nav__item> <a href=37H-Specialized%20Services%20%26%20Governance.html class=md-nav__link> <span class=md-ellipsis> Specialized Services & Governance </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_10> <label class=md-nav__link for=__nav_10 id=__nav_10_label tabindex=0> <span class=md-ellipsis> Cost Management </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_10_label aria-expanded=false> <label class=md-nav__title for=__nav_10> <span class="md-nav__icon md-icon"></span> Cost Management </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=31-Cost-Management.html class=md-nav__link> <span class=md-ellipsis> Cost Management </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_11 checked> <label class=md-nav__link for=__nav_11 id=__nav_11_label tabindex=0> <span class=md-ellipsis> Analytics and Data </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_11_label aria-expanded=true> <label class=md-nav__title for=__nav_11> <span class="md-nav__icon md-icon"></span> Analytics and Data </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active"> <input class="md-nav__toggle md-toggle" type=checkbox id=__toc> <label class="md-nav__link md-nav__link--active" for=__toc> <span class=md-ellipsis> Data Lakes, ETL & Data Integration </span> <span class="md-nav__icon md-icon"></span> </label> <a href=37C-Data%20Lakes%2C%20ETL%20%26%20Data%20Integration.html class="md-nav__link md-nav__link--active"> <span class=md-ellipsis> Data Lakes, ETL & Data Integration </span> </a> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#the-idea class=md-nav__link> <span class=md-ellipsis> The idea </span> </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=37D-Analytics%2C%20Big%20Data%20%26%20Streaming.html class=md-nav__link> <span class=md-ellipsis> Analytics, Big Data & Streaming </span> </a> </li> <li class=md-nav__item> <a href=37E-AI%20%26%20Machine%20Learning%20One-Liners.html class=md-nav__link> <span class=md-ellipsis> AI & Machine Learning One-Liners </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_12> <label class=md-nav__link for=__nav_12 id=__nav_12_label tabindex=0> <span class=md-ellipsis> Migration and Resilience </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_12_label aria-expanded=false> <label class=md-nav__title for=__nav_12> <span class="md-nav__icon md-icon"></span> Migration and Resilience </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=35-Disaster-Recovery.html class=md-nav__link> <span class=md-ellipsis> Disaster Recovery </span> </a> </li> <li class=md-nav__item> <a href=37A-Migration%2C%20Messaging%20%26%20Disaster%20Recovery.html class=md-nav__link> <span class=md-ellipsis> Migration, Messaging & Disaster Recovery </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_13> <label class=md-nav__link for=__nav_13 id=__nav_13_label tabindex=0> <span class=md-ellipsis> Exam Preparation </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_13_label aria-expanded=false> <label class=md-nav__title for=__nav_13> <span class="md-nav__icon md-icon"></span> Exam Preparation </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=36-Exam-Traps-KeyPatterns.html class=md-nav__link> <span class=md-ellipsis> Exam Traps & Key Patterns </span> </a> </li> <li class=md-nav__item> <a href=38-elimination%20rules.html class=md-nav__link> <span class=md-ellipsis> Elimination Rules </span> </a> </li> </ul> </nav> </li> </ul> </nav> </div> </div> </div> <div class="md-sidebar md-sidebar--secondary" data-md-component=sidebar data-md-type=toc> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#the-idea class=md-nav__link> <span class=md-ellipsis> The idea </span> </a> </li> </ul> </nav> </div> </div> </div> <div class=md-content data-md-component=content> <article class="md-content__inner md-typeset"> <h1 id=section-37c-data-lakes-etl-data-integration>Section 37C: Data Lakes, ETL &amp; Data Integration</h1> <h2 id=the-idea>The idea</h2> <p>These are AWS services that commonly appear in SAA questions involving <strong>data lakes, ETL, metadata, schema discovery, data preparation, incremental processing, and bulk operations on S3 objects</strong>.</p> <p>You generally don't need deep knowledge of each one.</p> <p>The best strategy is:</p> <blockquote> <p><strong>Read the requirement → identify the unique keyword → choose the service.</strong></p> </blockquote> <div class=highlight><pre><span></span><code>Serverless ETL + data catalog
+→ AWS Glue
+
+Automatically discover schema in S3
+→ Glue Crawler
+
+Store table/schema metadata
+→ Glue Data Catalog
+
+Transform CSV → Parquet
+→ Glue ETL
+
+Visual / drag-and-drop Glue ETL jobs
+→ Glue Studio
+
+Clean / mask / anonymize data with minimal custom code
+→ AWS Glue DataBrew
+
+Athena query performance on large S3 data
+→ Parquet / ORC
+
+Prevent Glue from reprocessing previously processed data
+→ Glue Job Bookmark
+
+Data lake + fine-grained permissions
+→ Lake Formation
+
+Aurora/JDBC → S3 data lake with predefined ingestion workflow
+→ Lake Formation Blueprint
+
+Salesforce → S3
+→ AppFlow
+
+Find/subscribe to third-party datasets
+→ AWS Data Exchange
+
+Discover sensitive data in S3
+→ Amazon Macie
+
+Bulk operation on millions of existing S3 objects
+→ S3 Batch Operations
+</code></pre></div> <hr> <h1 id=data-lake-lake-formation>Data Lake + Lake Formation</h1> <h3 id=what-is-a-data-lake>What is a data lake?</h3> <p><strong>Data lake = a central place to store large amounts of raw data in different formats for later processing and analytics.</strong></p> <p>In AWS, <strong>Amazon S3 is commonly used as the storage for a data lake</strong>.</p> <div class=highlight><pre><span></span><code>                    DATA LAKE
+                       ↓
+                      S3
+        ┌──────────────┼──────────────┐
+        ↓              ↓              ↓
+     CSV files      JSON files      Images
+     Logs           Parquet         IoT data
+     Database data  Video           etc.
+</code></pre></div> <p>Simple idea:</p> <div class=highlight><pre><span></span><code>S3
+= actual data
+
+Data lake
+= the overall collection of data used for analytics
+</code></pre></div> <p>Other services can then process or query it:</p> <div class=highlight><pre><span></span><code>S3
+ ↓
+Glue / Athena / EMR
+ ↓
+Process / query / analyze
+</code></pre></div> <h3 id=what-is-lake-formation>What is Lake Formation?</h3> <p><strong>AWS Lake Formation = governance and fine-grained access control for a data lake.</strong></p> <p>It does <strong>not</strong> store the actual data.</p> <p>Think:</p> <div class=highlight><pre><span></span><code>S3
+= stores the data
+
+Lake Formation
+= controls who can access what
+</code></pre></div> <p>For example:</p> <div class=highlight><pre><span></span><code>Sales team
+→ sales table
+
+Finance team
+→ financial table
+
+Regional manager
+→ only rows for their region
+
+Analyst
+→ only selected columns
+</code></pre></div> <p>Lake Formation can provide fine-grained permissions at the <strong>table, row, and column</strong> level.</p> <h3 id=common-pattern>Common pattern</h3> <div class=highlight><pre><span></span><code>S3
+ ↓
+Glue Crawler
+ ↓
+Glue Data Catalog
+ ↓
+Lake Formation permissions
+ ↓
+Athena / EMR / other analytics
+</code></pre></div> <h3 id=saa-memory>SAA memory</h3> <blockquote> <p><strong>Data lake = data</strong></p> <p><strong>S3 = common data lake storage</strong></p> <p><strong>Lake Formation = who can access what</strong></p> </blockquote> <h3 id=signal>Signal</h3> <blockquote> <p><strong>Data lake + fine-grained permissions → AWS Lake Formation</strong></p> </blockquote> <hr> <h1 id=lake-formation-blueprints-workflows>Lake Formation Blueprints &amp; Workflows</h1> <p><strong>Lake Formation Blueprint = predefined ingestion recipe.</strong></p> <p>A blueprint can create a <strong>workflow</strong> containing Glue jobs, crawlers, and triggers to ingest data into the S3 data lake.</p> <p>For a relational database such as <strong>Aurora MySQL</strong>, the <strong>incremental database blueprint</strong> can load data from a JDBC source into S3.</p> <div class=highlight><pre><span></span><code>Aurora MySQL
+     ↓
+Lake Formation Blueprint
+     ↓
+Workflow
+     ↓
+Glue jobs / crawler / triggers
+     ↓
+S3 data lake
+</code></pre></div> <p>The workflow copies the <strong>actual data</strong> into S3; the Glue Data Catalog stores metadata about the resulting tables.</p> <h3 id=incremental-database-blueprint>Incremental database blueprint</h3> <p>The first run loads the selected data and establishes bookmarks.</p> <p>Later runs use the bookmarks to identify <strong>new rows</strong>.</p> <div class=highlight><pre><span></span><code>First run
+→ existing data → S3
+
+Later runs
+→ new rows → S3
+</code></pre></div> <p>This is best when data is primarily <strong>append-only</strong> and existing rows are not continually updated.</p> <h3 id=blueprint-vs-workflow>Blueprint vs workflow</h3> <div class=highlight><pre><span></span><code>Blueprint
+= recipe/template
+
+Workflow
+= actual generated process
+</code></pre></div> <blockquote> <p><strong>Aurora/JDBC → S3 data lake with minimal ingestion orchestration → Lake Formation Blueprint</strong></p> </blockquote> <hr> <h1 id=lake-formation-tag-based-access-control-lf-tbac>Lake Formation Tag-Based Access Control (LF-TBAC)</h1> <p><strong>LF-TBAC = use tags to control access to many data resources.</strong></p> <p>Instead of manually granting permissions to each table, database, or column, you attach <strong>LF-Tags</strong> to resources and grant permissions based on those tags.</p> <p>Example:</p> <div class=highlight><pre><span></span><code>Sales data
+→ LF-Tag: department=sales
+
+DevOps data
+→ LF-Tag: department=devops
+
+HR data
+→ LF-Tag: department=hr
+</code></pre></div> <p>Then:</p> <div class=highlight><pre><span></span><code>DevOps team
+→ permission for department=devops
+→ gets access to matching resources
+</code></pre></div> <p>This is useful when:</p> <ul> <li>there are many datasets</li> <li>data is spread across multiple AWS accounts</li> <li>fine-grained access control is required</li> <li>minimal operational overhead is important</li> </ul> <h3 id=why-lf-tbac>Why LF-TBAC?</h3> <p>Without tags:</p> <div class=highlight><pre><span></span><code>Table 1 → manually grant
+Table 2 → manually grant
+Table 3 → manually grant
+Table 4 → manually grant
+...
+</code></pre></div> <p>With LF-TBAC:</p> <div class=highlight><pre><span></span><code>Tag resources
+      ↓
+Grant permission to the tag
+      ↓
+Matching resources are covered
+</code></pre></div> <h3 id=signal_1>Signal</h3> <blockquote> <p><strong>Many datasets + fine-grained access + cross-account sharing + minimal operational overhead</strong></p> </blockquote> <p>→ <strong>Lake Formation Tag-Based Access Control (LF-TBAC)</strong></p> <h3 id=exam-shortcut>Exam shortcut</h3> <blockquote> <p><strong>Lake Formation + scalable fine-grained authorization → LF-TBAC</strong></p> </blockquote> <hr> <h1 id=aws-glue>AWS Glue</h1> <p><strong>AWS Glue = serverless ETL and Data Catalog service.</strong></p> <p>ETL means:</p> <div class=highlight><pre><span></span><code>Extract
+Transform
+Load
+</code></pre></div> <p>Glue can:</p> <ul> <li>discover data</li> <li>catalog schemas</li> <li>transform data</li> <li>prepare data for analytics</li> <li>track previously processed data with <strong>job bookmarks</strong></li> </ul> <p>It is especially useful when the requirement is <strong>serverless ETL with low operational overhead</strong>, especially for larger data-processing workloads.</p> <p><strong>Glue Studio</strong> → visual / drag-and-drop interface for creating Glue ETL jobs.</p> <h3 id=main-glue-components>Main Glue components</h3> <div class=highlight><pre><span></span><code>             AWS Glue
+                │
+      ┌─────────┼─────────────┐
+      ↓         ↓             ↓
+   Crawler    Catalog         ETL
+  discover    metadata      transform
+                                │
+                                ↓
+                         Job Bookmark
+                         track progress
+</code></pre></div> <hr> <h1 id=glue-crawler>Glue Crawler</h1> <p><strong>Glue Crawler = automatically discovers the structure/schema of data.</strong></p> <p>It can inspect data sources such as S3 and determine things like:</p> <div class=highlight><pre><span></span><code>customer_id → integer
+name        → string
+price       → decimal
+</code></pre></div> <p>It then updates the <strong>Glue Data Catalog</strong>.</p> <h3 id=typical-flow>Typical flow</h3> <div class=highlight><pre><span></span><code>S3 files
+   ↓
+Glue Crawler
+   ↓
+Discover schema
+   ↓
+Glue Data Catalog
+</code></pre></div> <h3 id=signal_2>Signal</h3> <blockquote> <p><strong>"Automatically discover the schema of files in S3."</strong></p> </blockquote> <p>→ <strong>Glue Crawler</strong></p> <h3 id=important>Important</h3> <blockquote> <p><strong>Crawler discovers. It does not perform the ETL transformation.</strong></p> </blockquote> <p>For example, a crawler can determine that a CSV contains:</p> <div class=highlight><pre><span></span><code>customer_id
+name
+price
+</code></pre></div> <p>But it does not perform:</p> <div class=highlight><pre><span></span><code>CSV → Parquet
+</code></pre></div> <p>That is the job of Glue ETL.</p> <hr> <h1 id=glue-data-catalog>Glue Data Catalog</h1> <p><strong>Glue Data Catalog = centralized metadata store.</strong></p> <p>It stores information <strong>about</strong> datasets rather than the actual dataset itself.</p> <p>It can store:</p> <ul> <li>table definitions</li> <li>columns</li> <li>data types</li> <li>data locations</li> <li>schema</li> </ul> <p>Think:</p> <div class=highlight><pre><span></span><code>Actual data
+→ S3
+
+Information ABOUT the data
+→ Glue Data Catalog
+</code></pre></div> <h3 id=signal_3>Signal</h3> <blockquote> <p><strong>"Store metadata/schema/table definitions."</strong></p> </blockquote> <p>→ <strong>Glue Data Catalog</strong></p> <h3 id=important_1>Important</h3> <blockquote> <p><strong>Data Catalog stores metadata. It does not transform or store the actual data.</strong></p> </blockquote> <hr> <h1 id=glue-etl>Glue ETL</h1> <p><strong>Glue ETL = performs the actual data transformation.</strong></p> <p>For example:</p> <div class=highlight><pre><span></span><code>CSV
+ ↓
+Glue ETL
+ ↓
+Parquet
+</code></pre></div> <p>It can perform common transformations such as:</p> <ul> <li>format conversion</li> <li>filtering</li> <li>joining</li> <li>cleaning</li> <li>restructuring</li> </ul> <h3 id=signal_4>Signal</h3> <blockquote> <p><strong>"Convert CSV files to Parquet."</strong></p> </blockquote> <p>→ <strong>Glue ETL</strong></p> <h3 id=important-distinction>Important distinction</h3> <div class=highlight><pre><span></span><code>Glue Crawler
+= discovers schema
+
+Glue Data Catalog
+= stores metadata
+
+Glue ETL
+= transforms data
+</code></pre></div> <hr> <h1 id=aws-glue-databrew>AWS Glue DataBrew</h1> <p><strong>AWS Glue DataBrew = visual, no-code/low-code data preparation and cleaning service.</strong></p> <p>It is useful when the requirement is to <strong>clean, normalize, transform, or anonymize data without developing custom code</strong>.</p> <p>Typical operations include:</p> <ul> <li>cleaning data</li> <li>replacing values</li> <li>masking sensitive information</li> <li>removing unwanted data</li> <li>standardizing data</li> <li>preparing datasets for analytics or development</li> </ul> <h3 id=typical-pattern>Typical pattern</h3> <div class=highlight><pre><span></span><code>Amazon RDS
+    ↓
+DataBrew
+    ↓
+Clean / mask / transform data
+    ↓
+Amazon S3
+    ↓
+Development / analytics
+</code></pre></div> <h3 id=strong-saa-signal>Strong SAA signal</h3> <blockquote> <p><strong>"Clean or sanitize data with minimal custom code."</strong></p> </blockquote> <p>→ <strong>AWS Glue DataBrew</strong></p> <p>Especially when the question says:</p> <ul> <li>remove or replace personal identifiers</li> <li>mask sensitive values</li> <li>prepare a copy of production data for development</li> <li>reduce custom code</li> <li>minimize operational overhead</li> </ul> <h3 id=example>Example</h3> <p>A company exports customer data from RDS every week to create development data.</p> <p>Customer names and personal identifiers must be removed or replaced with random values.</p> <div class=highlight><pre><span></span><code>RDS
+ ↓
+DataBrew
+ ↓
+Replace / mask sensitive values
+ ↓
+S3
+ ↓
+Development environment
+</code></pre></div> <p>→ <strong>DataBrew</strong></p> <h3 id=databrew-vs-glue-etl>DataBrew vs Glue ETL</h3> <p>Both can transform data, but the exam distinction is:</p> <div class=highlight><pre><span></span><code>Glue ETL
+→ Serverless ETL
+→ More general / programmable data transformation
+
+DataBrew
+→ Visual data preparation
+→ Little/no custom code
+→ Cleaning / masking / standardizing data
+</code></pre></div> <h3 id=databrew-vs-macie>DataBrew vs Macie</h3> <p>This is an important SAA trap.</p> <div class=highlight><pre><span></span><code>Macie
+→ Discover sensitive data in S3
+
+DataBrew
+→ Clean / transform / mask data
+</code></pre></div> <p>Do not choose Macie just because the question mentions <strong>PII</strong>.</p> <p>If the requirement is:</p> <blockquote> <p><strong>"Find/discover sensitive data in S3."</strong></p> </blockquote> <p>→ <strong>Macie</strong></p> <p>If the requirement is:</p> <blockquote> <p><strong>"Remove, replace, mask, or clean sensitive data with minimal code."</strong></p> </blockquote> <p>→ <strong>DataBrew</strong></p> <h3 id=databrew-vs-athena>DataBrew vs Athena</h3> <div class=highlight><pre><span></span><code>Athena
+→ Query/analyze data in S3 using SQL
+
+DataBrew
+→ Visually clean/transform data
+</code></pre></div> <p>If you need to write SQL/regular expressions to perform the transformation, that usually means <strong>more operational overhead</strong> than DataBrew.</p> <h3 id=exam-shortcut_1>Exam shortcut</h3> <blockquote> <p><strong>Clean / mask / anonymize data + minimal code → DataBrew</strong></p> <p><strong>Discover sensitive data in S3 → Macie</strong></p> <p><strong>Query S3 data with SQL → Athena</strong></p> </blockquote> <hr> <h1 id=parquet-for-athena>Parquet for Athena</h1> <p><strong>Apache Parquet = columnar file format optimized for analytics.</strong></p> <p>When Athena queries a large dataset in S3, Parquet can reduce the amount of data that needs to be read because Athena can read only the required columns.</p> <p>Typical pattern:</p> <div class=highlight><pre><span></span><code>Large JSON dataset in S3
+        ↓
+Convert to Parquet
+        ↓
+Amazon Athena
+        ↓
+Less data scanned
+        ↓
+Faster / cheaper queries
+</code></pre></div> <h3 id=common-exam-signal>Common exam signal</h3> <blockquote> <p><strong>Athena queries are slow because a large amount of JSON data is stored in S3.</strong></p> </blockquote> <p>→ <strong>Convert the data to Parquet or another columnar format such as ORC.</strong></p> <h3 id=security-connection>Security connection</h3> <p>If the S3 data is governed by <strong>Lake Formation</strong>, the performance improvement does not require removing the Lake Formation controls.</p> <p>For data access through Lake Formation, the relevant IAM permission can include:</p> <p><strong><code>lakeformation:GetDataAccess</code></strong></p> <p>So the common exam combination is:</p> <div class=highlight><pre><span></span><code>Athena + large JSON dataset
+→ Parquet
+
+Lake Formation-controlled data access
+→ lakeformation:GetDataAccess
+</code></pre></div> <h3 id=important-distinction_1>Important distinction</h3> <div class=highlight><pre><span></span><code>Parquet / ORC
+→ query-performance optimization
+
+Lake Formation
+→ data lake access control
+</code></pre></div> <hr> <h1 id=glue-job-bookmarks>Glue Job Bookmarks</h1> <p><strong>Glue Job Bookmarks = track what a Glue ETL job has already processed.</strong></p> <p>They are useful for <strong>incremental ETL</strong> because they help Glue avoid processing the same old data again on later runs.</p> <h3 id=typical-problem>Typical problem</h3> <p>Suppose an S3 bucket contains:</p> <div class=highlight><pre><span></span><code>Day 1:
+A
+B
+C
+</code></pre></div> <p>The Glue job processes all three objects.</p> <p>Later:</p> <div class=highlight><pre><span></span><code>Day 2:
+A
+B
+C
+D
+E
+</code></pre></div> <p>Without a mechanism to track previous progress, the job may process:</p> <div class=highlight><pre><span></span><code>A B C D E
+</code></pre></div> <p>again.</p> <p>With <strong>job bookmarks</strong>, Glue can track what was already processed and focus on the newly relevant data.</p> <div class=highlight><pre><span></span><code>Day 1:
+S3 → A B C
+     ↓
+Glue processes A B C
+     ↓
+Bookmark records progress
+
+
+Day 2:
+S3 → A B C D E
+     ↓
+Bookmark knows A B C were already processed
+     ↓
+Glue processes new/relevant data
+</code></pre></div> <h3 id=signal_5>Signal</h3> <blockquote> <p><strong>"Glue ETL keeps reprocessing old data from previous runs."</strong></p> </blockquote> <p>→ <strong>Enable Glue Job Bookmarks</strong></p> <h3 id=main-benefit>Main benefit</h3> <p><strong>Operational efficiency.</strong></p> <p>You do not need to build custom logic just to remember which data was already processed.</p> <h3 id=typical-question>Typical question</h3> <blockquote> <p>"A daily AWS Glue ETL job reads data from S3, but old data from previous runs is being reprocessed. What is the most operationally efficient solution?"</p> </blockquote> <p>→ <strong>Enable Job Bookmarks</strong></p> <h3 id=important-distinction_2>Important distinction</h3> <div class=highlight><pre><span></span><code>Job Bookmark
+= remember what the Glue job processed
+
+Crawler
+= discover schema
+
+Catalog
+= store metadata
+
+ETL
+= transform data
+</code></pre></div> <hr> <h1 id=glue-job-bookmarks-vs-other-solutions>Glue Job Bookmarks vs Other Solutions</h1> <h2 id=job-bookmarks-vs-deleting-old-data>Job Bookmarks vs deleting old data</h2> <p>Do <strong>not</strong> create custom Lambda logic just to delete previously processed source data unless the requirement explicitly calls for deletion.</p> <p>Deleting source data can:</p> <ul> <li>destroy historical data</li> <li>create additional operational complexity</li> <li>make recovery harder</li> <li>require extra monitoring and permissions</li> </ul> <p>If the problem is simply:</p> <blockquote> <p><strong>"Don't process the same data again."</strong></p> </blockquote> <p>→ <strong>Glue Job Bookmarks</strong></p> <hr> <h2 id=job-bookmarks-vs-partitioning>Job Bookmarks vs partitioning</h2> <p>Partitioning and bookmarks solve different problems.</p> <div class=highlight><pre><span></span><code>Partitioning
+= organize data for more efficient querying/processing
+
+Job Bookmark
+= track previously processed data
+</code></pre></div> <p>For example:</p> <div class=highlight><pre><span></span><code>S3 data organized by:
+year/month/day
+→ Partitioning
+
+Glue remembers which data was already processed
+→ Job Bookmark
+</code></pre></div> <p>They can be used together.</p> <hr> <h1 id=complete-glue-example>Complete Glue Example</h1> <p>Suppose CSV files arrive in an S3 bucket every day.</p> <p>A typical serverless data-processing workflow can look like:</p> <div class=highlight><pre><span></span><code>S3 source bucket
+      ↓
+Glue Crawler
+      ↓
+Discover schema
+      ↓
+Glue Data Catalog
+      ↓
+Store metadata/table definition
+      ↓
+Glue ETL job
+      ↓
+Job Bookmark checks previous progress
+      ↓
+Process new/relevant data
+      ↓
+CSV → Parquet
+      ↓
+S3 transformed bucket
+</code></pre></div> <p>This separates the roles:</p> <div class=highlight><pre><span></span><code>Crawler
+→ Understand the structure
+
+Catalog
+→ Remember the structure
+
+ETL
+→ Transform the data
+
+Job Bookmark
+→ Remember what the ETL job already processed
+</code></pre></div> <hr> <h1 id=glue-etl-s3>Glue ETL + S3</h1> <p>A typical serverless solution can look like:</p> <div class=highlight><pre><span></span><code>S3
+ ↓ Object Created
+EventBridge
+ ↓
+Glue ETL job
+ ↓
+Job Bookmark
+ ↓
+CSV → Parquet
+ ↓
+S3 transformed bucket
+</code></pre></div> <p>Or the process can use a <strong>scheduled Glue job</strong>.</p> <p>Glue is useful when the requirement is:</p> <ul> <li>serverless ETL</li> <li>low operational overhead</li> <li>processing larger datasets</li> <li>preparing data for analytics</li> <li>incremental processing without custom tracking</li> </ul> <h3 id=glue-vs-lambda>Glue vs Lambda</h3> <div class=highlight><pre><span></span><code>Lambda
+→ lightweight event-driven processing
+
+Glue
+→ larger/serverless ETL and data preparation
+</code></pre></div> <hr> <h1 id=glue-vs-ec2-spark-vs-emr-vs-lambda>Glue vs EC2 + Spark vs EMR vs Lambda</h1> <p>A common SAA question may give several ways to process data.</p> <h3 id=ec2-spark>EC2 + Spark</h3> <div class=highlight><pre><span></span><code>EC2 + Spark
+→ You manage the servers
+</code></pre></div> <p>You are responsible for more infrastructure management.</p> <h3 id=emr>EMR</h3> <div class=highlight><pre><span></span><code>EMR
+→ Managed big-data / Spark infrastructure
+</code></pre></div> <p>Amazon EMR is covered more deeply in the analytics section.</p> <h3 id=lambda>Lambda</h3> <div class=highlight><pre><span></span><code>Lambda
+→ Better for lightweight event-driven processing
+</code></pre></div> <p>Lambda can be useful for smaller, short-running transformations triggered by events.</p> <h3 id=glue>Glue</h3> <div class=highlight><pre><span></span><code>Glue
+→ Serverless ETL
+</code></pre></div> <p>Glue is the natural choice when the question emphasizes <strong>serverless ETL</strong> rather than generic compute.</p> <h3 id=glue-job-bookmark>Glue Job Bookmark</h3> <div class=highlight><pre><span></span><code>Glue Job Bookmark
+→ Incremental processing
+</code></pre></div> <p>If the question specifically says that <strong>previously processed data keeps getting processed again</strong>, the key feature is the <strong>Job Bookmark</strong>, not simply Glue itself.</p> <hr> <h1 id=aws-glue-service-comparison>AWS Glue Service Comparison</h1> <table> <thead> <tr> <th>Glue component</th> <th>Main job</th> <th>Signal</th> </tr> </thead> <tbody> <tr> <td><strong>Glue Crawler</strong></td> <td>Discover schema</td> <td>Automatically discover schema</td> </tr> <tr> <td><strong>Glue Data Catalog</strong></td> <td>Store metadata</td> <td>Tables / schema / metadata</td> </tr> <tr> <td><strong>Glue ETL</strong></td> <td>Transform data</td> <td>CSV → Parquet / ETL</td> </tr> <tr> <td><strong>Glue Studio</strong></td> <td>Visual ETL job creation</td> <td>Drag-and-drop ETL</td> </tr> <tr> <td><strong>Glue DataBrew</strong></td> <td>Visual data preparation</td> <td>Clean / mask / anonymize with little code</td> </tr> <tr> <td><strong>Glue Job Bookmark</strong></td> <td>Track processing progress</td> <td>Prevent reprocessing previously read data</td> </tr> </tbody> </table> <h3 id=quick-memory>Quick memory</h3> <div class=highlight><pre><span></span><code>Discover
+→ Crawler
+
+Store
+→ Catalog
+
+Transform
+→ ETL
+
+Visual ETL
+→ Glue Studio
+
+Clean / mask / anonymize with little code
+→ DataBrew
+
+Remember previous processing
+→ Job Bookmark
+</code></pre></div> <hr> <h1 id=amazon-appflow>Amazon AppFlow</h1> <p><strong>Amazon AppFlow = transfer data between SaaS applications and AWS services without writing the integration yourself.</strong></p> <p>It is designed for data integration between supported applications and AWS destinations/sources.</p> <p>Examples include:</p> <div class=highlight><pre><span></span><code>Salesforce
+    ↓
+AppFlow
+    ↓
+S3
+</code></pre></div> <p>or:</p> <div class=highlight><pre><span></span><code>Salesforce
+    ↓
+AppFlow
+    ↓
+Amazon Redshift
+</code></pre></div> <h3 id=signal_6>Signal</h3> <blockquote> <p><strong>Salesforce/SaaS → S3 or Redshift → AppFlow</strong></p> </blockquote> <hr> <h2 id=example_1>Example</h2> <blockquote> <p>"A company wants to move Salesforce data into Amazon S3 without custom integration code."</p> </blockquote> <p>→ <strong>Amazon AppFlow</strong></p> <h3 id=important-idea>Important idea</h3> <p>AppFlow is about <strong>data transfer/integration between applications and AWS services</strong>.</p> <p>It is not primarily an ETL engine like Glue.</p> <div class=highlight><pre><span></span><code>AppFlow
+= move data between SaaS and AWS
+
+Glue
+= discover / catalog / transform data
+</code></pre></div> <hr> <h1 id=aws-data-exchange>AWS Data Exchange</h1> <p><strong>AWS Data Exchange = discover, subscribe to, share, and use third-party datasets in AWS.</strong></p> <p>It provides a way for data providers to make datasets available and for data recipients to discover and subscribe to them.</p> <p>Typical use case:</p> <div class=highlight><pre><span></span><code>Third-party data provider
+          ↓
+   AWS Data Exchange
+          ↓
+      Subscriber
+          ↓
+   AWS analytics / ML
+</code></pre></div> <p>Example:</p> <blockquote> <p>"A company wants to find and subscribe to a third-party dataset for use in its analytics workload."</p> </blockquote> <p>→ <strong>AWS Data Exchange</strong></p> <h3 id=signal_7>Signal</h3> <blockquote> <p><strong>Find / subscribe to third-party datasets → AWS Data Exchange</strong></p> </blockquote> <h3 id=important-distinction_3>Important distinction</h3> <div class=highlight><pre><span></span><code>AppFlow
+= move data between supported SaaS applications and AWS
+
+Data Exchange
+= discover / subscribe to external datasets
+</code></pre></div> <hr> <h1 id=amazon-macie>Amazon Macie</h1> <p><strong>Amazon Macie = discover and identify sensitive data in Amazon S3.</strong></p> <p>Macie uses pattern matching and machine learning techniques to help identify sensitive data and provide visibility into data security risks.</p> <p>Typical examples include:</p> <ul> <li>personal information</li> <li>credentials</li> <li>financial information</li> <li>other sensitive-data patterns</li> </ul> <h3 id=typical-pattern_1>Typical pattern</h3> <div class=highlight><pre><span></span><code>S3
+ ↓
+Macie
+ ↓
+Discover sensitive data
+</code></pre></div> <h3 id=signal_8>Signal</h3> <blockquote> <p><strong>"Discover sensitive data in S3."</strong></p> </blockquote> <p>→ <strong>Amazon Macie</strong></p> <h3 id=important-distinction_4>Important distinction</h3> <p>Macie is primarily about <strong>discovery and visibility</strong>, not general-purpose data cleaning.</p> <div class=highlight><pre><span></span><code>Macie
+→ Find sensitive data
+
+DataBrew
+→ Clean / transform / mask data
+
+Athena
+→ Query data
+</code></pre></div> <h3 id=saa-trap>SAA trap</h3> <p>A question may mention:</p> <blockquote> <p><strong>customer names / personal identifiers / PII</strong></p> </blockquote> <p>Do not automatically choose Macie.</p> <p>Ask:</p> <blockquote> <p><strong>Does the requirement say to discover the sensitive data, or to transform/remove it?</strong></p> </blockquote> <div class=highlight><pre><span></span><code>Discover PII in S3
+→ Macie
+
+Remove / replace / mask PII with minimal code
+→ DataBrew
+</code></pre></div> <hr> <h1 id=s3-batch-operations>S3 Batch Operations</h1> <p><strong>S3 Batch Operations = perform an operation on many existing S3 objects.</strong></p> <p>For example, it can perform supported operations such as:</p> <ul> <li>copy objects</li> <li>restore objects</li> <li>add tags</li> <li>invoke Lambda</li> <li>perform other supported object-level operations</li> </ul> <p>The key idea is <strong>bulk operations on existing objects</strong>.</p> <h3 id=example_2>Example</h3> <div class=highlight><pre><span></span><code>Millions of existing objects
+        ↓
+S3 Batch Operations
+        ↓
+Apply the operation
+</code></pre></div> <hr> <h1 id=important-s3-encryption-trap>Important S3 Encryption Trap</h1> <p>A bucket's default encryption setting does <strong>not retroactively change old objects</strong>.</p> <p>Suppose:</p> <div class=highlight><pre><span></span><code>S3 bucket
+↓
+Millions of existing objects
+</code></pre></div> <p>You change the bucket's default encryption configuration.</p> <p>That does not automatically reprocess all existing objects.</p> <p>When the question instead asks you to:</p> <blockquote> <p><strong>Perform an operation on millions/billions of existing S3 objects</strong></p> </blockquote> <p>→ <strong>S3 Batch Operations</strong></p> <hr> <h2 id=example_3>Example</h2> <blockquote> <p>"A company has millions of existing S3 objects and needs to apply an operation to all of them."</p> </blockquote> <p>→ <strong>S3 Batch Operations</strong></p> <p>The exact operation might be:</p> <ul> <li>copying objects</li> <li>tagging objects</li> <li>restoring objects</li> <li>invoking Lambda</li> <li>another supported object-level operation</li> </ul> <p>The important clue is the <strong>large number of existing objects</strong>.</p> <hr> <h1 id=s3-batch-operations-vs-eventbridge-lambda>S3 Batch Operations vs EventBridge / Lambda</h1> <p>Do not confuse bulk processing of existing objects with processing a newly created object.</p> <h3 id=new-object-arrives>New object arrives</h3> <div class=highlight><pre><span></span><code>S3 Object Created
+→ EventBridge / Lambda / other event-driven solution
+</code></pre></div> <h3 id=millions-of-existing-objects>Millions of existing objects</h3> <div class=highlight><pre><span></span><code>Existing objects
+→ S3 Batch Operations
+</code></pre></div> <h3 id=mental-model>Mental model</h3> <div class=highlight><pre><span></span><code>New event
+→ Event-driven processing
+
+Huge number of existing objects
+→ S3 Batch Operations
+</code></pre></div> <hr> <h1 id=data-lake-architecture-example>Data Lake Architecture Example</h1> <p>A larger architecture can combine several services:</p> <div class=highlight><pre><span></span><code>                    SaaS applications
+                         │
+                         ↓
+                      AppFlow
+                         │
+                         ↓
+S3 data lake ──────────────────────────────────┐
+   │                                            │
+   ↓                                            ↓
+Glue Crawler                             Lake Formation
+   │                                      permissions
+   ↓                                            │
+Glue Data Catalog                              │
+   │                                            │
+   ↓                                            │
+Glue ETL ───────────────→ transformed data ←───┘
+   │
+   ↓
+Job Bookmark
+tracks incremental processing
+</code></pre></div> <p>For a relational source such as Aurora:</p> <div class=highlight><pre><span></span><code>Aurora / JDBC
+      ↓
+Lake Formation Blueprint
+      ↓
+Generated workflow
+      ↓
+Glue jobs + crawler + triggers
+      ↓
+S3 data lake
+      ↓
+Lake Formation permissions
+      ↓
+Athena / QuickSight
+</code></pre></div> <p>For data preparation / anonymization:</p> <div class=highlight><pre><span></span><code>RDS export
+    ↓
+DataBrew
+    ↓
+Clean / mask / replace sensitive values
+    ↓
+S3
+    ↓
+Development environment
+</code></pre></div> <p>The roles remain different:</p> <div class=highlight><pre><span></span><code>AppFlow
+= bring data from SaaS
+
+Lake Formation Blueprint
+= predefined ingestion workflow
+
+S3
+= store the actual data
+
+Glue Crawler
+= discover schema
+
+Glue Data Catalog
+= store metadata
+
+Glue ETL
+= transform data
+
+DataBrew
+= visually clean / mask / prepare data
+
+Glue Job Bookmark
+= track previously processed data
+
+Lake Formation
+= control data lake access
+
+Macie
+= discover sensitive data in S3
+</code></pre></div> <hr> <h1 id=common-question-patterns>Common Question Patterns</h1> <blockquote> <p><strong>"Serverless ETL and a central data catalog are required."</strong></p> </blockquote> <p>→ <strong>AWS Glue</strong></p> <hr> <blockquote> <p><strong>"Automatically discover the schema of data files in S3."</strong></p> </blockquote> <p>→ <strong>Glue Crawler</strong></p> <hr> <blockquote> <p><strong>"Store table/schema metadata for analytics."</strong></p> </blockquote> <p>→ <strong>Glue Data Catalog</strong></p> <hr> <blockquote> <p><strong>"Convert CSV files into Parquet."</strong></p> </blockquote> <p>→ <strong>Glue ETL</strong></p> <hr> <blockquote> <p><strong>"Create Glue ETL jobs using a visual interface instead of building the job entirely in code."</strong></p> </blockquote> <p>→ <strong>Glue Studio</strong></p> <hr> <blockquote> <p><strong>"Clean, mask, or anonymize customer data with minimal custom code."</strong></p> </blockquote> <p>→ <strong>AWS Glue DataBrew</strong></p> <hr> <blockquote> <p><strong>"A weekly copy of RDS customer data is needed for development, but names and personal identifiers must be removed or replaced."</strong></p> </blockquote> <p>→ <strong>AWS Glue DataBrew</strong></p> <hr> <blockquote> <p><strong>"Athena queries are slow because a large amount of JSON data is stored in S3."</strong></p> </blockquote> <p>→ <strong>Transform the data into Apache Parquet (or another columnar format such as ORC)</strong></p> <hr> <blockquote> <p><strong>"A Glue ETL job keeps processing old S3 data from previous runs."</strong></p> </blockquote> <p>→ <strong>Enable Glue Job Bookmarks</strong></p> <hr> <blockquote> <p><strong>"A daily Glue job should process newly arrived data without repeatedly processing old data."</strong></p> </blockquote> <p>→ <strong>Glue Job Bookmarks</strong></p> <hr> <blockquote> <p><strong>"A company wants to build a data lake with fine-grained access control over tables, rows, and columns."</strong></p> </blockquote> <p>→ <strong>Lake Formation</strong></p> <hr> <blockquote> <p><strong>"A company stores its raw analytics data in S3 and wants to control which users can access specific tables, rows, or columns."</strong></p> </blockquote> <p>→ <strong>Lake Formation</strong></p> <hr> <blockquote> <p><strong>"Aurora/JDBC data must be ingested into an S3 data lake with minimal custom orchestration."</strong></p> </blockquote> <p>→ <strong>Lake Formation Blueprint / Workflow</strong></p> <hr> <blockquote> <p><strong>"Aurora data should be incrementally loaded into the data lake."</strong></p> </blockquote> <p>→ <strong>Lake Formation Incremental Database Blueprint</strong></p> <hr> <blockquote> <p><strong>"A company wants Aurora data in S3 and column-level access for marketing users, then wants to query it from QuickSight."</strong></p> </blockquote> <p>→ <strong>Lake Formation Blueprint → S3 → Lake Formation Data Filter → Athena → QuickSight</strong></p> <hr> <blockquote> <p><strong>"Move Salesforce data to S3 without custom integration code."</strong></p> </blockquote> <p>→ <strong>AppFlow</strong></p> <hr> <blockquote> <p><strong>"Transfer data from a SaaS application to Amazon Redshift without building the integration from scratch."</strong></p> </blockquote> <p>→ <strong>AppFlow</strong></p> <hr> <blockquote> <p><strong>"A company wants to find and subscribe to a third-party dataset for analytics."</strong></p> </blockquote> <p>→ <strong>AWS Data Exchange</strong></p> <hr> <blockquote> <p><strong>"A company wants to discover sensitive data patterns in an S3 bucket."</strong></p> </blockquote> <p>→ <strong>Amazon Macie</strong></p> <hr> <blockquote> <p><strong>"Apply an operation to millions of existing S3 objects."</strong></p> </blockquote> <p>→ <strong>S3 Batch Operations</strong></p> <hr> <blockquote> <p><strong>"Millions/billions of existing S3 objects need to be processed in bulk."</strong></p> </blockquote> <p>→ <strong>S3 Batch Operations</strong></p> <hr> <h1 id=important-saa-traps>Important SAA Traps</h1> <h2 id=glue-job-bookmark-vs-partitioning>Glue Job Bookmark vs Partitioning</h2> <p>Do not confuse these.</p> <div class=highlight><pre><span></span><code>Partitioning
+= organize data to improve query/processing efficiency
+
+Job Bookmark
+= track what the Glue job already processed
+</code></pre></div> <p>Exam trigger:</p> <div class=highlight><pre><span></span><code>Data is hard to query efficiently
+→ Think partitioning / columnar formats such as Parquet
+
+Glue keeps reprocessing old data
+→ Think Job Bookmark
+</code></pre></div> <hr> <h2 id=parquet-vs-gzip>Parquet vs GZIP</h2> <p>Do not treat compression and columnar storage as the same thing.</p> <div class=highlight><pre><span></span><code>Parquet
+= columnar format
+= analytics/query optimization
+
+GZIP
+= compression
+= reduces file size
+</code></pre></div> <p>For Athena performance questions involving large JSON datasets:</p> <blockquote> <p><strong>Convert to Parquet/ORC</strong></p> </blockquote> <p>rather than simply compressing the JSON with GZIP.</p> <hr> <h2 id=databrew-vs-macie_1>DataBrew vs Macie</h2> <p>This is one of the most useful distinctions in this section.</p> <div class=highlight><pre><span></span><code>Macie
+→ Discover sensitive data in S3
+
+DataBrew
+→ Clean / transform / mask / anonymize data
+</code></pre></div> <p>Exam trigger:</p> <div class=highlight><pre><span></span><code>Find PII
+→ Macie
+
+Remove / replace / mask PII
+→ DataBrew
+</code></pre></div> <hr> <h2 id=databrew-vs-athena_1>DataBrew vs Athena</h2> <div class=highlight><pre><span></span><code>Athena
+→ Query/analyze S3 data using SQL
+
+DataBrew
+→ Visually clean/transform data
+</code></pre></div> <p>If the question emphasizes <strong>minimal custom code</strong> for cleaning or preparing data, DataBrew is usually the better fit.</p> <hr> <h2 id=appflow-vs-data-exchange>AppFlow vs Data Exchange</h2> <div class=highlight><pre><span></span><code>SaaS application → AWS
+→ AppFlow
+
+Third-party dataset → discover/subscribe/use
+→ AWS Data Exchange
+</code></pre></div> <hr> <h2 id=s3-batch-operations-vs-normal-s3-events>S3 Batch Operations vs normal S3 events</h2> <div class=highlight><pre><span></span><code>One newly created object
+→ event-driven processing
+
+Millions of existing objects
+→ S3 Batch Operations
+</code></pre></div> <hr> <h2 id=job-bookmarks-vs-custom-lambda-cleanup>Job Bookmarks vs custom Lambda cleanup</h2> <p>Do not overengineer a Glue incremental-processing problem.</p> <div class=highlight><pre><span></span><code>Glue reprocesses old data
+→ Job Bookmark
+
+Delete old source objects
+→ Not the default solution
+</code></pre></div> <p>If the question asks for the <strong>most operationally efficient</strong> way to prevent reprocessing, Job Bookmarks are usually the direct answer.</p> <hr> <h2 id=blueprint-vs-glue-data-catalog>Blueprint vs Glue Data Catalog</h2> <p>Do not confuse ingestion with metadata.</p> <div class=highlight><pre><span></span><code>Lake Formation Blueprint / Workflow
+→ copies/ingests actual data into S3
+
+Glue Data Catalog
+→ stores metadata about that data
+</code></pre></div> <hr> <h1 id=glue-databrew-macie-athena>Glue + DataBrew + Macie + Athena</h1> <p>A useful way to separate the services:</p> <div class=highlight><pre><span></span><code>             S3 data
+                │
+      ┌─────────┼───────────┐
+      ↓         ↓           ↓
+   Macie     DataBrew    Athena
+      │         │           │
+   DISCOVER   CLEAN       QUERY
+   sensitive   / MASK      / ANALYZE
+     data      data         data
+</code></pre></div> <p>And for ETL:</p> <div class=highlight><pre><span></span><code>S3
+ ↓
+Glue Crawler
+ ↓
+Glue Data Catalog
+ ↓
+Glue ETL
+ ↓
+Transformed data
+</code></pre></div> <p>So:</p> <div class=highlight><pre><span></span><code>Crawler
+→ discover
+
+Catalog
+→ metadata
+
+ETL
+→ transform
+
+DataBrew
+→ visually clean / mask
+
+Macie
+→ discover sensitive data in S3
+
+Athena
+→ query
+</code></pre></div> <hr> <h1 id=pocket-card>Pocket Card</h1> <table> <thead> <tr> <th>Keyword</th> <th>Answer</th> </tr> </thead> <tbody> <tr> <td>Serverless ETL / data catalog</td> <td><strong>AWS Glue</strong></td> </tr> <tr> <td>Discover schema</td> <td><strong>Glue Crawler</strong></td> </tr> <tr> <td>Automatically discover S3 file schema</td> <td><strong>Glue Crawler</strong></td> </tr> <tr> <td>Store metadata</td> <td><strong>Glue Data Catalog</strong></td> </tr> <tr> <td>Store table/schema definitions</td> <td><strong>Glue Data Catalog</strong></td> </tr> <tr> <td>Transform data</td> <td><strong>Glue ETL</strong></td> </tr> <tr> <td>CSV → Parquet</td> <td><strong>Glue ETL</strong></td> </tr> <tr> <td>Visual / drag-and-drop ETL</td> <td><strong>Glue Studio</strong></td> </tr> <tr> <td>Clean / mask / anonymize data + minimal code</td> <td><strong>AWS Glue DataBrew</strong></td> </tr> <tr> <td>Discover sensitive data in S3</td> <td><strong>Amazon Macie</strong></td> </tr> <tr> <td>Query S3 data with SQL</td> <td><strong>Amazon Athena</strong></td> </tr> <tr> <td>Athena + large JSON dataset</td> <td><strong>Parquet / ORC</strong></td> </tr> <tr> <td>Reduce Athena data scanned</td> <td><strong>Parquet / ORC</strong></td> </tr> <tr> <td>Glue reprocesses old data</td> <td><strong>Glue Job Bookmark</strong></td> </tr> <tr> <td>Incremental Glue ETL processing</td> <td><strong>Glue Job Bookmark</strong></td> </tr> <tr> <td>Data lake + fine-grained permissions</td> <td><strong>Lake Formation</strong></td> </tr> <tr> <td>Data lake + many datasets + scalable permissions</td> <td><strong>Lake Formation LF-TBAC</strong></td> </tr> <tr> <td>S3 = actual data in the data lake</td> <td><strong>Amazon S3</strong></td> </tr> <tr> <td>Lake Formation = data lake access</td> <td><strong>AWS Lake Formation</strong></td> </tr> <tr> <td>Lake Formation data access</td> <td><strong><code>lakeformation:GetDataAccess</code></strong></td> </tr> <tr> <td>Table/row/column permissions</td> <td><strong>Lake Formation</strong></td> </tr> <tr> <td>Cross-account fine-grained access</td> <td><strong>Lake Formation LF-TBAC</strong></td> </tr> <tr> <td>Aurora/JDBC → S3 data lake</td> <td><strong>Lake Formation Blueprint</strong></td> </tr> <tr> <td>Predefined ingestion recipe</td> <td><strong>Lake Formation Blueprint</strong></td> </tr> <tr> <td>Blueprint → actual process</td> <td><strong>Lake Formation Workflow</strong></td> </tr> <tr> <td>Incremental Aurora/JDBC ingestion</td> <td><strong>Incremental Database Blueprint</strong></td> </tr> <tr> <td>Blueprint actual data destination</td> <td><strong>S3</strong></td> </tr> <tr> <td>Blueprint metadata</td> <td><strong>Glue Data Catalog</strong></td> </tr> <tr> <td>SaaS → S3</td> <td><strong>AppFlow</strong></td> </tr> <tr> <td>SaaS → Redshift</td> <td><strong>AppFlow</strong></td> </tr> <tr> <td>Find/subscribe to third-party datasets</td> <td><strong>AWS Data Exchange</strong></td> </tr> <tr> <td>Bulk operation on existing S3 objects</td> <td><strong>S3 Batch Operations</strong></td> </tr> <tr> <td>Millions/billions of existing objects</td> <td><strong>S3 Batch Operations</strong></td> </tr> </tbody> </table> <div class=highlight><pre><span></span><code>
+</code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> <button type=button class="md-top md-icon" data-md-component=top hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg> Back to top </button> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <div class=md-progress data-md-component=progress role=progressbar></div> <script id=__config type=application/json>{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.instant", "navigation.instant.progress", "navigation.top", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=assets/javascripts/bundle.a5f9d56c.min.js></script> <script src=scripts.8cca75.min.js></script> </body> </html>

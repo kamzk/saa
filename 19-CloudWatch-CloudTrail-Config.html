@@ -1,0 +1,533 @@
+<!doctype html><html lang=en class=no-js> <head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=canonical href=https://saac3.pages.dev/19-CloudWatch-CloudTrail-Config.html><link rel=prev href=37B-Certificates.html><link rel=next href=37F-Systems%20Manager%20%26%20Operations.html><link rel=icon href=assets/favicon.ico><meta name=generator content="mkdocs-1.6.1, mkdocs-material-9.8.2"><title>CloudWatch, CloudTrail & Config - AWS Solution Architect Associate Notes</title><link rel=stylesheet href=assets/stylesheets/main.57a0d79d.min.css><link rel=stylesheet href=assets/stylesheets/palette.fb2fffe2.min.css><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback"><style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style><link rel=stylesheet href=styles.css><script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script><link rel=manifest href=manifest.json><meta name=theme-color content=#FF6F00><meta name=mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black><meta name=apple-mobile-web-app-title content="AWS SAAC3"><link rel=apple-touch-icon href=assets/icon-192.png></head> <body dir=ltr data-md-color-scheme=default data-md-color-primary=amber data-md-color-accent=deep-orange> <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off> <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off> <label class=md-overlay for=__drawer></label> <div data-md-component=skip> <a href=#section-19-cloudwatch-cloudtrail-aws-config class=md-skip> Skip to content </a> </div> <div data-md-component=announce> </div> <header class="md-header md-header--shadow" data-md-component=header> <nav class="md-header__inner md-grid" aria-label=Header> <a href=. title="AWS Solution Architect Associate Notes" class="md-header__button md-logo" aria-label="AWS Solution Architect Associate Notes" data-md-component=logo> <img src=assets/logo.svg alt=logo> </a> <label class="md-header__button md-icon" for=__drawer> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg> </label> <div class=md-header__title data-md-component=header-title> <div class=md-header__ellipsis> <div class=md-header__topic> <span class=md-ellipsis> AWS Solution Architect Associate Notes </span> </div> <div class=md-header__topic data-md-component=header-topic> <span class=md-ellipsis> CloudWatch, CloudTrail & Config </span> </div> </div> </div> <form class=md-header__option data-md-component=palette> <input class=md-option data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme=default data-md-color-primary=amber data-md-color-accent=deep-orange aria-label="Switch to dark mode" type=radio name=__palette id=__palette_0> <label class="md-header__button md-icon" title="Switch to dark mode" for=__palette_1 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg> </label> <input class=md-option data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme=slate data-md-color-primary=deep-orange data-md-color-accent=amber aria-label="Switch to light mode" type=radio name=__palette id=__palette_1> <label class="md-header__button md-icon" title="Switch to light mode" for=__palette_0 hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg> </label> </form> <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script> <label class="md-header__button md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg> </label> <div class=md-search data-md-component=search role=dialog> <label class=md-search__overlay for=__search></label> <div class=md-search__inner role=search> <form class=md-search__form name=search> <input type=text class=md-search__input name=query aria-label=Search placeholder=Search autocapitalize=off autocorrect=off autocomplete=off spellcheck=false data-md-component=search-query required> <label class="md-search__icon md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg> </label> <nav class=md-search__options aria-label=Search> <button type=reset class="md-search__icon md-icon" title=Clear aria-label=Clear tabindex=-1> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> </button> </nav> <div class=md-search__suggest data-md-component=search-suggest></div> </form> <div class=md-search__output> <div class=md-search__scrollwrap tabindex=0 data-md-scrollfix> <div class=md-search-result data-md-component=search-result> <div class=md-search-result__meta> Initializing search </div> <ol class=md-search-result__list role=presentation></ol> </div> </div> </div> </div> </div> </nav> </header> <div class=md-container data-md-component=container> <main class=md-main data-md-component=main> <div class="md-main__inner md-grid"> <div class="md-sidebar md-sidebar--primary" data-md-component=sidebar data-md-type=navigation> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--primary" aria-label=Navigation data-md-level=0> <label class=md-nav__title for=__drawer> <a href=. title="AWS Solution Architect Associate Notes" class="md-nav__button md-logo" aria-label="AWS Solution Architect Associate Notes" data-md-component=logo> <img src=assets/logo.svg alt=logo> </a> AWS Solution Architect Associate Notes </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_1> <label class=md-nav__link for=__nav_1 id=__nav_1_label tabindex=0> <span class=md-ellipsis> Networking and Content Delivery </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_1_label aria-expanded=false> <label class=md-nav__title for=__nav_1> <span class="md-nav__icon md-icon"></span> Networking and Content Delivery </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=06-VPC.html class=md-nav__link> <span class=md-ellipsis> VPC </span> </a> </li> <li class=md-nav__item> <a href=07-Route53.html class=md-nav__link> <span class=md-ellipsis> Route 53 </span> </a> </li> <li class=md-nav__item> <a href=08-CloudFront-GlobalAccelerator.html class=md-nav__link> <span class=md-ellipsis> CloudFront & Global Accelerator </span> </a> </li> <li class=md-nav__item> <a href=32-DirectConnect-VPN.html class=md-nav__link> <span class=md-ellipsis> Direct Connect & VPN </span> </a> </li> <li class=md-nav__item> <a href=33-Transit-Gateway.html class=md-nav__link> <span class=md-ellipsis> Transit Gateway </span> </a> </li> <li class=md-nav__item> <a href=37I-DNS%2C%20IPv6%20%26%20Edge%20Infrastructure.html class=md-nav__link> <span class=md-ellipsis> DNS, IPv6 & Edge Infrastructure </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_2> <label class=md-nav__link for=__nav_2 id=__nav_2_label tabindex=0> <span class=md-ellipsis> Compute </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_2_label aria-expanded=false> <label class=md-nav__title for=__nav_2> <span class="md-nav__icon md-icon"></span> Compute </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=03-EC2.html class=md-nav__link> <span class=md-ellipsis> EC2 </span> </a> </li> <li class=md-nav__item> <a href=05-ELB-AutoScaling.html class=md-nav__link> <span class=md-ellipsis> ELB & Auto Scaling </span> </a> </li> <li class=md-nav__item> <a href=13-Lambda.html class=md-nav__link> <span class=md-ellipsis> Lambda </span> </a> </li> <li class=md-nav__item> <a href=14-ECS-Fargate.html class=md-nav__link> <span class=md-ellipsis> ECS & Fargate </span> </a> </li> <li class=md-nav__item> <a href=14B-EKS-Kubernetes.html class=md-nav__link> <span class=md-ellipsis> EKS & Kubernetes </span> </a> </li> <li class=md-nav__item> <a href=15-Elastic-Beanstalk.html class=md-nav__link> <span class=md-ellipsis> Elastic Beanstalk </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_3> <label class=md-nav__link for=__nav_3 id=__nav_3_label tabindex=0> <span class=md-ellipsis> Storage </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_3_label aria-expanded=false> <label class=md-nav__title for=__nav_3> <span class="md-nav__icon md-icon"></span> Storage </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=02-S3.html class=md-nav__link> <span class=md-ellipsis> S3 </span> </a> </li> <li class=md-nav__item> <a href=04-EBS-EFS-InstanceStore.html class=md-nav__link> <span class=md-ellipsis> EBS, EFS & Instance Store </span> </a> </li> <li class=md-nav__item> <a href=25-StorageGateway-DataSync-TransferFamily.html class=md-nav__link> <span class=md-ellipsis> Storage Gateway, DataSync & Transfer Family </span> </a> </li> <li class=md-nav__item> <a href=26-FSx.html class=md-nav__link> <span class=md-ellipsis> FSx </span> </a> </li> <li class=md-nav__item> <a href=27-Snow-Family.html class=md-nav__link> <span class=md-ellipsis> Snow Family </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_4> <label class=md-nav__link for=__nav_4 id=__nav_4_label tabindex=0> <span class=md-ellipsis> Identity and Access Management </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_4_label aria-expanded=false> <label class=md-nav__title for=__nav_4> <span class="md-nav__icon md-icon"></span> Identity and Access Management </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=01-IAM.html class=md-nav__link> <span class=md-ellipsis> IAM </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_5> <label class=md-nav__link for=__nav_5 id=__nav_5_label tabindex=0> <span class=md-ellipsis> Database Services </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_5_label aria-expanded=false> <label class=md-nav__title for=__nav_5> <span class="md-nav__icon md-icon"></span> Database Services </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=09-RDS-Aurora.html class=md-nav__link> <span class=md-ellipsis> RDS & Aurora </span> </a> </li> <li class=md-nav__item> <a href=10-DynamoDB.html class=md-nav__link> <span class=md-ellipsis> DynamoDB </span> </a> </li> <li class=md-nav__item> <a href=11-ElastiCache.html class=md-nav__link> <span class=md-ellipsis> ElastiCache </span> </a> </li> <li class=md-nav__item> <a href=12-Other-Databases.html class=md-nav__link> <span class=md-ellipsis> Other Databases </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_6> <label class=md-nav__link for=__nav_6 id=__nav_6_label tabindex=0> <span class=md-ellipsis> Application Services </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_6_label aria-expanded=false> <label class=md-nav__title for=__nav_6> <span class="md-nav__icon md-icon"></span> Application Services </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=16-API-Gateway.html class=md-nav__link> <span class=md-ellipsis> API Gateway </span> </a> </li> <li class=md-nav__item> <a href=17-SQS-SNS-Kinesis.html class=md-nav__link> <span class=md-ellipsis> SQS, SNS & Kinesis </span> </a> </li> <li class=md-nav__item> <a href=18-EventBridge-StepFunctions.html class=md-nav__link> <span class=md-ellipsis> EventBridge & Step Functions </span> </a> </li> <li class=md-nav__item> <a href=37G-Application%20Development%20%26%20Integration.html class=md-nav__link> <span class=md-ellipsis> Application Development & Integration </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_7> <label class=md-nav__link for=__nav_7 id=__nav_7_label tabindex=0> <span class=md-ellipsis> Security Services </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_7_label aria-expanded=false> <label class=md-nav__title for=__nav_7> <span class="md-nav__icon md-icon"></span> Security Services </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=20-KMS-CloudHSM.html class=md-nav__link> <span class=md-ellipsis> KMS & CloudHSM </span> </a> </li> <li class=md-nav__item> <a href=21-SecretsManager-ParameterStore.html class=md-nav__link> <span class=md-ellipsis> Secrets Manager & Parameter Store </span> </a> </li> <li class=md-nav__item> <a href=22-WAF-Shield-SecurityServices.html class=md-nav__link> <span class=md-ellipsis> WAF, Shield & Security Services </span> </a> </li> <li class=md-nav__item> <a href=23-Cognito.html class=md-nav__link> <span class=md-ellipsis> Cognito </span> </a> </li> <li class=md-nav__item> <a href=24-Directory-Services.html class=md-nav__link> <span class=md-ellipsis> Directory Services </span> </a> </li> <li class=md-nav__item> <a href=37B-Certificates.html class=md-nav__link> <span class=md-ellipsis> Certificates </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_8 checked> <label class=md-nav__link for=__nav_8 id=__nav_8_label tabindex=0> <span class=md-ellipsis> Monitoring and Operations </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_8_label aria-expanded=true> <label class=md-nav__title for=__nav_8> <span class="md-nav__icon md-icon"></span> Monitoring and Operations </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active"> <input class="md-nav__toggle md-toggle" type=checkbox id=__toc> <label class="md-nav__link md-nav__link--active" for=__toc> <span class=md-ellipsis> CloudWatch, CloudTrail & Config </span> <span class="md-nav__icon md-icon"></span> </label> <a href=19-CloudWatch-CloudTrail-Config.html class="md-nav__link md-nav__link--active"> <span class=md-ellipsis> CloudWatch, CloudTrail & Config </span> </a> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#the-idea class=md-nav__link> <span class=md-ellipsis> The idea </span> </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=37F-Systems%20Manager%20%26%20Operations.html class=md-nav__link> <span class=md-ellipsis> Systems Manager & Operations </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_9> <label class=md-nav__link for=__nav_9 id=__nav_9_label tabindex=0> <span class=md-ellipsis> Infrastructure and Governance </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_9_label aria-expanded=false> <label class=md-nav__title for=__nav_9> <span class="md-nav__icon md-icon"></span> Infrastructure and Governance </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=28-CloudFormation.html class=md-nav__link> <span class=md-ellipsis> CloudFormation </span> </a> </li> <li class=md-nav__item> <a href=29-Organizations-ControlTower.html class=md-nav__link> <span class=md-ellipsis> Organizations & Control Tower </span> </a> </li> <li class=md-nav__item> <a href=30-ServiceCatalog-TrustedAdvisor.html class=md-nav__link> <span class=md-ellipsis> Service Catalog & Trusted Advisor </span> </a> </li> <li class=md-nav__item> <a href=34-Well-Architected.html class=md-nav__link> <span class=md-ellipsis> Well-Architected Framework </span> </a> </li> <li class=md-nav__item> <a href=37H-Specialized%20Services%20%26%20Governance.html class=md-nav__link> <span class=md-ellipsis> Specialized Services & Governance </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_10> <label class=md-nav__link for=__nav_10 id=__nav_10_label tabindex=0> <span class=md-ellipsis> Cost Management </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_10_label aria-expanded=false> <label class=md-nav__title for=__nav_10> <span class="md-nav__icon md-icon"></span> Cost Management </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=31-Cost-Management.html class=md-nav__link> <span class=md-ellipsis> Cost Management </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_11> <label class=md-nav__link for=__nav_11 id=__nav_11_label tabindex=0> <span class=md-ellipsis> Analytics and Data </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_11_label aria-expanded=false> <label class=md-nav__title for=__nav_11> <span class="md-nav__icon md-icon"></span> Analytics and Data </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=37C-Data%20Lakes%2C%20ETL%20%26%20Data%20Integration.html class=md-nav__link> <span class=md-ellipsis> Data Lakes, ETL & Data Integration </span> </a> </li> <li class=md-nav__item> <a href=37D-Analytics%2C%20Big%20Data%20%26%20Streaming.html class=md-nav__link> <span class=md-ellipsis> Analytics, Big Data & Streaming </span> </a> </li> <li class=md-nav__item> <a href=37E-AI%20%26%20Machine%20Learning%20One-Liners.html class=md-nav__link> <span class=md-ellipsis> AI & Machine Learning One-Liners </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_12> <label class=md-nav__link for=__nav_12 id=__nav_12_label tabindex=0> <span class=md-ellipsis> Migration and Resilience </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_12_label aria-expanded=false> <label class=md-nav__title for=__nav_12> <span class="md-nav__icon md-icon"></span> Migration and Resilience </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=35-Disaster-Recovery.html class=md-nav__link> <span class=md-ellipsis> Disaster Recovery </span> </a> </li> <li class=md-nav__item> <a href=37A-Migration%2C%20Messaging%20%26%20Disaster%20Recovery.html class=md-nav__link> <span class=md-ellipsis> Migration, Messaging & Disaster Recovery </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_13> <label class=md-nav__link for=__nav_13 id=__nav_13_label tabindex=0> <span class=md-ellipsis> Exam Preparation </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_13_label aria-expanded=false> <label class=md-nav__title for=__nav_13> <span class="md-nav__icon md-icon"></span> Exam Preparation </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=36-Exam-Traps-KeyPatterns.html class=md-nav__link> <span class=md-ellipsis> Exam Traps & Key Patterns </span> </a> </li> <li class=md-nav__item> <a href=38-elimination%20rules.html class=md-nav__link> <span class=md-ellipsis> Elimination Rules </span> </a> </li> </ul> </nav> </li> </ul> </nav> </div> </div> </div> <div class="md-sidebar md-sidebar--secondary" data-md-component=sidebar data-md-type=toc> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#the-idea class=md-nav__link> <span class=md-ellipsis> The idea </span> </a> </li> </ul> </nav> </div> </div> </div> <div class=md-content data-md-component=content> <article class="md-content__inner md-typeset"> <h1 id=section-19-cloudwatch-cloudtrail-aws-config>Section 19: CloudWatch, CloudTrail &amp; AWS Config</h1> <h2 id=the-idea>The idea</h2> <p>These services monitor AWS but answer different questions:</p> <table> <thead> <tr> <th>Service</th> <th>Main question</th> </tr> </thead> <tbody> <tr> <td><strong>CloudWatch</strong></td> <td><strong>How is it performing?</strong></td> </tr> <tr> <td><strong>CloudTrail</strong></td> <td><strong>Who did what?</strong></td> </tr> <tr> <td><strong>AWS Config</strong></td> <td><strong>What was the resource configured like, and is it compliant?</strong></td> </tr> <tr> <td><strong>X-Ray</strong></td> <td><strong>Which part of the application request is slow?</strong></td> </tr> </tbody> </table> <div class=highlight><pre><span></span><code>Performance / metrics / logs / alarms → CloudWatch
+Who created / deleted / changed something? → CloudTrail
+What did the configuration look like? Is it compliant? → AWS Config
+Which service/hop in a request chain is slow? → X-Ray
+</code></pre></div> <hr> <h1 id=cloudwatch-how-is-it-performing>CloudWatch — "How is it performing?"</h1> <p><strong>Amazon CloudWatch = monitoring for metrics, logs, alarms, and dashboards.</strong></p> <p>Monitors include CPU, network traffic, application logs, error counts, latency, alarms, dashboards, and application/system metrics.</p> <h2 id=cloudwatch-metrics>CloudWatch Metrics</h2> <p>Metrics are <strong>numbers measured over time</strong>.</p> <div class=highlight><pre><span></span><code>CPU = 75%
+Request count = 10,000
+Latency = 250 ms
+</code></pre></div> <h2 id=important-ec2-metric-trap>Important EC2 metric trap</h2> <p>Standard EC2 metrics include CPU utilization, network traffic, status checks, and some EBS-related metrics.</p> <p>Normal EC2 metrics do <strong>not</strong> include OS-level:</p> <ul> <li>memory usage</li> <li>swap usage</li> <li>filesystem disk usage</li> </ul> <p>Use the <strong>CloudWatch Agent</strong> for memory, disk, process, network, and swap metrics.</p> <h3 id=exam-pattern>Exam pattern</h3> <blockquote> <p>"Alert when EC2 memory usage exceeds 80%."</p> </blockquote> <p>→ <strong>CloudWatch Agent + memory metric + CloudWatch Alarm</strong></p> <hr> <h1 id=ec2-swap-space-monitoring>EC2 Swap Space Monitoring</h1> <p>For swap monitoring:</p> <p>→ <strong>CloudWatch Agent</strong></p> <p>The agent can collect:</p> <div class=highlight><pre><span></span><code>swap_free
+swap_used
+swap_used_percent
+</code></pre></div> <p><code>swap_used_percent</code> = percentage of swap currently used.</p> <p>Some question banks may call this <strong><code>SwapUtilization</code></strong>, but the current AWS CloudWatch Agent metric name is <strong><code>swap_used_percent</code></strong>.</p> <p>Example:</p> <div class=highlight><pre><span></span><code>Swap space = 4 GB
+Swap used  = 3 GB
+swap_used_percent = 75%
+</code></pre></div> <h3 id=exam-pattern_1>Exam pattern</h3> <blockquote> <p>"EC2 instances are running out of swap space. Monitor swap utilization."</p> </blockquote> <p>→ <strong>CloudWatch Agent + swap metric</strong></p> <hr> <h2 id=why-ec2-detailed-monitoring-is-not-enough>Why EC2 Detailed Monitoring is NOT enough</h2> <p><strong>EC2 Detailed Monitoring does not mean more OS-level metrics.</strong> It mainly changes the frequency of standard EC2 metrics:</p> <div class=highlight><pre><span></span><code>Basic monitoring
+→ standard EC2 metrics
+→ usually 5-minute periods
+
+Detailed monitoring
+→ same general EC2 metric categories
+→ 1-minute periods
+</code></pre></div> <p>It does <strong>not</strong> add memory, swap, filesystem, or process-level metrics.</p> <p>For those → <strong>CloudWatch Agent</strong>.</p> <div class=highlight><pre><span></span><code>Detailed Monitoring = MORE FREQUENT EC2 METRICS
+CloudWatch Agent   = MORE OS-LEVEL METRICS
+</code></pre></div> <hr> <h2 id=ec2-monitoring-the-important-distinction>EC2 Monitoring — the important distinction</h2> <table> <thead> <tr> <th>Requirement</th> <th>Solution</th> </tr> </thead> <tbody> <tr> <td>Standard EC2 CPU/network metrics</td> <td><strong>CloudWatch</strong></td> </tr> <tr> <td>Standard metrics every 1 minute</td> <td><strong>EC2 Detailed Monitoring</strong></td> </tr> <tr> <td>EC2 memory usage</td> <td><strong>CloudWatch Agent</strong></td> </tr> <tr> <td>EC2 swap usage</td> <td><strong>CloudWatch Agent</strong></td> </tr> <tr> <td>EC2 filesystem disk usage</td> <td><strong>CloudWatch Agent</strong></td> </tr> <tr> <td>EC2 process-level metrics</td> <td><strong>CloudWatch Agent / procstat</strong></td> </tr> <tr> <td>Alarm on any collected metric</td> <td><strong>CloudWatch Alarm</strong></td> </tr> </tbody> </table> <div class=highlight><pre><span></span><code>Detailed Monitoring = frequency
+CloudWatch Agent    = visibility inside the OS
+</code></pre></div> <h2 id=auto-scaling-cloudwatch-agent>Auto Scaling + CloudWatch Agent</h2> <p>If instances are launched dynamically by an Auto Scaling Group and you need memory/swap/disk on every instance, you still need the <strong>CloudWatch Agent</strong>.</p> <p>Common architecture:</p> <div class=highlight><pre><span></span><code>Launch Template / AMI / User Data / Systems Manager
+                    ↓
+             CloudWatch Agent
+                    ↓
+               EC2 instances
+                    ↓
+             CloudWatch metrics
+                    ↓
+                  Alarms
+</code></pre></div> <p><strong>Exam point:</strong> Auto Scaling does <strong>not</strong> automatically install the CloudWatch Agent. Configure instances to have the agent.</p> <hr> <h1 id=cloudwatch-container-insights>CloudWatch Container Insights</h1> <p><strong>CloudWatch Container Insights = container-focused monitoring for EKS, ECS, and other container workloads.</strong></p> <p>It provides container-focused metrics and logs in CloudWatch for monitoring and dashboards.</p> <div class=highlight><pre><span></span><code>EKS / ECS
+   ↓
+CloudWatch Container Insights
+   ↓
+Container / pod / node metrics + logs
+   ↓
+CloudWatch dashboards / alarms
+</code></pre></div> <h3 id=exam-pattern_2>Exam pattern</h3> <blockquote> <p><strong>"EKS/ECS + application/container logs and metrics + centralized monitoring + least operational overhead."</strong></p> </blockquote> <p>→ <strong>CloudWatch Container Insights</strong></p> <h3 id=container-insights-vs-cloudwatch-agent>Container Insights vs CloudWatch Agent</h3> <div class=highlight><pre><span></span><code>CloudWatch Agent
+→ general-purpose agent
+→ EC2 / on-prem / host-level metrics and logs
+
+Container Insights
+→ container-focused monitoring
+→ EKS / ECS
+→ container / pod / node metrics + logs
+</code></pre></div> <h3 id=exam-shortcut>Exam shortcut</h3> <blockquote> <p><strong>Containerized workload → think Container Insights</strong></p> <p><strong>EC2/on-prem OS metrics such as memory, swap, filesystem → think CloudWatch Agent</strong></p> </blockquote> <hr> <h1 id=application-insights-vs-container-insights-vs-alb-access-logs>Application Insights vs Container Insights vs ALB Access Logs</h1> <p>These three are easy to confuse:</p> <table> <thead> <tr> <th>Tool</th> <th>Main purpose</th> <th>Think</th> </tr> </thead> <tbody> <tr> <td><strong>CloudWatch Application Insights</strong></td> <td>Monitor application components/resources and help troubleshoot application problems</td> <td><strong>Application troubleshooting</strong></td> </tr> <tr> <td><strong>CloudWatch Container Insights</strong></td> <td>Monitor containerized workloads such as EKS/ECS</td> <td><strong>Containers / pods / nodes</strong></td> </tr> <tr> <td><strong>ALB Access Logs</strong></td> <td>Record detailed HTTP/HTTPS requests handled by an ALB</td> <td><strong>Individual requests</strong></td> </tr> </tbody> </table> <div class=highlight><pre><span></span><code>Application Insights
+→ "What is happening with my application and its supporting resources?"
+
+Container Insights
+→ "What is happening with my containers/pods/nodes?"
+
+ALB Access Logs
+→ "What HTTP requests passed through the load balancer?"
+</code></pre></div> <h3 id=exam-shortcut_1>Exam shortcut</h3> <div class=highlight><pre><span></span><code>EKS / ECS + container metrics/logs
+→ Container Insights
+
+Application components + troubleshooting
+→ Application Insights
+
+Client IP / request path / HTTP status / request details
+→ ALB Access Logs
+</code></pre></div> <p>They can be used together:</p> <div class=highlight><pre><span></span><code>ALB
+  ↓
+Access Logs
+  ↓
+S3
+
+Application
+  ↓
+Application Insights
+  ↓
+Monitoring / troubleshooting
+
+EKS / ECS
+  ↓
+Container Insights
+  ↓
+Container / pod / node monitoring
+</code></pre></div> <hr> <h1 id=cloudwatch-enhanced-monitoring-vs-normal-cloudwatch>CloudWatch Enhanced Monitoring vs normal CloudWatch</h1> <p>For <strong>RDS</strong>, distinguish normal CloudWatch monitoring from Enhanced Monitoring.</p> <h2 id=normal-cloudwatch-rds-monitoring>Normal CloudWatch RDS monitoring</h2> <p>CloudWatch provides overall database-instance metrics, e.g.:</p> <div class=highlight><pre><span></span><code>RDS CPUUtilization = 75%
+</code></pre></div> <p>This is about the <strong>RDS instance as a whole</strong>.</p> <h2 id=rds-enhanced-monitoring>RDS Enhanced Monitoring</h2> <p><strong>Enhanced Monitoring = OS-level monitoring of the RDS instance.</strong></p> <p>Includes:</p> <ul> <li>CPU usage</li> <li>memory usage</li> <li>processes</li> <li>process-level CPU</li> <li>process-level memory</li> <li>load</li> <li>filesystem information</li> </ul> <p>Example:</p> <div class=highlight><pre><span></span><code>RDS instance
+├── Process A → CPU 20%, memory 300 MB
+├── Process B → CPU 35%, memory 500 MB
+└── Process C → CPU 10%, memory 100 MB
+</code></pre></div> <h3 id=exam-pattern_3>Exam pattern</h3> <blockquote> <p>"Monitor the CPU and memory used by individual processes on an RDS instance."</p> </blockquote> <p>→ <strong>RDS Enhanced Monitoring</strong></p> <div class=highlight><pre><span></span><code>Overall RDS CPU
+→ CloudWatch
+
+RDS OS-level CPU / memory / processes
+→ Enhanced Monitoring
+</code></pre></div> <hr> <h1 id=rds-performance-insights>RDS Performance Insights</h1> <p>Do not confuse <strong>Enhanced Monitoring</strong> with <strong>Performance Insights</strong>.</p> <p><strong>Performance Insights</strong> focuses on <strong>database performance and query/load analysis</strong>:</p> <div class=highlight><pre><span></span><code>Which SQL queries are consuming database resources?
+</code></pre></div> <p><strong>Enhanced Monitoring</strong> focuses on the <strong>underlying OS</strong>:</p> <div class=highlight><pre><span></span><code>How much CPU / memory are the database processes using?
+</code></pre></div> <h3 id=exam-patterns>Exam patterns</h3> <blockquote> <p>"Identify which SQL queries are causing high database load."</p> </blockquote> <p>→ <strong>Performance Insights</strong></p> <blockquote> <p>"Monitor OS-level CPU, memory, and process information."</p> </blockquote> <p>→ <strong>Enhanced Monitoring</strong></p> <div class=highlight><pre><span></span><code>Enhanced Monitoring = OS-level RDS monitoring
+Performance Insights = database workload / query performance
+</code></pre></div> <hr> <h1 id=cloudwatch-alarms>CloudWatch Alarms</h1> <p>A <strong>CloudWatch Alarm</strong> watches a metric and acts when a condition is met.</p> <div class=highlight><pre><span></span><code>CPU &gt; 80%
+    ↓
+CloudWatch Alarm
+    ↓
+SNS notification
+</code></pre></div> <p>Can also trigger:</p> <ul> <li>Auto Scaling</li> <li>EC2 actions</li> <li>SNS notifications</li> </ul> <h2 id=composite-alarms>Composite alarms</h2> <p>A <strong>Composite Alarm</strong> combines multiple alarms.</p> <div class=highlight><pre><span></span><code>CPU &gt; 80%
+AND
+Error rate &gt; 5%
+        ↓
+Composite Alarm
+</code></pre></div> <p>Use it to reduce unnecessary alerts.</p> <h3 id=exam-pattern_4>Exam pattern</h3> <blockquote> <p>"Several alarms are firing and the company wants fewer unnecessary notifications."</p> </blockquote> <p>→ <strong>Composite Alarm</strong></p> <hr> <h1 id=cloudwatch-logs>CloudWatch Logs</h1> <p>CloudWatch Logs stores application and system logs.</p> <div class=highlight><pre><span></span><code>Log Group
+├── Log Stream
+├── Log Stream
+└── Log Stream
+</code></pre></div> <ul> <li><strong>Log group</strong>: usually an application or service.</li> <li><strong>Log stream</strong>: logs from one source, such as an instance or container.</li> </ul> <h2 id=metric-filters>Metric Filters</h2> <p>A <strong>metric filter</strong> searches logs for a pattern and turns the result into a metric.</p> <div class=highlight><pre><span></span><code>Application log:
+ERROR
+ERROR
+INFO
+ERROR
+
+Metric filter:
+Count ERROR
+    ↓
+CloudWatch metric
+    ↓
+Alarm if &gt; 100
+</code></pre></div> <h3 id=exam-pattern_5>Exam pattern</h3> <blockquote> <p>"Trigger an alarm when the application writes more than 100 ERROR messages in 5 minutes."</p> </blockquote> <p>→ <strong>CloudWatch Logs Metric Filter + Alarm</strong></p> <hr> <h1 id=cloudwatch-logs-insights>CloudWatch Logs Insights</h1> <p><strong>Logs Insights = interactive query and analysis of CloudWatch Logs.</strong></p> <p>Use it to search/analyze large amounts of logs.</p> <blockquote> <p>"Find all requests that took more than 2 seconds."</p> </blockquote> <p>→ <strong>CloudWatch Logs Insights</strong></p> <div class=highlight><pre><span></span><code>Metric Filter = turn log patterns into metrics
+Logs Insights = query / analyze logs
+</code></pre></div> <hr> <h1 id=cloudwatch-logs-subscription-filters>CloudWatch Logs Subscription Filters</h1> <p>A <strong>subscription filter</strong> sends log events somewhere else in <strong>near real time</strong>.</p> <p>Common destinations:</p> <ul> <li>Kinesis Data Streams</li> <li>Kinesis Data Firehose</li> <li>Lambda</li> </ul> <div class=highlight><pre><span></span><code>CloudWatch Logs
+      ↓
+Subscription Filter
+      ↓
+Lambda / Kinesis
+</code></pre></div> <h3 id=exam-pattern_6>Exam pattern</h3> <blockquote> <p>"Process log entries in real time as they arrive."</p> </blockquote> <p>→ <strong>CloudWatch Logs Subscription Filter</strong></p> <hr> <h1 id=cloudwatch-logs-s3-firehose>CloudWatch Logs → S3 / Firehose</h1> <p>Common pattern:</p> <div class=highlight><pre><span></span><code>CloudWatch Logs
+      ↓
+Subscription Filter
+      ↓
+Kinesis Data Firehose
+      ↓
+S3
+</code></pre></div> <p>Think of this for:</p> <ul> <li>continuously exporting logs</li> <li>centralizing logs</li> <li>archiving logs</li> <li>processing logs before storage</li> </ul> <hr> <h1 id=alb-access-logs-detailed-http-request-logging>ALB Access Logs — detailed HTTP request logging</h1> <p><strong>Application Load Balancer Access Logs = detailed records of HTTP/HTTPS requests processed by the ALB.</strong></p> <p>Different from CloudWatch metrics: access logs contain <strong>individual request records</strong>, not only aggregated numbers.</p> <p>Can contain:</p> <ul> <li>client IP</li> <li>request path</li> <li>request method</li> <li>HTTP status codes</li> <li>bytes sent/received</li> <li>request processing time</li> <li>target processing time</li> <li>response processing time</li> <li>user agent and other request metadata</li> </ul> <p>Published to <strong>Amazon S3 periodically, typically every 5 minutes</strong>.</p> <h3 id=exam-pattern_7>Exam pattern</h3> <blockquote> <p>"Capture detailed information about every HTTP request through an ALB, including the client IP address and latency."</p> </blockquote> <p>→ <strong>ALB Access Logs</strong></p> <h2 id=alb-access-logs-vs-cloudwatch-metrics>ALB Access Logs vs CloudWatch Metrics</h2> <div class=highlight><pre><span></span><code>CloudWatch Metrics = aggregated numbers
+RequestCount
+TargetResponseTime
+HTTPCode_ELB_5XX_Count
+</code></pre></div> <p>vs.</p> <div class=highlight><pre><span></span><code>ALB Access Logs = individual request records
+Client IP
+Request path
+Status code
+Request / target / response latency
+</code></pre></div> <p>Examples:</p> <blockquote> <p>"How many requests reached the ALB?"</p> </blockquote> <p>→ <strong>CloudWatch metric: RequestCount</strong></p> <blockquote> <p>"Show me the client IP and details of each request."</p> </blockquote> <p>→ <strong>ALB Access Logs</strong></p> <h2 id=alb-access-logs-vs-cloudtrail>ALB Access Logs vs CloudTrail</h2> <div class=highlight><pre><span></span><code>CloudTrail
+= control-plane / API activity
+"Who modified the ALB?"
+
+ALB Access Logs
+= data-plane HTTP traffic
+"What HTTP request passed through the ALB?"
+</code></pre></div> <h3 id=exam-pattern_8>Exam pattern</h3> <blockquote> <p>"The company wants detailed information about all HTTP requests that passed through the public-facing ALB."</p> </blockquote> <p>→ <strong>ALB Access Logs</strong>, not CloudTrail.</p> <h2 id=alb-access-logs-vs-x-ray>ALB Access Logs vs X-Ray</h2> <div class=highlight><pre><span></span><code>ALB Access Logs
+= detailed request records at the load balancer
+
+X-Ray
+= distributed tracing across application components
+</code></pre></div> <p>Use access logs for client IP, path, HTTP status, and latency fields.</p> <p>Use X-Ray when the goal is:</p> <div class=highlight><pre><span></span><code>Which application component in the request chain caused the delay?
+</code></pre></div> <h2 id=alb-access-logs-vs-cloudwatch-logs>ALB Access Logs vs CloudWatch Logs</h2> <div class=highlight><pre><span></span><code>ALB Access Logs
+→ records created by the load balancer
+→ commonly stored in S3
+→ request-level ALB traffic information
+
+CloudWatch Logs
+→ application/system/container logs
+→ stored in CloudWatch Logs
+→ queried with Logs Insights
+</code></pre></div> <h3 id=exam-clues>Exam clues</h3> <blockquote> <p>"Capture detailed information about requests handled by the ALB."</p> </blockquote> <p>→ <strong>ALB Access Logs</strong></p> <blockquote> <p>"Search application log messages."</p> </blockquote> <p>→ <strong>CloudWatch Logs / Logs Insights</strong></p> <hr> <h1 id=cloudwatch-application-insights>CloudWatch Application Insights</h1> <p><strong>CloudWatch Application Insights</strong> helps automatically discover and monitor application components and supporting AWS resources and helps troubleshoot application problems.</p> <p>Useful for:</p> <ul> <li>application/resource monitoring</li> <li>relevant metrics</li> <li>logs</li> <li>dashboards</li> <li>detecting problems</li> <li>troubleshooting application issues</li> </ul> <p>For containerized applications, it can be used for application monitoring and troubleshooting.</p> <p><strong>Application Insights does not replace ALB access logs or Container Insights.</strong></p> <div class=highlight><pre><span></span><code>ALB Access Logs
+= "What requests passed through the ALB?"
+
+Container Insights
+= "What is happening with the containers/pods/nodes?"
+
+Application Insights
+= "What is happening with the application and its supporting resources?"
+</code></pre></div> <p>A question can require more than one of these.</p> <h3 id=example-architecture>Example architecture</h3> <div class=highlight><pre><span></span><code>Client
+   ↓
+ALB
+   ├── ALB Access Logs → S3
+   ↓
+Application / EKS / ECS workload
+   ├── Container Insights
+   │      └── container / pod / node monitoring
+   │
+   └── Application Insights
+          └── application/resource monitoring
+</code></pre></div> <h3 id=exam-pattern_9>Exam pattern</h3> <blockquote> <p>"Capture detailed ALB HTTP requests for traffic analysis and also simplify troubleshooting of the application."</p> </blockquote> <p>→ <strong>ALB Access Logs + CloudWatch Application Insights</strong></p> <hr> <h1 id=cloudwatch-dashboards>CloudWatch Dashboards</h1> <p>CloudWatch dashboards display metrics and monitoring information in one place.</p> <p>They can show resources and metrics from <strong>different Regions</strong>.</p> <div class=highlight><pre><span></span><code>US      → CPU / Errors / Latency
+Europe  → CPU / Errors / Latency
+Asia    → CPU / Errors / Latency
+                ↓
+       One CloudWatch dashboard
+</code></pre></div> <hr> <h1 id=cloudwatch-high-value-exam-traps>CloudWatch — High-Value Exam Traps</h1> <h3 id=ec2-memory>EC2 Memory</h3> <blockquote> <p>"Monitor EC2 memory usage."</p> </blockquote> <p>→ <strong>CloudWatch Agent</strong></p> <p>Not → EC2 Detailed Monitoring.</p> <h3 id=ec2-swap>EC2 Swap</h3> <blockquote> <p>"Monitor EC2 swap utilization."</p> </blockquote> <p>→ <strong>CloudWatch Agent</strong></p> <p>Current AWS Agent metrics: <code>swap_used_percent</code>, <code>swap_used</code>, <code>swap_free</code>.</p> <p>(Some question banks may call this <code>SwapUtilization</code>.)</p> <h3 id=ec2-disk-space>EC2 Disk Space</h3> <blockquote> <p>"Alert when the EC2 filesystem is 90% full."</p> </blockquote> <p>→ <strong>CloudWatch Agent</strong></p> <p>Do not confuse:</p> <div class=highlight><pre><span></span><code>EBS volume metrics
+</code></pre></div> <p>with:</p> <div class=highlight><pre><span></span><code>filesystem space inside the operating system
+</code></pre></div> <p>CloudWatch Agent can collect filesystem metrics such as <code>disk_used_percent</code>.</p> <h3 id=ec2-detailed-monitoring>EC2 Detailed Monitoring</h3> <blockquote> <p>"The company wants EC2 metrics every minute instead of every five minutes."</p> </blockquote> <p>→ <strong>Detailed Monitoring</strong></p> <p>Changes <strong>frequency</strong>, not OS metric type.</p> <h3 id=process-level-ec2-metrics>Process-level EC2 metrics</h3> <blockquote> <p>"Monitor CPU and memory usage for a specific process running on EC2."</p> </blockquote> <p>→ <strong>CloudWatch Agent / procstat</strong></p> <h3 id=container-monitoring>Container monitoring</h3> <blockquote> <p>"EKS/ECS needs centralized container metrics and logs with a dashboard and minimal operational overhead."</p> </blockquote> <p>→ <strong>CloudWatch Container Insights</strong></p> <h3 id=application-troubleshooting>Application troubleshooting</h3> <blockquote> <p>"Automatically monitor application components/resources and help troubleshoot application problems."</p> </blockquote> <p>→ <strong>CloudWatch Application Insights</strong></p> <h3 id=alb-request-details>ALB request details</h3> <blockquote> <p>"Capture every HTTP request, including client IP and latency."</p> </blockquote> <p>→ <strong>ALB Access Logs</strong></p> <p>Not → CloudWatch <code>GetMetricData</code> Not → CloudTrail Not necessarily → X-Ray</p> <h3 id=alb-health>ALB health</h3> <blockquote> <p>"Monitor whether the load balancer/targets are healthy."</p> </blockquote> <p>→ <strong>ELB health checks / CloudWatch health-related metrics</strong></p> <p>Do not confuse:</p> <div class=highlight><pre><span></span><code>Health checks = "Is the target healthy?"
+Access logs  = "What requests went through the ALB?"
+</code></pre></div> <hr> <h1 id=cloudtrail-who-did-what>CloudTrail — "Who did what?"</h1> <p><strong>AWS CloudTrail = audit log of AWS API activity.</strong></p> <p>Records:</p> <ul> <li>who made the request</li> <li>what action they performed</li> <li>when it happened</li> <li>where the request came from</li> <li>what resource was affected</li> </ul> <p>Example:</p> <div class=highlight><pre><span></span><code>Alice
+   ↓
+Terminate EC2 instance
+   ↓
+CloudTrail
+</code></pre></div> <h3 id=example-question>Example question</h3> <blockquote> <p>"Who terminated the production EC2 instance yesterday?"</p> </blockquote> <p>→ <strong>CloudTrail</strong></p> <hr> <h1 id=cloudtrail-multi-region-trails-global-service-events>CloudTrail Multi-Region Trails &amp; Global Service Events</h1> <p>These are two small but important SAA concepts.</p> <h3 id=multi-region-trail>Multi-Region trail</h3> <p>A <strong>Multi-Region trail</strong> logs events from <strong>all enabled AWS Regions</strong>.</p> <p>Use:</p> <div class=highlight><pre><span></span><code>--is-multi-region-trail
+</code></pre></div> <blockquote> <p>Need API activity from multiple/all AWS Regions → <strong>Multi-Region trail</strong></p> </blockquote> <h3 id=global-service-events>Global service events</h3> <p>Some AWS services are <strong>global services</strong>, such as IAM. CloudTrail can include their API events with:</p> <div class=highlight><pre><span></span><code>--include-global-service-events
+</code></pre></div> <blockquote> <p>Need IAM/global service activity → <strong>include global service events</strong></p> </blockquote> <h3 id=simple-exam-mapping>Simple exam mapping</h3> <div class=highlight><pre><span></span><code>All Regions
+→ --is-multi-region-trail
+
+Global services such as IAM
+→ --include-global-service-events
+</code></pre></div> <h3 id=example>Example</h3> <div class=highlight><pre><span></span><code>aws cloudtrail create-trail \
+    --name MyTrail \
+    --s3-bucket-name my-log-bucket \
+    --is-multi-region-trail \
+    --include-global-service-events
+</code></pre></div> <h3 id=exam-pattern_10>Exam pattern</h3> <blockquote> <p>"Track API activity across all AWS Regions and include IAM/global service activity."</p> </blockquote> <p>→ <strong>Multi-Region CloudTrail trail + global service events</strong></p> <h3 id=trap>Trap</h3> <div class=highlight><pre><span></span><code>--no-include-global-service-events
+</code></pre></div> <p>→ <strong>Excludes global service events</strong></p> <blockquote> <p><strong>Multi-Region ≠ automatically the same thing as global service events</strong></p> </blockquote> <p>Think:</p> <div class=highlight><pre><span></span><code>Multi-Region
+→ WHERE? → all Regions
+
+Global service events
+→ WHICH special services? → global services
+</code></pre></div> <hr> <h1 id=cloudtrail-event-history>CloudTrail Event History</h1> <p>CloudTrail provides <strong>90 days of management event history</strong> without requiring a trail.</p> <p>For longer-term retention:</p> <div class=highlight><pre><span></span><code>CloudTrail Trail
+      ↓
+     S3
+</code></pre></div> <p>Store logs in S3 for long-term retention.</p> <h3 id=exam-pattern_11>Exam pattern</h3> <blockquote> <p>"Keep API activity records for several years."</p> </blockquote> <p>→ <strong>CloudTrail Trail → S3</strong></p> <h3 id=event-history-vs-cloudtrail-lake>Event History vs CloudTrail Lake</h3> <div class=highlight><pre><span></span><code>CloudTrail Event History
+→ last 90 days
+→ management events
+→ simple search/filtering
+→ no trail required
+
+CloudTrail Lake
+→ query event data with SQL
+→ more flexible analysis
+→ event data stores
+</code></pre></div> <hr> <h1 id=cloudtrail-lake-query-and-analyze-cloudtrail-events>CloudTrail Lake — query and analyze CloudTrail events</h1> <p><strong>CloudTrail Lake = a built-in CloudTrail data store and SQL-based query/analysis capability.</strong></p> <p>Use it when the question asks you to <strong>query, filter, or analyze CloudTrail events</strong>.</p> <div class=highlight><pre><span></span><code>CloudTrail events
+      ↓
+Event Data Store
+      ↓
+CloudTrail Lake
+      ↓
+SQL query / analysis
+</code></pre></div> <p>Useful for:</p> <ul> <li><code>AccessDenied</code> errors</li> <li><code>Unauthorized</code> errors</li> <li>finding specific API activity</li> <li>filtering by multiple event attributes</li> </ul> <h3 id=exam-pattern_12>Exam pattern</h3> <blockquote> <p>"A company needs to efficiently find and analyze IAM-related <code>AccessDenied</code> and <code>Unauthorized</code> errors in CloudTrail events."</p> </blockquote> <p>→ <strong>CloudTrail Lake</strong></p> <h3 id=cloudtrail-lake-vs-athena>CloudTrail Lake vs Athena</h3> <div class=highlight><pre><span></span><code>CloudTrail Lake
+→ built for CloudTrail event analysis
+→ SQL queries
+
+Athena
+→ general SQL query service
+→ commonly queries CloudTrail logs stored in S3
+</code></pre></div> <h3 id=exam-shortcut_2>Exam shortcut</h3> <blockquote> <p><strong>"Query CloudTrail events with SQL"</strong> → <strong>CloudTrail Lake</strong></p> <p><strong>"CloudTrail logs are in S3 and need SQL analysis"</strong> → <strong>Athena</strong></p> </blockquote> <hr> <h1 id=cloudtrail-logs-s3-encryption>CloudTrail Logs + S3 Encryption</h1> <p>CloudTrail log files delivered to S3 are <strong>encrypted at rest by default with S3 server-side encryption (SSE-S3)</strong>. You can optionally use <strong>SSE-KMS</strong> when you need control over the KMS key and its permissions.</p> <p>Separately, <strong>Amazon S3 automatically encrypts all new object uploads with SSE-S3 (AES-256) by default</strong>.</p> <div class=highlight><pre><span></span><code>New S3 object
+→ automatically encrypted
+→ SSE-S3
+→ AES-256
+</code></pre></div> <p>Enabling bucket default encryption does <strong>not</strong> automatically re-encrypt old unencrypted objects.</p> <h3 id=exam-trap>Exam trap</h3> <div class=highlight><pre><span></span><code>S3 new objects
+→ SSE-S3 by default
+
+CloudTrail → S3
+→ encrypted at rest by default
+
+Need customer-controlled encryption key
+→ SSE-KMS
+</code></pre></div> <h3 id=sse-s3-vs-sse-kms>SSE-S3 vs SSE-KMS</h3> <div class=highlight><pre><span></span><code>SSE-S3
+= AWS manages the S3 encryption keys
+= default S3 encryption
+
+SSE-KMS
+= AWS KMS manages the key
+= more control over key policies / permissions
+</code></pre></div> <hr> <h1 id=cloudtrail-management-events-vs-data-events>CloudTrail Management Events vs Data Events</h1> <h2 id=management-events>Management events</h2> <p><strong>Control-plane operations</strong>, e.g.:</p> <ul> <li>create EC2 instance</li> <li>terminate EC2 instance</li> <li>create S3 bucket</li> <li>change IAM policy</li> </ul> <h2 id=data-events>Data events</h2> <p><strong>Resource-level operations</strong>, e.g.:</p> <ul> <li>reading an S3 object</li> <li>deleting an S3 object</li> <li>invoking a Lambda function</li> </ul> <p>Data events generally must be <strong>enabled explicitly</strong> and can incur additional charges.</p> <h3 id=exam-trap_1>Exam trap</h3> <blockquote> <p>"Who deleted a specific object from S3?"</p> </blockquote> <p>→ <strong>CloudTrail S3 Data Events</strong></p> <p>Normal management events are not enough.</p> <hr> <h1 id=cloudtrail-log-file-integrity-validation>CloudTrail Log File Integrity Validation</h1> <p>Helps prove CloudTrail log files were <strong>not modified after delivery</strong>.</p> <p>Useful for:</p> <ul> <li>security investigations</li> <li>compliance</li> <li>forensics</li> <li>proving log integrity</li> </ul> <h3 id=exam-pattern_13>Exam pattern</h3> <blockquote> <p>"Logs must be tamper-evident for forensic purposes."</p> </blockquote> <p>→ <strong>CloudTrail Log File Integrity Validation</strong></p> <hr> <h1 id=cloudtrail-processing-library>CloudTrail Processing Library</h1> <p><strong>CloudTrail Processing Library = programmatic processing of CloudTrail log files.</strong></p> <p>It is useful when an application needs to <strong>consume/process CloudTrail logs programmatically</strong>.</p> <blockquote> <p><strong>Process CloudTrail log files in an application → CloudTrail Processing Library</strong></p> </blockquote> <p>For SAA, recognize it mainly as a <strong>log-processing tool</strong>, not as the solution for detecting tampering.</p> <hr> <h1 id=cloudtrail-insights>CloudTrail Insights</h1> <p><strong>CloudTrail Insights detects unusual API activity.</strong></p> <p>Example:</p> <div class=highlight><pre><span></span><code>Normally:
+TerminateInstances = 2 per day
+
+Suddenly:
+TerminateInstances = 500 in 10 minutes
+</code></pre></div> <p>CloudTrail Insights can identify the unusual behavior.</p> <div class=highlight><pre><span></span><code>CloudTrail = API audit
+CloudTrail Insights = unusual API activity
+</code></pre></div> <hr> <h1 id=aws-config-what-is-the-configuration-and-is-it-compliant>AWS Config — "What is the configuration, and is it compliant?"</h1> <p><strong>AWS Config = resource configuration history + compliance checking.</strong></p> <p>Answers:</p> <blockquote> <p>"What did this security group look like last Tuesday?"</p> <p>"Does this security group comply with our security rules?"</p> </blockquote> <hr> <h1 id=configuration-history>Configuration history</h1> <p>AWS Config records changes to resource configurations.</p> <p>Example:</p> <div class=highlight><pre><span></span><code>Monday
+SG allows port 22 from company IP
+
+Tuesday
+SG changed to 0.0.0.0/0
+
+Wednesday
+SG changed again
+</code></pre></div> <p>You can investigate configuration history.</p> <h3 id=exam-pattern_14>Exam pattern</h3> <blockquote> <p>"Show what a security group's configuration was one week ago."</p> </blockquote> <p>→ <strong>AWS Config</strong></p> <hr> <h1 id=config-rules>Config Rules</h1> <p>AWS Config Rules evaluate whether resources meet a requirement.</p> <p>Example:</p> <div class=highlight><pre><span></span><code>Rule:
+SSH must not be open to the Internet
+        ↓
+Security Group
+0.0.0.0/0:22
+        ↓
+NONCOMPLIANT
+</code></pre></div> <p>Rules can be:</p> <ul> <li>AWS-managed</li> <li>custom</li> </ul> <h3 id=exam-pattern_15>Exam pattern</h3> <blockquote> <p>"Identify security groups that allow SSH from the Internet."</p> </blockquote> <p>→ <strong>AWS Config Rule</strong></p> <hr> <h1 id=iam-access-key-rotation>IAM Access Key Rotation</h1> <p>AWS Config has a managed rule:</p> <p><strong><code>access-keys-rotated</code></strong></p> <p>It checks whether IAM user access keys have been rotated within the configured maximum age.</p> <div class=highlight><pre><span></span><code>maxAccessKeyAge = 90 days
+        ↓
+Access key &gt; 90 days
+        ↓
+NON_COMPLIANT
+</code></pre></div> <h3 id=exam-pattern_16>Exam pattern</h3> <blockquote> <p>"Identify IAM user access keys that have not been rotated for more than 90 days."</p> </blockquote> <p>→ <strong>AWS Config managed rule <code>access-keys-rotated</code></strong></p> <h3 id=automatic-remediation>Automatic remediation</h3> <blockquote> <p>"Automatically deactivate and delete IAM user access keys that are more than 90 days old."</p> </blockquote> <p>→ <strong>AWS Config <code>access-keys-rotated</code> → EventBridge → Lambda</strong></p> <div class=highlight><pre><span></span><code>Config
+  ↓
+NON_COMPLIANT
+  ↓
+EventBridge
+  ↓
+Lambda
+  ↓
+Deactivate + delete key
+</code></pre></div> <p><strong>Exam trap:</strong> EventBridge does not itself determine that an IAM access key is older than 90 days. Config performs the compliance evaluation first.</p> <hr> <h1 id=config-remediation>Config Remediation</h1> <p>AWS Config can automatically trigger remediation when a resource becomes noncompliant.</p> <p>Common pattern:</p> <div class=highlight><pre><span></span><code>Config Rule
+     ↓
+Noncompliant
+     ↓
+SSM Automation
+     ↓
+Fix the resource
+</code></pre></div> <h3 id=example_1>Example</h3> <blockquote> <p>"Automatically remove a world-open SSH rule."</p> </blockquote> <p>→ <strong>Config Rule + remediation action</strong></p> <hr> <h1 id=important-config-limitation>Important Config limitation</h1> <p><strong>AWS Config does not prevent the action from happening.</strong> It detects configuration and compliance problems.</p> <blockquote> <p><strong>"Prevent users from creating this resource or performing this action."</strong></p> </blockquote> <p>Think:</p> <ul> <li>IAM</li> <li>SCPs</li> <li>other preventive controls</li> </ul> <p>Not Config.</p> <div class=highlight><pre><span></span><code>Config
+= detect / record / evaluate
+
+SCP / IAM
+= prevent / control permissions
+</code></pre></div> <hr> <h1 id=aws-audit-manager-can-i-prove-compliance>AWS Audit Manager — "Can I prove compliance?"</h1> <p><strong>AWS Audit Manager = collect and organize evidence for compliance audits.</strong></p> <div class=highlight><pre><span></span><code>Audit Manager
+→ "Can I provide evidence for the required compliance controls?"
+</code></pre></div> <h3 id=exam-pattern_17>Exam pattern</h3> <blockquote> <p>"Collect evidence and prepare for a compliance audit/framework."</p> </blockquote> <p>→ <strong>AWS Audit Manager</strong></p> <div class=highlight><pre><span></span><code>Config
+→ Is the resource configured correctly?
+
+Audit Manager
+→ Can I prove compliance with the required controls?
+
+Trusted Advisor
+→ Are we following AWS best practices?
+</code></pre></div> <hr> <h1 id=x-ray-which-part-of-the-request-is-slow>X-Ray — "Which part of the request is slow?"</h1> <p><strong>AWS X-Ray = distributed tracing.</strong></p> <p>Follows one request across multiple services.</p> <div class=highlight><pre><span></span><code>Client
+  ↓
+API Gateway
+  ↓
+Lambda
+  ↓
+Service A
+  ↓
+Service B
+  ↓
+DynamoDB
+</code></pre></div> <p>If the request takes 2 seconds:</p> <div class=highlight><pre><span></span><code>API Gateway   50 ms
+Lambda        100 ms
+Service A     150 ms
+Service B     1,600 ms  ← problem
+DynamoDB      100 ms
+</code></pre></div> <h3 id=exam-pattern_18>Exam pattern</h3> <blockquote> <p>"A request passes through ten microservices. Find which service is causing the latency."</p> </blockquote> <p>→ <strong>X-Ray</strong></p> <div class=highlight><pre><span></span><code>CloudWatch = this service is slow
+X-Ray       = this specific hop in the request is slow
+</code></pre></div> <hr> <h1 id=the-four-way-comparison>The four-way comparison</h1> <table> <thead> <tr> <th>Service</th> <th>Main question</th> <th>Example</th> </tr> </thead> <tbody> <tr> <td><strong>CloudWatch</strong></td> <td>How is it performing?</td> <td>CPU = 90%</td> </tr> <tr> <td><strong>CloudTrail</strong></td> <td>Who did what?</td> <td>Alice terminated EC2</td> </tr> <tr> <td><strong>AWS Config</strong></td> <td>What was the configuration? Is it compliant?</td> <td>SG allowed SSH last Tuesday</td> </tr> <tr> <td><strong>X-Ray</strong></td> <td>Which part of the request is slow?</td> <td>Service B adds 1.6 seconds</td> </tr> </tbody> </table> <div class=highlight><pre><span></span><code>CloudWatch = PERFORMANCE
+CloudTrail = API AUDIT
+Config     = CONFIGURATION + COMPLIANCE
+X-Ray      = REQUEST TRACE
+</code></pre></div> <hr> <h1 id=alb-monitoring-the-five-way-distinction>ALB Monitoring — the five-way distinction</h1> <table> <thead> <tr> <th>Requirement</th> <th>Service</th> </tr> </thead> <tbody> <tr> <td>Number of requests / aggregated ALB behavior</td> <td><strong>CloudWatch Metrics</strong></td> </tr> <tr> <td>Detailed individual HTTP requests</td> <td><strong>ALB Access Logs</strong></td> </tr> <tr> <td>Who changed the ALB configuration/API</td> <td><strong>CloudTrail</strong></td> </tr> <tr> <td>Which application hop is slow</td> <td><strong>X-Ray</strong></td> </tr> <tr> <td>Application/resource troubleshooting</td> <td><strong>CloudWatch Application Insights</strong></td> </tr> <tr> <td>Container/pod/node monitoring</td> <td><strong>CloudWatch Container Insights</strong></td> </tr> <tr> <td>Target/load balancer health</td> <td><strong>ELB Health Checks</strong></td> </tr> </tbody> </table> <div class=highlight><pre><span></span><code>ALB
+├── CloudWatch Metrics
+│   └── RequestCount / latency / errors
+├── Access Logs
+│   └── client IP / request / status / latency details
+├── CloudTrail
+│   └── API/control-plane changes
+├── Health Checks
+│   └── target health
+└── X-Ray
+    └── distributed request tracing
+</code></pre></div> <hr> <h1 id=similar-exam-questions>Similar Exam Questions</h1> <h2 id=1-ec2-memory-monitoring>1. EC2 memory monitoring</h2> <blockquote> <p>"An application running on EC2 occasionally runs out of memory. The architect needs to monitor memory utilization."</p> </blockquote> <p>→ <strong>CloudWatch Agent</strong></p> <div class=highlight><pre><span></span><code>EC2
+ ↓
+CloudWatch Agent
+ ↓
+Memory metric
+ ↓
+CloudWatch Alarm
+</code></pre></div> <h2 id=2-ec2-swap-monitoring>2. EC2 swap monitoring</h2> <blockquote> <p>"Several EC2 instances are failing because of insufficient swap space. Monitor swap utilization."</p> </blockquote> <p>→ <strong>CloudWatch Agent</strong></p> <p>Current agent metric:</p> <div class=highlight><pre><span></span><code>swap_used_percent
+</code></pre></div> <h2 id=3-ec2-disk-space-monitoring>3. EC2 disk-space monitoring</h2> <blockquote> <p>"Alert when <code>/var</code> reaches 90% disk utilization."</p> </blockquote> <p>→ <strong>CloudWatch Agent</strong></p> <p>Because this is <strong>filesystem-level information inside the OS</strong>.</p> <h2 id=4-ec2-metric-frequency>4. EC2 metric frequency</h2> <blockquote> <p>"The company needs EC2 metrics every minute rather than every five minutes."</p> </blockquote> <p>→ <strong>EC2 Detailed Monitoring</strong></p> <div class=highlight><pre><span></span><code>Basic    → 5 minutes
+Detailed → 1 minute
+</code></pre></div> <h2 id=5-ec2-process-monitoring>5. EC2 process monitoring</h2> <blockquote> <p>"Find how much CPU and memory a specific process is consuming."</p> </blockquote> <p>→ <strong>CloudWatch Agent with process/procstat monitoring</strong></p> <h2 id=6-rds-overall-cpu>6. RDS overall CPU</h2> <blockquote> <p>"Monitor the CPU utilization of an RDS instance."</p> </blockquote> <p>→ <strong>CloudWatch</strong></p> <h2 id=7-rds-process-level-cpumemory>7. RDS process-level CPU/memory</h2> <blockquote> <p>"Monitor CPU and memory usage of individual processes on an RDS instance."</p> </blockquote> <p>→ <strong>RDS Enhanced Monitoring</strong></p> <h2 id=8-rds-query-performance>8. RDS query performance</h2> <blockquote> <p>"Determine which SQL statements are responsible for database load."</p> </blockquote> <p>→ <strong>RDS Performance Insights</strong></p> <h2 id=9-log-message-alarm>9. Log message alarm</h2> <blockquote> <p>"Send an alert if the application generates more than 100 ERROR entries in five minutes."</p> </blockquote> <p>→ <strong>CloudWatch Logs Metric Filter + CloudWatch Alarm</strong></p> <h2 id=10-search-logs>10. Search logs</h2> <blockquote> <p>"Find requests that took more than two seconds."</p> </blockquote> <p>→ <strong>CloudWatch Logs Insights</strong></p> <h2 id=11-real-time-log-processing>11. Real-time log processing</h2> <blockquote> <p>"Send application logs to Lambda for real-time processing."</p> </blockquote> <p>→ <strong>CloudWatch Logs Subscription Filter → Lambda</strong></p> <h2 id=12-identify-who-performed-an-api-action>12. Identify who performed an API action</h2> <blockquote> <p>"Who terminated the EC2 instance?"</p> </blockquote> <p>→ <strong>CloudTrail</strong></p> <h2 id=13-identify-who-deleted-an-s3-object>13. Identify who deleted an S3 object</h2> <blockquote> <p>"Who deleted this specific object from an S3 bucket?"</p> </blockquote> <p>→ <strong>CloudTrail S3 Data Events</strong></p> <h2 id=14-long-term-api-auditing>14. Long-term API auditing</h2> <blockquote> <p>"Keep API activity records for seven years."</p> </blockquote> <p>→ <strong>CloudTrail Trail → S3</strong></p> <h2 id=15-cloudtrail-multi-region-global-services>15. CloudTrail Multi-Region + global services</h2> <blockquote> <p>"A company has resources in multiple AWS Regions and needs API activity across all Regions, including events from global services such as IAM."</p> </blockquote> <p>→ <strong>Multi-Region CloudTrail trail + global service events</strong></p> <div class=highlight><pre><span></span><code>All Regions
+→ --is-multi-region-trail
+
+Global services
+→ --include-global-service-events
+</code></pre></div> <h2 id=16-cloudtrail-lake-iam-error-analysis>16. CloudTrail Lake — IAM error analysis</h2> <blockquote> <p>"A multinational corporation needs to efficiently find and analyze IAM-related <code>AccessDenied</code> and <code>Unauthorized</code> errors in its CloudTrail events. CloudTrail is already enabled. Which solution meets the requirement with the least effort?"</p> </blockquote> <p>→ <strong>CloudTrail Lake</strong></p> <div class=highlight><pre><span></span><code>CloudTrail events
+      ↓
+CloudTrail Lake
+      ↓
+SQL query
+      ↓
+AccessDenied / Unauthorized
+</code></pre></div> <h3 id=why-not-athena>Why not Athena?</h3> <p>Athena can query CloudTrail logs stored in S3, but normally requires the S3 + table/schema setup. CloudTrail Lake is designed specifically for querying CloudTrail event data.</p> <h2 id=17-cloudtrail-log-encryption>17. CloudTrail log encryption</h2> <blockquote> <p>"CloudTrail logs stored in S3 must be encrypted."</p> </blockquote> <p>→ <strong>CloudTrail → S3 with server-side encryption</strong></p> <p>Current behavior:</p> <div class=highlight><pre><span></span><code>CloudTrail → S3
+→ encrypted at rest by default
+
+S3 new objects
+→ SSE-S3 by default
+</code></pre></div> <p>Need a customer-controlled KMS key:</p> <div class=highlight><pre><span></span><code>CloudTrail
+→ SSE-KMS
+</code></pre></div> <h2 id=18-s3-default-encryption>18. S3 default encryption</h2> <blockquote> <p>"Are newly uploaded S3 objects encrypted by default?"</p> </blockquote> <p>→ <strong>Yes, SSE-S3 (AES-256).</strong></p> <blockquote> <p>"Will enabling default encryption encrypt old unencrypted objects?"</p> </blockquote> <p>→ <strong>No.</strong></p> <h2 id=19-unusual-api-activity>19. Unusual API activity</h2> <blockquote> <p>"Detect unusual spikes in API activity."</p> </blockquote> <p>→ <strong>CloudTrail Insights</strong></p> <h2 id=20-prove-logs-were-not-modified>20. Prove logs were not modified</h2> <blockquote> <p>"Provide evidence that CloudTrail logs have not been tampered with."</p> </blockquote> <p>→ <strong>CloudTrail Log File Integrity Validation</strong></p> <h2 id=21-process-cloudtrail-logs-programmatically>21. Process CloudTrail logs programmatically</h2> <blockquote> <p>"An application needs to consume and process CloudTrail log files programmatically."</p> </blockquote> <p>→ <strong>CloudTrail Processing Library</strong></p> <h2 id=22-historical-configuration>22. Historical configuration</h2> <blockquote> <p>"What did this security group look like last Tuesday?"</p> </blockquote> <p>→ <strong>AWS Config</strong></p> <h2 id=23-compliance>23. Compliance</h2> <blockquote> <p>"Identify security groups that allow SSH from the Internet."</p> </blockquote> <p>→ <strong>AWS Config Rule</strong></p> <h2 id=24-automatic-compliance-remediation>24. Automatic compliance remediation</h2> <blockquote> <p>"Automatically fix resources that violate the security rule."</p> </blockquote> <p>→ <strong>AWS Config Rule + remediation</strong></p> <p>Often:</p> <div class=highlight><pre><span></span><code>Config
+ ↓
+Noncompliant
+ ↓
+SSM Automation
+ ↓
+Fix
+</code></pre></div> <h2 id=25-iam-access-key-rotation>25. IAM access key rotation</h2> <blockquote> <p>"A company wants to identify IAM user access keys that are more than 90 days old."</p> </blockquote> <p>→ <strong>AWS Config managed rule <code>access-keys-rotated</code></strong></p> <div class=highlight><pre><span></span><code>maxAccessKeyAge = 90 days
+</code></pre></div> <h2 id=26-iam-access-key-automatic-cleanup>26. IAM access key automatic cleanup</h2> <blockquote> <p>"A company wants to automatically deactivate and delete any IAM user access key that is more than 90 days old with the least operational effort."</p> </blockquote> <p>→ <strong>AWS Config <code>access-keys-rotated</code> → EventBridge → Lambda</strong></p> <div class=highlight><pre><span></span><code>IAM access key
+      ↓
+AWS Config
+access-keys-rotated
+      ↓
+&gt; 90 days
+      ↓
+NON_COMPLIANT
+      ↓
+EventBridge
+      ↓
+Lambda
+      ↓
+Deactivate + delete
+</code></pre></div> <h3 id=why-not-eventbridge-directly>Why not EventBridge directly?</h3> <blockquote> <p>"Create an EventBridge rule to filter IAM access keys older than 90 days."</p> </blockquote> <p>→ <strong>Not the intended solution</strong></p> <p>Config performs the access-key age/compliance evaluation first.</p> <h2 id=27-prevent-the-action>27. Prevent the action</h2> <blockquote> <p>"Prevent developers from disabling CloudTrail."</p> </blockquote> <p>→ <strong>IAM / SCP / preventive control</strong></p> <p>Not → <strong>AWS Config</strong></p> <h2 id=28-distributed-application-latency>28. Distributed application latency</h2> <blockquote> <p>"A request passes through API Gateway, Lambda, several microservices, and DynamoDB. Find which component is causing the delay."</p> </blockquote> <p>→ <strong>X-Ray</strong></p> <h2 id=29-alb-client-ip-and-request-details>29. ALB client IP and request details</h2> <blockquote> <p>"Capture detailed information about every HTTP request through an ALB, including client IP addresses and latency."</p> </blockquote> <p>→ <strong>ALB Access Logs</strong></p> <h2 id=30-alb-api-changes>30. ALB API changes</h2> <blockquote> <p>"Find out who modified the ALB listener or configuration."</p> </blockquote> <p>→ <strong>CloudTrail</strong></p> <p>Not → <strong>ALB Access Logs</strong></p> <h2 id=31-alb-aggregate-request-count>31. ALB aggregate request count</h2> <blockquote> <p>"Monitor the number of requests received by the ALB over time."</p> </blockquote> <p>→ <strong>CloudWatch Metrics</strong></p> <h2 id=32-alb-request-path-and-client-ip>32. ALB request path and client IP</h2> <blockquote> <p>"The company needs the source IP address and detailed information about individual requests."</p> </blockquote> <p>→ <strong>ALB Access Logs</strong></p> <h2 id=33-find-the-slow-application-component>33. Find the slow application component</h2> <blockquote> <p>"The ALB shows high latency and the company needs to determine which downstream service is responsible."</p> </blockquote> <p>→ <strong>X-Ray</strong></p> <h2 id=34-monitor-application-troubleshooting>34. Monitor application troubleshooting</h2> <blockquote> <p>"The company wants automated application monitoring and troubleshooting for its application and supporting AWS resources."</p> </blockquote> <p>→ <strong>CloudWatch Application Insights</strong></p> <h2 id=35-eks-container-monitoring>35. EKS container monitoring</h2> <blockquote> <p>"A company has a public-facing application running on EKS. It needs centralized application/container logs and metrics, plus a dashboard, with the least operational overhead."</p> </blockquote> <p>→ <strong>CloudWatch Container Insights</strong></p> <div class=highlight><pre><span></span><code>EKS
+ ↓
+Container Insights
+ ↓
+Container / pod / node metrics + logs
+ ↓
+CloudWatch dashboard
+</code></pre></div> <h2 id=36-application-insights-vs-container-insights>36. Application Insights vs Container Insights</h2> <blockquote> <p>"The company wants to monitor and troubleshoot application components and their supporting AWS resources."</p> </blockquote> <p>→ <strong>CloudWatch Application Insights</strong></p> <blockquote> <p>"The company wants container/pod/node monitoring for an EKS or ECS workload."</p> </blockquote> <p>→ <strong>CloudWatch Container Insights</strong></p> <h3 id=easy-exam-distinction>Easy exam distinction</h3> <div class=highlight><pre><span></span><code>Application problem
+→ Application Insights
+
+Container problem
+→ Container Insights
+
+Individual ALB HTTP request
+→ ALB Access Logs
+</code></pre></div> <p>They can be used together when the question requires both.</p> <hr> <h1 id=very-common-monitoring-traps>Very Common Monitoring Traps</h1> <h2 id=trap-1-detailed-monitoring-sounds-like-detailed-os-monitoring>Trap 1 — "Detailed Monitoring" sounds like detailed OS monitoring</h2> <p>It isn't.</p> <div class=highlight><pre><span></span><code>Detailed Monitoring = frequency
+CloudWatch Agent    = visibility inside the OS
+</code></pre></div> <h2 id=trap-2-cloudwatch-vs-cloudwatch-agent>Trap 2 — CloudWatch vs CloudWatch Agent</h2> <div class=highlight><pre><span></span><code>CloudWatch
+= monitoring platform
+
+CloudWatch Agent
+= software running on the server
+  that collects additional OS metrics
+</code></pre></div> <h2 id=trap-3-cloudwatch-agent-vs-rds-enhanced-monitoring>Trap 3 — CloudWatch Agent vs RDS Enhanced Monitoring</h2> <div class=highlight><pre><span></span><code>EC2 memory/swap/disk
+→ CloudWatch Agent
+
+RDS OS-level process/memory monitoring
+→ Enhanced Monitoring
+</code></pre></div> <h2 id=trap-4-enhanced-monitoring-vs-performance-insights>Trap 4 — Enhanced Monitoring vs Performance Insights</h2> <div class=highlight><pre><span></span><code>OS/process information
+→ Enhanced Monitoring
+
+Database/query/load information
+→ Performance Insights
+</code></pre></div> <h2 id=trap-5-cloudwatch-logs-vs-cloudtrail>Trap 5 — CloudWatch Logs vs CloudTrail</h2> <div class=highlight><pre><span></span><code>Application logs
+→ CloudWatch Logs
+
+AWS API activity
+→ CloudTrail
+</code></pre></div> <p>Example:</p> <div class=highlight><pre><span></span><code>"Application returned HTTP 500"
+→ CloudWatch Logs
+
+"Who deleted the EC2 instance?"
+→ CloudTrail
+</code></pre></div> <h2 id=trap-6-cloudtrail-vs-config>Trap 6 — CloudTrail vs Config</h2> <div class=highlight><pre><span></span><code>Who changed the resource?
+→ CloudTrail
+
+What was the resource configuration?
+→ Config
+</code></pre></div> <h2 id=trap-7-config-vs-iamscp>Trap 7 — Config vs IAM/SCP</h2> <div class=highlight><pre><span></span><code>Detect noncompliance
+→ Config
+
+Prevent unauthorized action
+→ IAM / SCP
+</code></pre></div> <h2 id=trap-8-config-vs-eventbridge>Trap 8 — Config vs EventBridge</h2> <div class=highlight><pre><span></span><code>Evaluate IAM key age / compliance
+→ Config
+
+React to the compliance change
+→ EventBridge
+
+Deactivate/delete the IAM key
+→ Lambda
+</code></pre></div> <h2 id=trap-9-cloudwatch-vs-x-ray>Trap 9 — CloudWatch vs X-Ray</h2> <div class=highlight><pre><span></span><code>Metric shows high latency
+→ CloudWatch
+
+Find which service/hop caused the latency
+→ X-Ray
+</code></pre></div> <h2 id=trap-10-s3-encryption>Trap 10 — S3 encryption</h2> <div class=highlight><pre><span></span><code>New S3 object
+→ SSE-S3 automatically
+
+Need customer-controlled key
+→ SSE-KMS
+
+Old unencrypted S3 objects
+→ not automatically re-encrypted
+</code></pre></div> <h2 id=trap-11-alb-access-logs-vs-cloudtrail>Trap 11 — ALB Access Logs vs CloudTrail</h2> <div class=highlight><pre><span></span><code>HTTP requests through ALB
+→ ALB Access Logs
+
+AWS API calls involving the ALB
+→ CloudTrail
+</code></pre></div> <h2 id=trap-12-alb-access-logs-vs-cloudwatch-metrics>Trap 12 — ALB Access Logs vs CloudWatch Metrics</h2> <div class=highlight><pre><span></span><code>Individual request details
+→ ALB Access Logs
+
+Aggregated request/latency metrics
+→ CloudWatch Metrics
+</code></pre></div> <h2 id=trap-13-alb-access-logs-vs-x-ray>Trap 13 — ALB Access Logs vs X-Ray</h2> <div class=highlight><pre><span></span><code>Request details at the load balancer
+→ ALB Access Logs
+
+Trace the request through multiple application services
+→ X-Ray
+</code></pre></div> <h2 id=trap-14-health-checks-vs-access-logs>Trap 14 — Health checks vs Access Logs</h2> <div class=highlight><pre><span></span><code>Is the target healthy?
+→ ELB Health Check
+
+What requests are going through the ALB?
+→ ALB Access Logs
+</code></pre></div> <h2 id=trap-15-application-insights-vs-access-logs>Trap 15 — Application Insights vs Access Logs</h2> <div class=highlight><pre><span></span><code>Detailed ALB HTTP traffic
+→ ALB Access Logs
+
+Application monitoring / troubleshooting
+→ CloudWatch Application Insights
+</code></pre></div> <h2 id=trap-16-application-insights-vs-container-insights>Trap 16 — Application Insights vs Container Insights</h2> <div class=highlight><pre><span></span><code>Application components/resources
+→ Application Insights
+
+Containers / pods / nodes
+→ Container Insights
+</code></pre></div> <h2 id=trap-17-cloudtrail-event-history-vs-cloudtrail-lake>Trap 17 — CloudTrail Event History vs CloudTrail Lake</h2> <div class=highlight><pre><span></span><code>Last 90 days of management events
+→ CloudTrail Event History
+
+SQL query / flexible CloudTrail event analysis
+→ CloudTrail Lake
+
+Traditional long-term delivery to S3
+→ CloudTrail Trail
+</code></pre></div> <h2 id=trap-18-cloudtrail-lake-vs-athena>Trap 18 — CloudTrail Lake vs Athena</h2> <div class=highlight><pre><span></span><code>Query CloudTrail events directly with SQL
+→ CloudTrail Lake
+
+Query CloudTrail logs stored in S3
+→ Athena
+</code></pre></div> <h2 id=trap-19-cloudtrail-encryption-vs-integrity>Trap 19 — CloudTrail encryption vs integrity</h2> <div class=highlight><pre><span></span><code>SSE-S3 / SSE-KMS
+→ encryption / confidentiality
+
+Log File Validation
+→ integrity / tamper detection
+</code></pre></div> <h2 id=trap-20-cloudtrail-processing-library-vs-log-file-validation>Trap 20 — CloudTrail Processing Library vs Log File Validation</h2> <div class=highlight><pre><span></span><code>Processing Library
+→ programmatically process CloudTrail logs
+
+Log File Validation
+→ verify log integrity / detect tampering
+</code></pre></div> <hr> <h1 id=pocket-card>Pocket Card</h1> <table> <thead> <tr> <th>Keyword</th> <th>Answer</th> </tr> </thead> <tbody> <tr> <td>Performance / health / metrics</td> <td><strong>CloudWatch</strong></td> </tr> <tr> <td>Logs</td> <td><strong>CloudWatch Logs</strong></td> </tr> <tr> <td>Alarm on a metric</td> <td><strong>CloudWatch Alarm</strong></td> </tr> <tr> <td>Count log messages → metric</td> <td><strong>Metric Filter</strong></td> </tr> <tr> <td>Query logs</td> <td><strong>Logs Insights</strong></td> </tr> <tr> <td>Real-time log processing</td> <td><strong>Subscription Filter</strong></td> </tr> <tr> <td>Reduce alert noise</td> <td><strong>Composite Alarm</strong></td> </tr> <tr> <td>EC2 memory</td> <td><strong>CloudWatch Agent</strong></td> </tr> <tr> <td>EC2 swap</td> <td><strong>CloudWatch Agent</strong></td> </tr> <tr> <td>EC2 filesystem disk usage</td> <td><strong>CloudWatch Agent</strong></td> </tr> <tr> <td>EC2 process metrics</td> <td><strong>CloudWatch Agent / procstat</strong></td> </tr> <tr> <td>EC2 metrics every 1 minute</td> <td><strong>Detailed Monitoring</strong></td> </tr> <tr> <td>EKS/ECS container monitoring</td> <td><strong>CloudWatch Container Insights</strong></td> </tr> <tr> <td>Application/resource troubleshooting</td> <td><strong>CloudWatch Application Insights</strong></td> </tr> <tr> <td>RDS process-level CPU/memory</td> <td><strong>Enhanced Monitoring</strong></td> </tr> <tr> <td>RDS query/database load</td> <td><strong>Performance Insights</strong></td> </tr> <tr> <td>Detailed HTTP requests through ALB</td> <td><strong>ALB Access Logs</strong></td> </tr> <tr> <td>ALB client IP</td> <td><strong>ALB Access Logs</strong></td> </tr> <tr> <td>ALB request/target/response latency</td> <td><strong>ALB Access Logs</strong></td> </tr> <tr> <td>ALB aggregate request count</td> <td><strong>CloudWatch Metrics</strong></td> </tr> <tr> <td>ALB health</td> <td><strong>ELB Health Checks</strong></td> </tr> <tr> <td>Who did what / API audit</td> <td><strong>CloudTrail</strong></td> </tr> <tr> <td>All Regions</td> <td><strong><code>--is-multi-region-trail</code></strong></td> </tr> <tr> <td>Global service events</td> <td><strong><code>--include-global-service-events</code></strong></td> </tr> <tr> <td>Last 90 days management events</td> <td><strong>CloudTrail Event History</strong></td> </tr> <tr> <td>Query CloudTrail events with SQL</td> <td><strong>CloudTrail Lake</strong></td> </tr> <tr> <td>AccessDenied / Unauthorized analysis</td> <td><strong>CloudTrail Lake</strong></td> </tr> <tr> <td>CloudTrail logs stored in S3</td> <td><strong>CloudTrail Trail → S3</strong></td> </tr> <tr> <td>S3 object-level "who"</td> <td><strong>CloudTrail Data Events</strong></td> </tr> <tr> <td>Unusual API activity</td> <td><strong>CloudTrail Insights</strong></td> </tr> <tr> <td>Prove logs weren't modified</td> <td><strong>Log File Integrity Validation</strong></td> </tr> <tr> <td>Process CloudTrail logs programmatically</td> <td><strong>CloudTrail Processing Library</strong></td> </tr> <tr> <td>CloudTrail logs encrypted</td> <td><strong>S3 SSE-S3 by default</strong></td> </tr> <tr> <td>New S3 objects encrypted</td> <td><strong>SSE-S3 by default</strong></td> </tr> <tr> <td>Customer-controlled S3 key</td> <td><strong>SSE-KMS</strong></td> </tr> <tr> <td>Existing old unencrypted data</td> <td><strong>Not automatically re-encrypted</strong></td> </tr> <tr> <td>Query CloudTrail logs in S3</td> <td><strong>Athena</strong></td> </tr> <tr> <td>Configuration history</td> <td><strong>AWS Config</strong></td> </tr> <tr> <td>Configuration compliance</td> <td><strong>AWS Config Rules</strong></td> </tr> <tr> <td>IAM access key &gt;90 days</td> <td><strong>Config <code>access-keys-rotated</code></strong></td> </tr> <tr> <td>Configure IAM access-key age</td> <td><strong><code>maxAccessKeyAge</code></strong></td> </tr> <tr> <td>Auto deactivate/delete old IAM key</td> <td><strong>Config → EventBridge → Lambda</strong></td> </tr> <tr> <td>Automatically fix Config violations</td> <td><strong>Config + remediation</strong></td> </tr> <tr> <td>Compliance audit / collect evidence</td> <td><strong>AWS Audit Manager</strong></td> </tr> <tr> <td>AWS best-practice recommendations</td> <td><strong>Trusted Advisor</strong></td> </tr> <tr> <td>Prevent an action</td> <td><strong>IAM / SCP</strong></td> </tr> <tr> <td>Trace request across services</td> <td><strong>X-Ray</strong></td> </tr> </tbody> </table> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> <button type=button class="md-top md-icon" data-md-component=top hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg> Back to top </button> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <div class=md-progress data-md-component=progress role=progressbar></div> <script id=__config type=application/json>{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.instant", "navigation.instant.progress", "navigation.top", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=assets/javascripts/bundle.a5f9d56c.min.js></script> <script src=scripts.8cca75.min.js></script> </body> </html>
