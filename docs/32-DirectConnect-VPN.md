@@ -57,7 +57,7 @@ Transit Gateway
  VPC   VPC   VPC
 ```
 
-### The key difference
+## The key difference
 
 > **VPN can attach directly to a Transit Gateway.**
 
@@ -67,7 +67,7 @@ This distinction is extremely important for SAA questions.
 
 ---
 
-# 1. Site-to-Site VPN
+## 1. Site-to-Site VPN
 
 AWS Site-to-Site VPN creates an **IPsec VPN connection** between an on-premises network and AWS.
 
@@ -84,11 +84,11 @@ It normally uses an internet/network path rather than a dedicated Direct Connect
 
 ---
 
-# 2. VPN Architecture: VGW vs Transit Gateway
+## 2. VPN Architecture: VGW vs Transit Gateway
 
 This is the first major distinction to understand.
 
-## A. VPN → Virtual Private Gateway → VPC
+### A. VPN → Virtual Private Gateway → VPC
 
 This is the traditional VPN architecture.
 
@@ -123,7 +123,7 @@ Think:
 
 ---
 
-# 3. VPN → Transit Gateway → VPCs
+## 3. VPN → Transit Gateway → VPCs
 
 A Site-to-Site VPN can also be attached **directly to a Transit Gateway**.
 
@@ -139,7 +139,7 @@ Transit Gateway
 
 There is **no Direct Connect Gateway** here.
 
-### Why use this architecture?
+## Why use this architecture?
 
 Transit Gateway acts as a central router.
 
@@ -163,7 +163,7 @@ This is useful when the company has:
 * A centralized networking architecture
 * On-premises networks that need to communicate with many VPCs
 
-### Exam clue
+## Exam clue
 
 > On-premises needs VPN connectivity to **multiple VPCs**.
 
@@ -172,7 +172,7 @@ This is useful when the company has:
 > Cross-Region VPCs connect with each other**.
 → **Transit Gateway peering**
 
-### Important
+## Important
 
 Do **not** think:
 
@@ -192,7 +192,7 @@ The VPN is itself a **Transit Gateway attachment**.
 
 ---
 
-# 4. VPN: VGW vs Transit Gateway
+## 4. VPN: VGW vs Transit Gateway
 
 | Requirement                          | Architecture                              |
 | ------------------------------------ | ----------------------------------------- |
@@ -201,7 +201,7 @@ The VPN is itself a **Transit Gateway attachment**.
 | Central hub for many VPCs            | **Transit Gateway**                       |
 | Need higher aggregate VPN throughput | **TGW + ECMP + multiple VPN connections** |
 
-### Easy memory
+## Easy memory
 
 > **VGW = VPN to a VPC**
 
@@ -209,7 +209,7 @@ The VPN is itself a **Transit Gateway attachment**.
 
 ---
 
-# 5. Scaling VPN Throughput with ECMP
+## 5. Scaling VPN Throughput with ECMP
 
 A common SAA requirement is:
 
@@ -229,7 +229,7 @@ On-premises ────┼── VPN Connection 2 ──┼── Transit Gatew
 
 ECMP (**Equal-Cost Multi-Path**) allows traffic to use multiple equal-cost paths.
 
-### Important requirements
+## Important requirements
 
 For Site-to-Site VPN ECMP:
 
@@ -247,7 +247,7 @@ Multiple VPN connections
 Higher aggregate VPN throughput
 ```
 
-### Very important distinction
+## Very important distinction
 
 A single VPN connection already has **two tunnels**.
 
@@ -266,7 +266,7 @@ For throughput scaling:
 
 ---
 
-# 6. Large Bandwidth Tunnels
+## 6. Large Bandwidth Tunnels
 
 AWS also supports **Large Bandwidth Tunnels (LBT)** for supported Site-to-Site VPN configurations.
 
@@ -286,7 +286,7 @@ Large Bandwidth Tunnels are supported for VPN connections attached to **Transit 
 
 Both tunnels in a VPN connection must use the same bandwidth configuration.
 
-### Need even more aggregate bandwidth?
+## Need even more aggregate bandwidth?
 
 Use:
 
@@ -321,7 +321,7 @@ The exact achievable throughput depends on the architecture and configuration. F
 
 ---
 
-# 7. VPN Throughput vs VPN Redundancy
+## 7. VPN Throughput vs VPN Redundancy
 
 Do not confuse these requirements.
 
@@ -356,7 +356,7 @@ look for:
 
 ---
 
-# 8. VPN CloudHub
+## 8. VPN CloudHub
 
 **VPN CloudHub** is different from Transit Gateway.
 
@@ -379,7 +379,7 @@ Office B  Office C
 
 The sites can communicate through AWS without creating a direct VPN connection between every pair.
 
-### Example
+## Example
 
 ```text
 Office A ──┐
@@ -389,7 +389,7 @@ Office B ──┼── AWS VPN CloudHub
 Office C ──┘
 ```
 
-### Exam clue
+## Exam clue
 
 > Several branch offices/data centers need to communicate with each other through AWS.
 
@@ -397,7 +397,7 @@ Office C ──┘
 
 ---
 
-# 9. VPN CloudHub vs Transit Gateway
+## 9. VPN CloudHub vs Transit Gateway
 
 These can look similar in exam questions, but the main idea is different.
 
@@ -409,7 +409,7 @@ These can look similar in exam questions, but the main idea is different.
 | VPC connectivity       | Not the main purpose                   | Major use case                        |
 | VPN throughput scaling | Not the main pattern                   | **ECMP**                              |
 
-### Easy rule
+## Easy rule
 
 > **Multiple on-premises sites need to communicate through AWS → VPN CloudHub**
 
@@ -417,7 +417,7 @@ These can look similar in exam questions, but the main idea is different.
 
 ---
 
-# 10. Client VPN
+## 10. Client VPN
 
 **AWS Client VPN** is different from Site-to-Site VPN.
 
@@ -431,7 +431,7 @@ Employee laptop
       AWS
 ```
 
-### Remember
+## Remember
 
 | Requirement                      | Service              |
 | -------------------------------- | -------------------- |
@@ -440,7 +440,7 @@ Employee laptop
 
 ---
 
-# 11. Direct Connect
+## 11. Direct Connect
 
 **AWS Direct Connect (DX)** provides a dedicated network connection between an on-premises location and AWS.
 
@@ -452,7 +452,7 @@ On-premises
     AWS
 ```
 
-### Main characteristics
+## Main characteristics
 
 * Dedicated connectivity
 * Does not use the public internet for the Direct Connect path
@@ -470,7 +470,7 @@ Common dedicated connection capacities include:
 
 ---
 
-# 12. Direct Connect Is Private, Not Encrypted
+## 12. Direct Connect Is Private, Not Encrypted
 
 This is one of the most important exam traps.
 
@@ -496,7 +496,7 @@ VPN / IPsec
 
 ---
 
-# 13. Direct Connect Virtual Interfaces
+## 13. Direct Connect Virtual Interfaces
 
 A **Virtual Interface (VIF)** determines how traffic is routed through a Direct Connect connection.
 
@@ -510,7 +510,7 @@ The three important VIF types are:
 
 ---
 
-# 14. Private VIF
+## 14. Private VIF
 
 A **Private VIF** is used for private connectivity to VPC resources.
 
@@ -537,7 +537,7 @@ A private VIF can be used with a Virtual Private Gateway or a Direct Connect Gat
 
 ---
 
-# 15. Public VIF
+## 15. Public VIF
 
 A **Public VIF** is used to access AWS public services through Direct Connect.
 
@@ -560,7 +560,7 @@ Public VIF
 AWS public services
 ```
 
-### Exam clue
+## Exam clue
 
 > "On-premises needs Direct Connect access to S3."
 
@@ -568,7 +568,7 @@ AWS public services
 
 ---
 
-# 16. Transit VIF
+## 16. Transit VIF
 
 A **Transit VIF** is used when Direct Connect needs to reach a **Transit Gateway**.
 
@@ -590,7 +590,7 @@ Transit Gateway
  VPC   VPC   VPC
 ```
 
-### This is the critical Direct Connect architecture
+## This is the critical Direct Connect architecture
 
 You **do not** connect the Direct Connect connection directly to the Transit Gateway.
 
@@ -606,7 +606,7 @@ Direct Connect Gateway
 Transit Gateway
 ```
 
-### Exam clue
+## Exam clue
 
 > "Connect on-premises to many VPCs through an existing Direct Connect connection and Transit Gateway."
 
@@ -648,7 +648,7 @@ Site-to-Site VPN
    Transit Gateway
 ```
 
-### Memorize this exact comparison
+## Memorize this exact comparison
 
 ```text
 VPN + TGW
@@ -672,7 +672,7 @@ This is one of the most useful architecture patterns in this section.
 
 ---
 
-# 18. Direct Connect Gateway
+## 18. Direct Connect Gateway
 
 A **Direct Connect Gateway (DXGW)** allows Direct Connect connectivity to be extended to AWS networks.
 
@@ -708,7 +708,7 @@ depending on the architecture.
 
 ---
 
-# 19. Direct Connect Gateway + Transit Gateway
+## 19. Direct Connect Gateway + Transit Gateway
 
 For a large multi-account environment:
 
@@ -741,7 +741,7 @@ For example, the on-premises network contains:
 
 and several AWS accounts need access to them.
 
-### Exam clue
+## Exam clue
 
 > "Multiple AWS accounts need access to on-premises resources through an existing Direct Connect connection."
 
@@ -751,7 +751,7 @@ Think:
 
 ---
 
-# 20. Direct Connect Gateway vs Transit Gateway
+## 20. Direct Connect Gateway vs Transit Gateway
 
 These services have different jobs.
 
@@ -785,11 +785,11 @@ VPC  VPC  VPC
 
 ---
 
-# 21. VPN + Transit Gateway vs DX + Transit Gateway
+## 21. VPN + Transit Gateway vs DX + Transit Gateway
 
 This is the most important comparison in this section.
 
-## VPN
+### VPN
 
 ```text
 On-premises
@@ -836,7 +836,7 @@ Transit Gateway
 
 ---
 
-# 22. Direct Connect vs VPC Peering
+## 22. Direct Connect vs VPC Peering
 
 **VPC Peering** provides point-to-point connectivity between VPCs.
 
@@ -870,7 +870,7 @@ Not a large VPC peering mesh.
 
 ---
 
-# 23. Multi-Account Transit Gateway
+## 23. Multi-Account Transit Gateway
 
 A Transit Gateway can be shared with other AWS accounts using **AWS Resource Access Manager (RAM)**.
 
@@ -907,7 +907,7 @@ Multiple AWS accounts
 
 ---
 
-# 24. Direct Connect + VPN Backup
+## 24. Direct Connect + VPN Backup
 
 A common exam requirement is:
 
@@ -926,7 +926,7 @@ On-premises ────────┤
 
 The VPN provides an alternative path if Direct Connect becomes unavailable.
 
-### Exam clue
+## Exam clue
 
 > **"Cost-effective backup for Direct Connect"**
 
@@ -934,7 +934,7 @@ The VPN provides an alternative path if Direct Connect becomes unavailable.
 
 ---
 
-# 25. Direct Connect + VPN Encryption
+## 25. Direct Connect + VPN Encryption
 
 Direct Connect itself is private but does not encrypt traffic by default.
 
@@ -977,7 +977,7 @@ Think about a **VPN/IPsec encryption layer over the private Direct Connect path*
 
 ---
 
-# 26. Two Direct Connect Connections
+## 26. Two Direct Connect Connections
 
 For stronger Direct Connect resilience, an organization can use multiple Direct Connect connections.
 
@@ -989,7 +989,7 @@ On-premises ──┤
 
 Ideally, the connections should use independent physical/network paths where possible.
 
-### Trade-off
+## Trade-off
 
 ```text
 More resilience
@@ -1001,7 +1001,7 @@ More cost
 
 ---
 
-# 27. VPN First, Direct Connect Later
+## 27. VPN First, Direct Connect Later
 
 Direct Connect can take longer to provision.
 
@@ -1032,7 +1032,7 @@ On-premises
 
 The VPN can later become a backup path.
 
-### Exam clue
+## Exam clue
 
 > "The company needs connectivity immediately while waiting for Direct Connect."
 
@@ -1040,7 +1040,7 @@ The VPN can later become a backup path.
 
 ---
 
-# 28. Choosing VPN vs Direct Connect
+## 28. Choosing VPN vs Direct Connect
 
 The decision usually comes down to these requirements:
 
@@ -1057,7 +1057,7 @@ The decision usually comes down to these requirements:
 
 ---
 
-# 29. Architecture Decision Table
+## 29. Architecture Decision Table
 
 This is the table to use when solving SAA questions.
 
@@ -1080,7 +1080,7 @@ This is the table to use when solving SAA questions.
 
 ---
 
-# 30. The Four Most Important Architectures
+## 30. The Four Most Important Architectures
 
 If you remember only four diagrams, remember these.
 
@@ -1154,7 +1154,7 @@ Transit Gateway
 
 ---
 
-# 31. The Critical Difference
+## 31. The Critical Difference
 
 When you see a question involving **Transit Gateway**, first ask:
 
@@ -1162,7 +1162,7 @@ When you see a question involving **Transit Gateway**, first ask:
 
 Then choose the path.
 
-### If VPN:
+## If VPN:
 
 ```text
 VPN
@@ -1172,7 +1172,7 @@ Transit Gateway
 VPCs
 ```
 
-### If Direct Connect:
+## If Direct Connect:
 
 ```text
 Direct Connect
@@ -1186,7 +1186,7 @@ Transit Gateway
 VPCs
 ```
 
-### Never confuse these:
+## Never confuse these:
 
 ```text
 ❌ Direct Connect → Transit Gateway
@@ -1202,7 +1202,7 @@ VPCs
 
 ---
 
-# 32. Exam Question Patterns
+## 32. Exam Question Patterns
 
 > **"The company needs connectivity to AWS within days."**
 
@@ -1298,9 +1298,9 @@ Remember:
 
 ---
 
-# 33. Pocket Card
+## 33. Pocket Card
 
-## VPN
+### VPN
 
 | Keyword                                 | Answer                                    |
 | --------------------------------------- | ----------------------------------------- |
@@ -1316,7 +1316,7 @@ Remember:
 
 ---
 
-## Direct Connect
+### Direct Connect
 
 | Keyword                        | Answer                       |
 | ------------------------------ | ---------------------------- |
@@ -1333,7 +1333,7 @@ Remember:
 
 ---
 
-## Transit Gateway
+### Transit Gateway
 
 | Requirement               | Answer                            |
 | ------------------------- | --------------------------------- |

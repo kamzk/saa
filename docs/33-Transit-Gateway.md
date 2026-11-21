@@ -14,7 +14,7 @@ It is useful when an organization has:
 * a need for **transitive routing**
 * a need to centrally control network traffic
 
-### VPC Peering vs Transit Gateway
+## VPC Peering vs Transit Gateway
 
 **VPC Peering** connects two VPCs directly.
 
@@ -42,7 +42,7 @@ With Transit Gateway:
 
 Each VPC connects to the Transit Gateway, and the Transit Gateway can route traffic between the attached networks.
 
-### Easy rule
+## Easy rule
 
 > **VPC Peering = direct VPC-to-VPC connection**
 
@@ -50,7 +50,7 @@ Each VPC connects to the Transit Gateway, and the Transit Gateway can route traf
 
 ---
 
-# What can connect to Transit Gateway?
+## What can connect to Transit Gateway?
 
 Transit Gateway supports several attachment types.
 
@@ -62,7 +62,7 @@ Transit Gateway supports several attachment types.
 | **Transit Gateway peering**             | Connect two Transit Gateways                             |
 | **Other supported network attachments** | Connect supported AWS/network resources                  |
 
-### Typical architecture
+## Typical architecture
 
 ```text
                        Transit Gateway
@@ -77,7 +77,7 @@ Transit Gateway supports several attachment types.
 
 ---
 
-# Transit Gateway routing
+## Transit Gateway routing
 
 Transit Gateway uses **Transit Gateway route tables** to control how traffic is routed between attachments.
 
@@ -99,13 +99,13 @@ You can configure routing so that:
 * Development VPCs can communicate with on-premises
 * Production VPCs cannot route to development VPCs
 
-### Important idea
+## Important idea
 
 > **Transit Gateway route tables can be used to segment traffic between groups of VPCs.**
 
 ---
 
-# AWS RAM and Transit Gateway
+## AWS RAM and Transit Gateway
 
 **AWS Resource Access Manager (AWS RAM)** allows supported AWS resources to be **shared across AWS accounts**.
 
@@ -129,7 +129,7 @@ Central networking account
 
 This allows a central networking account to manage the Transit Gateway while other AWS accounts attach their VPCs to it.
 
-### Important distinction
+## Important distinction
 
 > **Transit Gateway = connects the networks**
 
@@ -137,7 +137,7 @@ This allows a central networking account to manage the Transit Gateway while oth
 
 RAM does **not** perform the network routing itself.
 
-### Exam clue
+## Exam clue
 
 > "A central networking account has a Transit Gateway and wants VPCs in other AWS accounts to use it."
 
@@ -145,7 +145,7 @@ RAM does **not** perform the network routing itself.
 
 ---
 
-# Transit Gateway + Direct Connect
+## Transit Gateway + Direct Connect
 
 For on-premises connectivity through Direct Connect, the typical architecture is:
 
@@ -183,7 +183,7 @@ For multi-account architectures, the Transit Gateway can be shared using **AWS R
 
 ---
 
-# Transit Gateway + Site-to-Site VPN
+## Transit Gateway + Site-to-Site VPN
 
 Transit Gateway can also be used as the central endpoint for multiple VPN connections.
 
@@ -205,7 +205,7 @@ This is useful when several offices or on-premises networks need centralized con
 
 ---
 
-# Transit Gateway Peering
+## Transit Gateway Peering
 
 You can connect two Transit Gateways using **Transit Gateway peering**.
 
@@ -221,7 +221,7 @@ VPC C ─┘                     └─ VPC F
 
 This is useful when different regions have separate Transit Gateways that need connectivity.
 
-### Exam clue
+## Exam clue
 
 > "Connect two Transit Gateways in different Regions."
 
@@ -229,7 +229,7 @@ This is useful when different regions have separate Transit Gateways that need c
 
 ---
 
-# Appliance mode
+## Appliance mode
 
 **Appliance mode** is used when traffic must pass through a network appliance such as:
 
@@ -257,7 +257,7 @@ Firewall
 Destination
 ```
 
-### Exam clue
+## Exam clue
 
 > "All traffic must pass through the same firewall in both directions."
 
@@ -265,13 +265,13 @@ Destination
 
 ---
 
-# Multicast
+## Multicast
 
 Transit Gateway supports **IP multicast**.
 
 This is useful for applications that need one-to-many network communication.
 
-### Exam clue
+## Exam clue
 
 > "The application requires IP multicast."
 
@@ -283,7 +283,7 @@ For SAA, remember:
 
 ---
 
-# Transit Gateway vs VPC Peering
+## Transit Gateway vs VPC Peering
 
 | Feature                            | VPC Peering                                    | Transit Gateway                      |
 | ---------------------------------- | ---------------------------------------------- | ------------------------------------ |
@@ -297,11 +297,11 @@ For SAA, remember:
 | Cross-region connectivity          | Supported                                      | Supported through TGW peering        |
 | Typical use                        | Small/simple VPC-to-VPC connectivity           | Large/multi-VPC network architecture |
 
-### When should you prefer VPC Peering?
+## When should you prefer VPC Peering?
 
 For a small number of VPCs that simply need direct communication, VPC Peering can be simpler and may have lower cost because it does not have Transit Gateway attachment/hourly charges.
 
-### When should you prefer Transit Gateway?
+## When should you prefer Transit Gateway?
 
 Use Transit Gateway when you need:
 
@@ -316,7 +316,7 @@ Use Transit Gateway when you need:
 
 ---
 
-# Transit Gateway vs PrivateLink
+## Transit Gateway vs PrivateLink
 
 These solve very different problems.
 
@@ -352,13 +352,13 @@ Service
 
 The consumer does not receive general network access to the provider VPC.
 
-### Easy rule
+## Easy rule
 
 > **Need network-to-network connectivity → Transit Gateway**
 
 > **Need access to one specific service → PrivateLink**
 
-### PrivateLink exam clues
+## PrivateLink exam clues
 
 Use PrivateLink when the question emphasizes:
 
@@ -369,7 +369,7 @@ Use PrivateLink when the question emphasizes:
 
 ---
 
-# Cost considerations
+## Cost considerations
 
 Transit Gateway charges for:
 
@@ -388,7 +388,7 @@ Do not choose Transit Gateway only because it is more scalable; consider the act
 
 ---
 
-# Question patterns
+## Question patterns
 
 > **"25 VPCs and an on-premises datacenter need centralized connectivity."**
 
@@ -460,7 +460,7 @@ If transitive connectivity is required:
 
 ---
 
-# Pocket card
+## Pocket card
 
 | Keyword                              | Answer                             |
 | ------------------------------------ | ---------------------------------- |
@@ -481,7 +481,7 @@ If transitive connectivity is required:
 
 ---
 
-# Easy memory rules
+## Easy memory rules
 
 ```text
 VPC Peering
@@ -528,7 +528,7 @@ PrivateLink
                 VPC         VPC         VPC
 ```
 
-### Core SAA rules
+## Core SAA rules
 
 > **VPC Peering → direct, non-transitive**
 

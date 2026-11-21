@@ -17,9 +17,9 @@ These are smaller AWS networking and infrastructure services that usually appear
 
 ---
 
-# Route 53 Resolver
+## Route 53 Resolver
 
-## The idea
+### The idea
 
 **Route 53 Resolver connects DNS between your AWS VPC and your on-premises/corporate network.**
 
@@ -33,7 +33,7 @@ and one side needs to resolve DNS names that are known only by the other side.
 
 ---
 
-## First: What problem does it solve?
+### First: What problem does it solve?
 
 DNS converts a hostname into an IP address:
 
@@ -77,7 +77,7 @@ That's where Route 53 Resolver endpoints come in.
 
 ---
 
-# There are TWO directions
+## There are TWO directions
 
 The easiest way to understand Resolver is to look at **where the DNS query starts**.
 
@@ -99,9 +99,9 @@ uses:
 
 ---
 
-# Inbound Resolver Endpoint
+## Inbound Resolver Endpoint
 
-## What does it do?
+### What does it do?
 
 It allows **DNS queries coming from on-premises into AWS**.
 
@@ -151,9 +151,9 @@ Therefore:
 
 ---
 
-# Outbound Resolver Endpoint
+## Outbound Resolver Endpoint
 
-## What does it do?
+### What does it do?
 
 It allows **DNS queries originating in AWS to reach on-premises DNS servers**.
 
@@ -205,7 +205,7 @@ Therefore:
 
 ---
 
-# The most important Resolver diagram
+## The most important Resolver diagram
 
 ```text
                     AWS
@@ -242,7 +242,7 @@ AWS → On-prem
 
 ---
 
-# What does Resolver actually transfer?
+## What does Resolver actually transfer?
 
 The Resolver endpoint forwards **DNS queries**.
 
@@ -265,7 +265,7 @@ AWS and on-prem can resolve each other's names
 
 ---
 
-# Resolver does NOT create network connectivity
+## Resolver does NOT create network connectivity
 
 You still need network connectivity such as:
 
@@ -296,9 +296,9 @@ The Resolver endpoint handles the **DNS part**.
 
 ---
 
-# Common Resolver scenarios
+## Common Resolver scenarios
 
-## Scenario 1
+### Scenario 1
 
 > On-premises servers need to resolve private DNS names in AWS.
 
@@ -314,7 +314,7 @@ Answer:
 
 ---
 
-## Scenario 2
+### Scenario 2
 
 > EC2 instances need to resolve internal corporate DNS names.
 
@@ -330,7 +330,7 @@ Answer:
 
 ---
 
-## Scenario 3
+### Scenario 3
 
 > AWS and on-premises are connected through Direct Connect, but AWS workloads cannot resolve internal corporate hostnames.
 
@@ -346,7 +346,7 @@ Answer:
 
 ---
 
-## Scenario 4
+### Scenario 4
 
 > On-premises applications cannot resolve private Route 53 names hosted in AWS.
 
@@ -362,7 +362,7 @@ Answer:
 
 ---
 
-# Don't confuse DNS direction with network ownership
+## Don't confuse DNS direction with network ownership
 
 The names **inbound/outbound are from AWS's perspective**.
 
@@ -384,11 +384,11 @@ Always ask:
 
 ---
 
-# Route 53 Hosted Zones vs Resolver
+## Route 53 Hosted Zones vs Resolver
 
 These are different things.
 
-## Route 53 Hosted Zone
+### Route 53 Hosted Zone
 
 Stores DNS records such as:
 
@@ -410,7 +410,7 @@ Think:
 
 ---
 
-# Quick comparison
+## Quick comparison
 
 | Requirement                            | Answer                         |
 | -------------------------------------- | ------------------------------ |
